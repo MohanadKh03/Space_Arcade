@@ -67,4 +67,35 @@ struct Menu {
     }
 };
 
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& isPLAY,Event& event) {
+    
+        //The start of the program , basically all the menu stuff .
+        if (isMENU) {
+            switch (event.type) {
+                //if the key is pressed then move up/down
+            case Event::KeyPressed:
+                switch (event.key.code) {
+                case Keyboard::Up:
+                    main.MoveUp();
+                    break;
+                case Keyboard::Down:
+                    main.MoveDown();
+                    break;
+                }
+            }
+            //conditions when entered .. ez 
+            if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+                switch (main.getPressed()) {
+                case 0:
+                    isMENU = false;
+                    isPLAY = true;
+                    break;
+                case 1:
+                    window.close();
+                    break;
+                }
+            }
+        }
+}
+
 #endif
