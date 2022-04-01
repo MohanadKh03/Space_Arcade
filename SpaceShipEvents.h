@@ -2,7 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<iostream>
-void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y ) {
+void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y) {
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < 320)
 	{
 		YP.move(0.1, 0);

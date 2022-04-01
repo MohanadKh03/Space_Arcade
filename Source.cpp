@@ -33,7 +33,7 @@ int main()
     int x = 0, y = 0;
     Texture t;
     Texture Bg;
-    Bg.loadFromFile("back ground.jpeg");
+    Bg.loadFromFile("background.jpg");
     Sprite Bg1(Bg);
     const float Bgscale = 0.8;
     Bg1.setScale(Bgscale, Bgscale);
@@ -62,8 +62,10 @@ int main()
             window.draw(s_mainBG);
             main.draw(window);
         }
-        if (playPressed)
+        if (playPressed) {
             window.draw(s_spaceshipBG);
+            window.draw(t);
+        }
 
         window.display();
     }
