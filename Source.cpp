@@ -44,7 +44,7 @@ int main()
     camera.setCenter(YP.getPosition());
     YP.setTexture(t);
     YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
-    YP.setPosition(window, 0);                                                                        //window AND photo
+    YP.setPosition(500, 500);                                                                        //window AND photo
     //ggggggggggg
     while (window.isOpen())
     {
