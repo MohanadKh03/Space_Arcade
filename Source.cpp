@@ -37,11 +37,11 @@ int main()
     Sprite Bg1(Bg);
     const float Bgscale = 0.8;
     Bg1.setScale(Bgscale, Bgscale);
-    Bg1.setPosition(-500, -300);
+    Bg1.setPosition(0, 0);
     t.loadFromFile("yellow hair boy.png");
     Sprite YP;
     View camera(sf::FloatRect(0, 0, 600, 600));
-    camera.setCenter(YP.getPosition());
+    
     YP.setTexture(t);
     YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
     YP.setPosition(500, 500);                                                                        //window AND photo
@@ -55,8 +55,9 @@ int main()
                 window.close();
             RunMenuEvents(window, main, isMenuOpened, playPressed,event);
             if (playPressed)
-                MovementSpaceShip(camera, YP, x, y);
+                MovementSpaceShip(window, camera, YP, x, y);
         }
+        camera.setCenter(YP.getPosition());
 
         window.clear();
         if (isMenuOpened) {
@@ -64,7 +65,7 @@ int main()
             main.draw(window);
         }
         if (playPressed) {
-            window.draw(Bg1);
+            window.draw(s_spaceshipBG);
             window.draw(YP);
         }
 
