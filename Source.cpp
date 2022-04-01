@@ -1,13 +1,16 @@
-#include <SFML/Graphics.hpp>
 #include <fstream>
+#include <SFML/Graphics.hpp>
 #include "MainMenu.h"
 #include "SpaceShipEvents.h"
+#include "BrickBreaker.h"
 using namespace std;
 using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(1600, 900), "Space Arcade");
+    int screenWidth = 1600;
+    int screenHeight = 900;
+    RenderWindow window(VideoMode(screenWidth, screenHeight), "Space Arcade");
 
     //booleans for the Menu itself and Play  
     Menu main(window.getSize().x, window.getSize().y); bool isMenuOpened = true, playPressed = false;
@@ -29,7 +32,9 @@ int main()
                                                                              //Scaling to the 
                                                                              //difference between
      //  gggggggggggggg
-     // 	
+     // 
+    int score = 0;
+
     int x = 0, y = 0;
     Texture t;
     Texture Bg;
@@ -56,6 +61,9 @@ int main()
             RunMenuEvents(window, main, isMenuOpened, playPressed,event);
             if (playPressed)
                 MovementSpaceShip(window, camera, YP, x, y);
+
+            if (Keyboard::isKeyPressed(Keyboard::R))
+                gameGameLoop(screenWidth, screenHeight, score);
         }
         camera.setCenter(YP.getPosition());
 
@@ -70,6 +78,7 @@ int main()
         }
 
         window.display();
+        cout << "Score: " << score << endl;
     }
 
     return 0;
