@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "MainMenu.h"
-
+#include "SpaceShipEvents.h"
 using namespace std;
 using namespace sf;
 
@@ -28,8 +28,24 @@ int main()
                            , window.getSize().y / s_spaceshipBG.getLocalBounds().height);
                                                                              //Scaling to the 
                                                                              //difference between
-                                                                             //window AND photo
-
+     //  gggggggggggggg
+     // 	
+    int x = 0, y = 0;
+    Texture t;
+    Texture Bg;
+    Bg.loadFromFile("back ground.jpeg");
+    Sprite Bg1(Bg);
+    const float Bgscale = 0.8;
+    Bg1.setScale(Bgscale, Bgscale);
+    Bg1.setPosition(-500, -300);
+    t.loadFromFile("yellow hair boy.png");
+    Sprite YP;
+    View camera(sf::FloatRect(0, 0, 600, 600));
+    camera.setCenter(YP.getPosition());
+    YP.setTexture(t);
+    YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
+    YP.setPosition(0, 0);                                                                        //window AND photo
+    //ggggggggggg
     while (window.isOpen())
     {
         Event event;
