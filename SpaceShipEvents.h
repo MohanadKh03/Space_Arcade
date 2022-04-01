@@ -5,8 +5,8 @@
 void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y) {
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < 320)
 	{
-		YP.move(0.1, 0);
-		camera.move(0.1, 0);
+		YP.move(10, 0);
+		camera.move(10, 0);
 		x++;
 		x %= 4;
 		y = 2;
@@ -14,8 +14,8 @@ void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y) {
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Left) && YP.getPosition().x > -470)
 	{
-		YP.move(-0.1, 0);
-		camera.move(-0.1, 0);
+		YP.move(-10, 0);
+		camera.move(-10, 0);
 		x++;
 		x %= 4;
 		y = 1;
@@ -23,8 +23,8 @@ void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y) {
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Up) && YP.getPosition().y > -230)
 	{
-		YP.move(0, -0.1);
-		camera.move(0, -0.1);
+		YP.move(0, -10);
+		camera.move(0, -10);
 		x++;
 		x %= 4;
 		y = 3;
@@ -32,8 +32,8 @@ void MovementSpaceShip(View& camera,Sprite& YP,int& x,int& y) {
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Down) && YP.getPosition().y < 270)
 	{
-		YP.move(0, 0.1);
-		camera.move(0, 0.1);
+		YP.move(0, 10);
+		camera.move(0, 10);
 		x++;
 		x %= 4;
 		y = 0;
