@@ -7,7 +7,7 @@ using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(1200, 800), "Space Arcade");
+    RenderWindow window(VideoMode(1600, 900), "Space Arcade");
 
     //booleans for the Menu itself and Play  
     Menu main(window.getSize().x, window.getSize().y); bool isMenuOpened = true, playPressed = false;
@@ -38,6 +38,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             RunMenuEvents(window, main, isMenuOpened, playPressed,event);
+            
         }
 
         window.clear();
