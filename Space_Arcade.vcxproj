@@ -145,11 +145,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="BrickBreaker.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="SpaceShipEvents.h" />
   </ItemGroup>

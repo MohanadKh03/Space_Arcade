@@ -18,6 +18,9 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -26,10 +29,7 @@
     <ClInclude Include="SpaceShipEvents.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="BrickBreaker.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ball.h">
+    <ClInclude Include="game.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

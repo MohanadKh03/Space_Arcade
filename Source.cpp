@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "MainMenu.h"
 #include "SpaceShipEvents.h"
-#include "BrickBreaker.h"
+#include "game.h"
 using namespace std;
 using namespace sf;
 
@@ -62,8 +62,10 @@ int main()
             if (playPressed)
                 MovementSpaceShip(window, camera, YP, x, y);
 
-            if (Keyboard::isKeyPressed(Keyboard::R))
-                gameGameLoop(screenWidth, screenHeight, score);
+            if (Keyboard::isKeyPressed(Keyboard::R)) {
+                game brickBreakerGame("2.Breakout C++ SFML", score);
+                brickBreakerGame.run(score);
+            }
         }
         camera.setCenter(YP.getPosition());
 
@@ -78,7 +80,6 @@ int main()
         }
 
         window.display();
-        cout << "Score: " << score << endl;
     }
 
     return 0;
