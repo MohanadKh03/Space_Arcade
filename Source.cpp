@@ -8,9 +8,7 @@ using namespace sf;
 
 int main()
 {
-    int screenWidth = 1600;
-    int screenHeight = 900;
-    RenderWindow window(VideoMode(screenWidth, screenHeight), "Space Arcade");
+    RenderWindow window(VideoMode(1600,900), "Space Arcade");
 
     //booleans for the Menu itself and Play  
     Menu main(window.getSize().x, window.getSize().y); bool isMenuOpened = true, playPressed = false;
@@ -20,20 +18,11 @@ int main()
     t_mainBG.loadFromFile("BlackBG.jpg");
     Sprite s_mainBG(t_mainBG);
     s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
-                    , window.getSize().y / s_mainBG.getLocalBounds().height); //Scaling to the 
+                     ,window.getSize().y / s_mainBG.getLocalBounds().height); //Scaling to the 
                                                                              //difference between
                                                                              //window AND photo
-    //Space Background
-    Texture t_spaceshipBG;
-    t_spaceshipBG.loadFromFile("Spaceship.jfif");
-    Sprite s_spaceshipBG(t_spaceshipBG);
-    s_spaceshipBG.setScale(window.getSize().x / s_spaceshipBG.getLocalBounds().width
-                           , window.getSize().y / s_spaceshipBG.getLocalBounds().height);
-                                                                             //Scaling to the 
-                                                                             //difference between
-     //  gggggggggggggg
-     // 
-    int score = 0;
+    //  gggggggggggggg 
+    int score_BrickBreaker = 0;
 
     int x = 0, y = 0;
     Texture t;
@@ -45,11 +34,10 @@ int main()
     Bg1.setPosition(0, 0);
     t.loadFromFile("yellow hair boy.png");
     Sprite YP;
-    View camera(sf::FloatRect(0, 0, 600, 600));
-    
+    View camera(Vector2f(0.f, 0.f), Vector2f(window.getSize().x,window.getSize().y));
     YP.setTexture(t);
     YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
-    YP.setPosition(500, 500);                                                                        //window AND photo
+    YP.setPosition(window.getSize().x/ 2.f, window.getSize().y / 2.f);
     //ggggggggggg
     while (window.isOpen())
     {
@@ -63,8 +51,8 @@ int main()
                 MovementSpaceShip(window, camera, YP, x, y);
 
             if (Keyboard::isKeyPressed(Keyboard::R)) {
-                game brickBreakerGame("2.Breakout C++ SFML", score);
-                brickBreakerGame.run(score);
+                game brickBreakerGame("2.Breakout C++ SFML", score_BrickBreaker);
+                brickBreakerGame.run(score_BrickBreaker);
             }
         }
         camera.setCenter(YP.getPosition());
@@ -75,7 +63,8 @@ int main()
             main.draw(window);
         }
         if (playPressed) {
-            window.draw(s_spaceshipBG);
+            window.draw(Bg1);
+            window.setView(camera);
             window.draw(YP);
         }
 
