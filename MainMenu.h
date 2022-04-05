@@ -25,12 +25,12 @@ struct Menu {
         }
 
         //Texts to be shown
-        texts(menu[0], "Play", 100, height / 2, 35, font[0]);
-        texts(menu[1], "Exit", 100, height / 1.5, 35, font[0]);
+        texts(menu[0], "Play", 50, height / 2, 35, font[0]);
+        texts(menu[1], "Exit", 50, height / 1.5, 35, font[0]);
         menu[0].setOutlineThickness(2.5);
         menu[1].setOutlineThickness(2.5);
 
-        texts(menu[2], "Space Arcade", 300, height / 4, 65, font[1]);
+        texts(menu[2], "Space Arcade", 100, height / 4, 65, font[1]);
         menu[2].setOutlineThickness(2); menu[2].setOutlineColor(Color::Black);
         menu[2].setFillColor(Color::Cyan);
 
