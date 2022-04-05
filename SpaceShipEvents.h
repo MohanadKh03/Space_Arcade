@@ -35,7 +35,32 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 	box7.setPosition(-356, -38);
 	int screenXBorders = 20;
 	int screenYBorders = 100;
-	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < window.getSize().x - screenXBorders)
+	
+	if (box1.getGlobalBounds().intersects(YP.getGlobalBounds()) || box3.getGlobalBounds().intersects(YP.getGlobalBounds()) || box5.getGlobalBounds().intersects(YP.getGlobalBounds()) || box7.getGlobalBounds().intersects(YP.getGlobalBounds()) || GM1.getGlobalBounds().intersects(YP.getGlobalBounds()))
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			YP.move(0, -0.1);
+			camera.move(0, -0.1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			YP.move(0, 0.1);
+			camera.move(0, 0.1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+			YP.move(0.1, 0);
+			camera.move(0.1, 0);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			YP.move(-0.1, 0);
+			camera.move(-0.1, 0);
+		}
+	}
+	else {
+		if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < window.getSize().x - screenXBorders)
 	{
 		YP.move(10, 0);
 		camera.move(10, 0);
@@ -72,28 +97,6 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 		YP.setTextureRect(IntRect(x * 64, y * 64, 64, 64));
 
 	}
-	if (box1.getGlobalBounds().intersects(YP.getGlobalBounds()) || box3.getGlobalBounds().intersects(YP.getGlobalBounds()) || box5.getGlobalBounds().intersects(YP.getGlobalBounds()) || box7.getGlobalBounds().intersects(YP.getGlobalBounds()) || GM1.getGlobalBounds().intersects(YP.getGlobalBounds()))
-	{
-		if (Keyboard::isKeyPressed(Keyboard::Down))
-		{
-			YP.move(0, -0.1);
-			camera.move(0, -0.1);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Up))
-		{
-			YP.move(0, 0.1);
-			camera.move(0, 0.1);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			YP.move(0.1, 0);
-			camera.move(0.1, 0);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-0.1, 0);
-			camera.move(-0.1, 0);
-		}
-
+	}
 
 }
