@@ -21,9 +21,39 @@ int main()
                      ,window.getSize().y / s_mainBG.getLocalBounds().height); //Scaling to the 
                                                                              //difference between
                                                                              //window AND photo
-    //  gggggggggggggg 
+    
     int score_BrickBreaker = 0;
-
+    // gg
+    Texture GM;
+    GM.loadFromFile("game machine.png");
+    Sprite GM1(GM);
+    const float GMscale = 0.15;
+    GM1.setScale(GMscale, GMscale);
+    GM1.setPosition(-480, -250);
+    Texture box4;
+    box4.loadFromFile("box3.png");
+    Sprite box5(box4);
+    const float box4scale = 1.2;
+    box5.setScale(box4scale, box4scale);
+    box5.setPosition(-360, 80);
+    Texture box2;
+    box2.loadFromFile("box3.png");
+    Sprite box3(box2);
+    const float box2scale = 1.2;
+    box3.setScale(box2scale, box2scale);
+    box3.setPosition(-296, 40);
+    Texture box;
+    box.loadFromFile("boxs2.png");
+    Sprite box1(box);
+    const float boxscale = 1.2;
+    box1.setScale(boxscale, boxscale);
+    box1.setPosition(-215, 58);
+    Texture box6;
+    box6.loadFromFile("boxs2.png");
+    Sprite box7(box6);
+    const float box6scale = 1.2;
+    box7.setScale(box6scale, box6scale);
+    box7.setPosition(-356, -38);
     int x = 0, y = 0;
     Texture t;
     Texture Bg;
