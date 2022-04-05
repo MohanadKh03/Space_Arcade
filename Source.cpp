@@ -93,8 +93,13 @@ int main()
             main.draw(window);
         }
         if (playPressed) {
-            window.draw(Bg1);
             window.setView(camera);
+            window.draw(GM1);
+            window.draw(box7);
+            window.draw(box5);
+            window.draw(box3);
+            window.draw(box1);
+            window.draw(Bg1);
             window.draw(YP);
         }
 
