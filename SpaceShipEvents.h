@@ -6,7 +6,7 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 	Texture GM;
 	GM.loadFromFile("game machine.png");
 	Sprite GM1(GM);
-	const float GMscale = 0.15;
+	const float GMscale = 0.15f;
 	GM1.setScale(GMscale, GMscale);
 	GM1.setPosition(0, 0);
 

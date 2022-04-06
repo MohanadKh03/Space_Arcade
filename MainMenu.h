@@ -26,7 +26,7 @@ struct Menu {
 
         //Texts to be shown
         texts(menu[0], "Play", 100, height / 2, 35, font[0]);
-        texts(menu[1], "Exit", 100, height / 1.5, 35, font[0]);
+        texts(menu[1], "Exit", 100, height / 1.5f, 35, font[0]);
         menu[0].setOutlineThickness(2.5);
         menu[1].setOutlineThickness(2.5);
 

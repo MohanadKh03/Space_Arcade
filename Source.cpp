@@ -8,17 +8,19 @@ using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(1600,900), "Space Arcade");
+    int windowX = 1600;
+    int windowY = 900;
+    RenderWindow window(VideoMode(windowX,windowY), "Space Arcade");
 
     //booleans for the Menu itself and Play  
-    Menu main(window.getSize().x, window.getSize().y); bool isMenuOpened = true, playPressed = false;
+    Menu main((float)windowX, (float)windowY); bool isMenuOpened = true, playPressed = false;
 
     //Main background
     Texture t_mainBG;
     t_mainBG.loadFromFile("BlackBG.jpg");
     Sprite s_mainBG(t_mainBG);
-    s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
-                     ,window.getSize().y / s_mainBG.getLocalBounds().height); //Scaling to the 
+    s_mainBG.setScale(windowX / s_mainBG.getLocalBounds().width
+                     ,windowY / s_mainBG.getLocalBounds().height); //Scaling to the 
                                                                              //difference between
                                                                              //window AND photo
     
@@ -28,15 +30,15 @@ int main()
     Texture Bg;
     Bg.loadFromFile("background2.jpg");
     Sprite Bg1(Bg);
-    const float Bgscale = 0.8;
+    const float Bgscale = 0.8f;
     Bg1.setScale(Bgscale, Bgscale);
     Bg1.setPosition(0, 0);
     t.loadFromFile("yellow hair boy.png");
     Sprite YP;
-    View camera(Vector2f(0.f, 0.f), Vector2f(window.getSize().x/2,window.getSize().y/2));
+    View camera(Vector2f(0.0f,0.0f), Vector2f((float)windowX / 2, (float)windowY / 2));
     YP.setTexture(t);
     YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
-    YP.setPosition(window.getSize().x/ 2.f, window.getSize().y / 2.f);
+    YP.setPosition(windowX / 2.f, windowY / 2.f);
     //ggggggggggg
     while (window.isOpen())
     {
