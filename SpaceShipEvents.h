@@ -2,7 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<iostream>
-void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int& y) {
+void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int& y/*, float dt*/) {
 	Texture GM;
 	GM.loadFromFile("game machine.png");
 	Sprite GM1(GM);
@@ -12,11 +12,11 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 
 	int screenXBorders = 20;
 	int screenYBorders = 100;
-
+	const int speed = 25;
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < window.getSize().x - screenXBorders)
 	{
-		YP.move(10, 0);
-		camera.move(10, 0);
+		YP.move(speed, 0);
+		camera.move(speed, 0);
 		x++;
 		x %= 4;
 		y = 2;
@@ -24,8 +24,8 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Left) && YP.getPosition().x > screenXBorders)
 	{
-		YP.move(-10, 0);
-		camera.move(-10, 0);
+		YP.move(-speed, 0);
+		camera.move(-speed, 0);
 		x++;
 		x %= 4;
 		y = 1;
@@ -33,8 +33,8 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Up) && YP.getPosition().y > screenYBorders)
 	{
-		YP.move(0, -10);
-		camera.move(0, -10);
+		YP.move(0, -speed);
+		camera.move(0, -speed);
 		x++;
 		x %= 4;
 		y = 3;
@@ -42,8 +42,8 @@ void MovementSpaceShip(RenderWindow& window, View& camera,Sprite& YP,int& x,int&
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Down) && YP.getPosition().y < window.getSize().y - screenYBorders)
 	{
-		YP.move(0, 10);
-		camera.move(0, 10);
+		YP.move(0, speed);
+		camera.move(0,speed);
 		x++;
 		x %= 4;
 		y = 0;
