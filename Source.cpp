@@ -24,22 +24,23 @@ int main()
                                                                              //difference between
                                                                              //window AND photo
     
+    ///Sprite inside the spaceship itself
+        int x = 0, y = 0;
+        Texture t;
+        Texture Bg;
+        Bg.loadFromFile("background2.jpg");
+        Sprite Bg1(Bg);
+        const float Bgscale = 0.8f;
+        Bg1.setScale(Bgscale, Bgscale);
+        Bg1.setPosition(0, 0);
+        t.loadFromFile("yellow hair boy.png");
+        Sprite YP;
+        View camera(Vector2f(0.0f,0.0f), Vector2f((float)windowX / 2, (float)windowY / 2));
+        YP.setTexture(t);
+        YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
+        YP.setPosition(windowX / 2.f, windowY / 2.f);
+    //Game scores
     int score_BrickBreaker = 0;
-    int x = 0, y = 0;
-    Texture t;
-    Texture Bg;
-    Bg.loadFromFile("background2.jpg");
-    Sprite Bg1(Bg);
-    const float Bgscale = 0.8f;
-    Bg1.setScale(Bgscale, Bgscale);
-    Bg1.setPosition(0, 0);
-    t.loadFromFile("yellow hair boy.png");
-    Sprite YP;
-    View camera(Vector2f(0.0f,0.0f), Vector2f((float)windowX / 2, (float)windowY / 2));
-    YP.setTexture(t);
-    YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
-    YP.setPosition(windowX / 2.f, windowY / 2.f);
-    //ggggggggggg
     while (window.isOpen())
     {
         Event event;
@@ -55,8 +56,8 @@ int main()
             }
         }
         window.clear();
-        camera.setCenter(YP.getPosition());
 
+        camera.setCenter(YP.getPosition());
         if (isMenuOpened) {
             window.draw(s_mainBG);
             main.draw(window);
@@ -70,6 +71,5 @@ int main()
 
         window.display();
     }
-
     return 0;
 }

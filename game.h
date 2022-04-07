@@ -14,7 +14,7 @@
 using namespace std;
 using namespace sf;
 #pragma once
-class game
+struct game
 {
 public:
 	game(string title, int& score);
