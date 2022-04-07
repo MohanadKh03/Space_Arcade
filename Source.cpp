@@ -8,9 +8,14 @@ using namespace sf;
 
 int main()
 {
-    int windowX = 1600;
-    int windowY = 900;
-    RenderWindow window(VideoMode(windowX,windowY), "Space Arcade");
+    
+    //RenderWindow window(VideoMode(1600,900), "Space Arcade");
+    RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
+    window.setMouseCursorVisible(false);
+    window.setFramerateLimit(60);
+
+    int windowX = (int)window.getSize().x;
+    int windowY = (int)window.getSize().y;
 
     //booleans for the Menu itself and Play  
     Menu main((float)windowX, (float)windowY); bool isMenuOpened = true, playPressed = false;
@@ -46,7 +51,7 @@ int main()
         Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
             RunMenuEvents(window, main, isMenuOpened, playPressed,event);
 
