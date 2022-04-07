@@ -12,7 +12,7 @@ game::game(string title, int& score)
     width = window.getSize().x;
     height = window.getSize().y;
     blocksWidth = (int)width / 80;
-    blocksHeight = (int)height / 112;
+    blocksHeight = (int)height / 150;
     //user rectangle 
     paddle.setSize(Vector2f((int)width / 8, 20.0f));
     paddle.setFillColor(Color(80, 10, 10));
@@ -33,14 +33,14 @@ game::game(string title, int& score)
     text.setString("Score : " + to_string(score));
     text.setFillColor(Color(50, 205, 50, 255));
     text.setCharacterSize(32);
-    text.setPosition(0, 500);
+    text.setPosition(10,window.getSize().y-100);
     lives = 3;
     font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
     textLife.setFont(font);
     textLife.setString("Life : " + to_string(lives));
     textLife.setFillColor(Color(50, 205, 50, 255));
     textLife.setCharacterSize(32);
-    textLife.setPosition(0, 400);
+    textLife.setPosition(10, window.getSize().y-50);
 
     // special effects calls  /////////////////////////////////////////
     hitEffectTex.loadFromFile("effect.png");
