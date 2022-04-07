@@ -31,6 +31,12 @@ int main()
     
     int score_BrickBreaker = 0;
     int x = 0, y = 0;
+    Texture GM;
+    GM.loadFromFile("game machine.png");
+    Sprite GM1(GM);
+    const float GMscale = 0.15f;
+    GM1.setScale(GMscale, GMscale);
+    GM1.setPosition(30, 80);
     Texture t;
     Texture Bg;
     Bg.loadFromFile("background2.jpg");
@@ -68,6 +74,7 @@ int main()
         }
         if (playPressed) {
             window.setView(camera);
+            window.draw(GM1);
             window.draw(Bg1);
             MovementSpaceShip(window, camera, YP, x, y);
             window.draw(YP);
