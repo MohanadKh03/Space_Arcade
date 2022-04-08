@@ -3,58 +3,57 @@
 #include <time.h>
 
 // Constructor
-game::game(string title, int& score)
+// Set the initial values of the game's variables
+game::game(RenderWindow* window, int& score)
 {
-    //window.create(VideoMode(w, h), title);
-    window.create(VideoMode::getFullscreenModes()[0], title, sf::Style::None);
-    window.setMouseCursorVisible(false);
-    window.setFramerateLimit(60);
-    width = window.getSize().x;
-    height = window.getSize().y;
-    blocksWidth = (int)width / 80;
-    blocksHeight = (int)height / 150;
-    //user rectangle 
-    paddle.setSize(Vector2f((int)width / 8, 20.0f));
+    // No. of blocks on the screen
+    blocksWidth = (int)window->getSize().x / 80;
+    blocksHeight = (int)window->getSize().y / 150;
+    // Paddle (player) 
+    paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color(80, 10, 10));
     paddle.setOutlineThickness(1.0f);
     paddle.setOutlineColor(Color(255, 255, 255));
-    //ball
-    ball.setRadius((float)width / 160);
-    ball.setFillColor(/*Color(10, 80, 80)*/Color::White);
+    // Balls
+    ball.setRadius((float)window->getSize().x / 160);
+    ball.setFillColor(Color::White);
     ball.setOutlineThickness(1.0f);
     ball.setOutlineColor(Color(255, 255, 255));
     speedfactor = 5.0f;
     defaultspeed = 500.0f;
-    angle = 0.0f;;
+    angle = 0.0f;
 
-    // Drawing the UI
+    // Draw the UI
     font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
     text.setFont(font);
     text.setString("Score : " + to_string(score));
     text.setFillColor(Color(50, 205, 50, 255));
     text.setCharacterSize(32);
-    text.setPosition(10,window.getSize().y-100);
+    text.setPosition(10,10);
     lives = 3;
     font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
     textLife.setFont(font);
-    textLife.setString("Life : " + to_string(lives));
+    textLife.setString("Lives : " + to_string(lives));
     textLife.setFillColor(Color(50, 205, 50, 255));
     textLife.setCharacterSize(32);
-    textLife.setPosition(10, window.getSize().y-50);
+    textLife.setOrigin(textLife.getLocalBounds().width, textLife.getLocalBounds().height);
+    textLife.setPosition(window->getSize().x - 10, textLife.getLocalBounds().height + 10);
 
     // special effects calls  /////////////////////////////////////////
     hitEffectTex.loadFromFile("effect.png");
     hitEffect.setTexture(hitEffectTex);
-    hitEffect.setScale(Vector2f(window.getSize().x / 800, window.getSize().x / 800));
+    hitEffect.setScale(Vector2f(window->getSize().x / 800, window->getSize().y / 800));
     hitEffect.setOrigin(18.5, 17);
     hitEffect.setRotation(90);
 
     reset();
+
     // Spawn Blocks
-    for (int y = 0; y < blocksHeight; y++ /*block.getSize().y*/)
+    for (int y = 1; y < blocksHeight; y++)
     {
-        for (int x = 0; x < blocksWidth; x++ /*block.getSize().x*/)
+        for (int x = 0; x < blocksWidth; x++)
         {
+            // Create random variable for each block's size
             int randomSize = 0;
             if (x == blocksWidth - 1) {
                 randomSize = 1;
@@ -63,11 +62,11 @@ game::game(string title, int& score)
                 randomSize = (rand() % 2) + 1;
             }
             // Set each block
-            blocks[y][x].setSize(Vector2f((width / blocksWidth) * randomSize, height / 18));
-            blocks[y][x].setOutlineThickness(1.0f);
-            blocks[y][x].setFillColor(Color::Red);
-            blocks[y][x].setOutlineColor(Color::White);
-            blocks[y][x].setPosition(Vector2f(x * (blocks[y][x].getSize().x / randomSize), y * (blocks[y][x].getSize().y)));
+            blocks[y-1][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize, window->getSize().y / 18));
+            blocks[y-1][x].setOutlineThickness(1.0f);
+            blocks[y-1][x].setFillColor(Color::Red);
+            blocks[y-1][x].setOutlineColor(Color::White);
+            blocks[y-1][x].setPosition(Vector2f(x * (blocks[y-1][x].getSize().x / randomSize), y * (blocks[y-1][x].getSize().y)));
             if (randomSize == 2) {
                 x++;
             }
@@ -76,29 +75,38 @@ game::game(string title, int& score)
     }
 }
 
-void game::event(Event e)
+// Check for inputs
+void game::event(RenderWindow& window, Event e)
 {
-    if (e.type == Event::Closed)
-    {
-        window.close();
+    // Check for pause input
+    if (e.key.code == Keyboard::P) {
+        if (!pressed) {
+            paused = !paused;
+            pressed = true;
+        }
     }
+    if (e.type == Event::KeyReleased) {
+        if (e.key.code == Keyboard::P)
+            pressed = false;
+    }
+
     //The Paddle Move With The Movement Of The Mouse 
-    else if (e.type == Event::MouseMoved)
+    if (e.type == Event::MouseMoved)
     {
         if (!paused) {
-            paddle.setPosition(Vector2f(Mouse::getPosition(window).x - (paddle.getSize().x / 2), height - 40));
-            //if The Paddle Smaller Than The Porder Of the Window From the Right Set It's Position From Zero
+            paddle.setPosition(Vector2f(Mouse::getPosition(window).x - (paddle.getSize().x / 2), window.getSize().y - 40));
+            // Set paddle movement restrictions
             if (paddle.getPosition().x < 0)
             {
                 paddle.setPosition(Vector2f(0, paddle.getPosition().y));
             }
-            else if (paddle.getPosition().x > width - paddle.getSize().x)
+            else if (paddle.getPosition().x > window.getSize().x - paddle.getSize().x)
             {
-                paddle.setPosition(Vector2f(width - paddle.getSize().x, paddle.getPosition().y));
+                paddle.setPosition(Vector2f(window.getSize().x - paddle.getSize().x, paddle.getPosition().y));
             }
         }
     }
-    else if (e.type == Event::MouseButtonPressed/* && lives <= 3 */ && lives > 0 && flag)
+    else if (e.type == Event::MouseButtonPressed && lives > 0 && flag)
     {
         // If You Pressed the Mouse The Ball Will Get A Random Degree And Move In This Direction 
         ball.setPosition(Vector2f(paddle.getPosition().x + (paddle.getSize().x / 2) - ball.getRadius(), paddle.getPosition().y - paddle.getSize().y));
@@ -108,20 +116,12 @@ void game::event(Event e)
         flag = false;
         cout << "Lives: " << lives << endl;
     }
-    if (e.key.code == Keyboard::Escape) {
-        if (!pressed) {
-            paused = !paused;
-            pressed = true;
-        }
-    }
-    if (e.type == Event::KeyReleased) {
-        if (e.key.code == Keyboard::Escape)
-            pressed = false;
-    }
 }
 
-void game::update(float dt, int& score)
+// Update each frame of the game
+void game::update(RenderWindow* window, int& score)
 {
+    // Don't update when paused
     if (paused) {
         return;
     }
@@ -133,18 +133,16 @@ void game::update(float dt, int& score)
         effectTimer = effectDelay;
     }
     else {
-        effectTimer -= 1 * dt;
+        effectTimer -= 1 * deltaTime;
     }
 
+    //Set The Position Of The Ball To Middle Of The Paddle 
     if (speed.y == 0.0f)
-    {
-        //Set The Position Of The Ball To Middle Of The Paddle 
         ball.setPosition(Vector2f(paddle.getPosition().x + (paddle.getSize().x / 2) - ball.getRadius(), paddle.getPosition().y - paddle.getSize().y - ball.getRadius()));
-    }
     else
     {
-        ball.setPosition(Vector2f(ball.getPosition().x + (speed.x * dt), ball.getPosition().y + (speed.y * dt)));
-        //Ball Boundry Collision
+        ball.setPosition(Vector2f(ball.getPosition().x + (speed.x * deltaTime), ball.getPosition().y + (speed.y * deltaTime)));
+        //.......Ball Boundry Collision.......
         //Left Boundry
         if (ball.getPosition().x <= 0.0f)
         {
@@ -164,16 +162,16 @@ void game::update(float dt, int& score)
             speed.y = abs(speed.y);
         }
         //Right Boundry
-        else if (ball.getPosition().x + (ball.getRadius() * 2.0f) >= width)
+        else if (ball.getPosition().x + (ball.getRadius() * 2.0f) >= window->getSize().x)
         {
             // play the effect
-            playEffect(Vector2f(window.getSize().x, ball.getPosition().y), -90);
+            playEffect(Vector2f(window->getSize().x, ball.getPosition().y), -90);
 
-            ball.setPosition(Vector2f(width - (ball.getRadius() * 2.0f), ball.getPosition().y));
+            ball.setPosition(Vector2f(window->getSize().x - (ball.getRadius() * 2.0f), ball.getPosition().y));
             speed.x = -abs(speed.x);
         }
         //Lower Boundery
-        else if (ball.getPosition().y + (ball.getRadius() * 2.0f) >= height)
+        else if (ball.getPosition().y + (ball.getRadius() * 2.0f) >= window->getSize().y)
         {
             reset();
             lives--;
@@ -206,6 +204,7 @@ void game::update(float dt, int& score)
         {
             for (int x = 0; x < blocksWidth; x++)
             {
+                // Check for collision and direction of it
                 if (ball.getGlobalBounds().intersects(blocks[y][x].getGlobalBounds())) {
                     blocks[y][x].setScale(Vector2f(0, 0));
                     if (ball.getPosition().x + (ball.getRadius() * 2.0f) < blocks[y][x].getPosition().x) {
@@ -229,6 +228,7 @@ void game::update(float dt, int& score)
                 }
             }
         }
+        // Check for WIN or LOSE  conditions
         int killedBlockCount = 0;
         for (int y = 0; y < blocksHeight; y++) {
             for (int x = 0; x < blocksWidth; x++) {
@@ -238,13 +238,13 @@ void game::update(float dt, int& score)
             }
         }
         if (killedBlockCount == blockCount || lives <= 0) {
-            window.close();
+            window->close();
         }
     }
 }
 
-
-void game::render()
+// Render the game 
+void game::render(RenderWindow& window)
 {
     // Spawn Blocks
     for (int y = 0; y < blocksHeight; y++)
@@ -263,33 +263,21 @@ void game::render()
     window.draw(hitEffect);
 }
 
+// Reset the position of the ball
 void game::reset()
 {
     speed = Vector2f(0.0f, 0.0f);
     flag = true;
 }
 
-void game::run(int& score)
+// Run the whole game
+void game::run(RenderWindow& window, Event e, int& score)
 {
-    Clock gameClock;
-    float deltaTime = 0.0f;
-
-    while (window.isOpen())
-    {
-        gameClock.restart();
-        Event e;
-        while (window.pollEvent(e))
-        {
-            event(e);
-        }
-        window.clear();
-        update(deltaTime, score);
-        render();
-        window.display();
-        deltaTime = gameClock.getElapsedTime().asSeconds();
-    }
+    render(window);
+    update(&window, score);
 }
 
+// Play the splash effect
 void game::playEffect(Vector2f position, float rotation) {
     effectTimer = effectDelay;
     spriteIndex = 0;

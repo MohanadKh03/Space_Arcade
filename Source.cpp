@@ -8,7 +8,6 @@ using namespace sf;
 
 int main()
 {
-    
     //RenderWindow window(VideoMode(1600,900), "Space Arcade");
     RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
     window.setMouseCursorVisible(false);
@@ -16,6 +15,11 @@ int main()
 
     int windowX = (int)window.getSize().x;
     int windowY = (int)window.getSize().y;
+
+    Clock gameClock;
+    float dt = 0.0f;
+
+    int gameID = 0;
 
     //booleans for the Menu itself and Play  
     Menu main((float)windowX, (float)windowY); bool isMenuOpened = true, playPressed = false;
@@ -84,42 +88,64 @@ int main()
     YP.setTextureRect(IntRect(x * 64, 0 * 64, 64, 64));
     YP.setPosition(windowX / 2.f, windowY / 2.f);
     //ggggggggggg
+
+    game brickBreakerGame(&window, score_BrickBreaker);
+
     while (window.isOpen())
     {
+        gameClock.restart();
         Event event;
         while (window.pollEvent(event))
         {
-
             if (event.type == sf::Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
-            RunMenuEvents(window, main, isMenuOpened, playPressed,event);
 
             if (Keyboard::isKeyPressed(Keyboard::R)) {
-                game brickBreakerGame("2.Breakout C++ SFML", score_BrickBreaker);
-                brickBreakerGame.run(score_BrickBreaker);
+                gameID = 1;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                gameID = 0;
+            }
+
+            brickBreakerGame.event(window, event);
+        }
+
+        window.clear();
+        if (gameID == 0) {
+            // Open the main menu and the space ship
+            RunMenuEvents(window, main, isMenuOpened, playPressed, event);
+            camera.setCenter(YP.getPosition());
+            if (isMenuOpened) {
+                window.draw(s_mainBG);
+                main.draw(window);
+            }
+            if (playPressed) {
+                window.setView(camera);
+                window.draw(GM1);
+                window.draw(wall5);
+                window.draw(wall3);
+                window.draw(wall1);
+                window.draw(BS1);
+                window.draw(Bg1);
+                MovementSpaceShip(window, camera, YP, x, y, GM1, BS1, wall1, wall3, wall5);
+                window.draw(YP);
+                window.draw(BW1);
             }
         }
-        window.clear();
-        camera.setCenter(YP.getPosition());
-
-        if (isMenuOpened) {
-            window.draw(s_mainBG);
-            main.draw(window);
+        else if (gameID == 1) {
+            // Open the first game
+            window.setView(window.getDefaultView());
+            brickBreakerGame.deltaTime = dt;
+            brickBreakerGame.run(window, event, score_BrickBreaker);
         }
-        if (playPressed) {
-            window.setView(camera);
-            window.draw(GM1);
-            window.draw(wall5);
-            window.draw(wall3);
-            window.draw(wall1);
-            window.draw(BS1);
-            window.draw(Bg1);
-            MovementSpaceShip(window, camera, YP, x, y);
-            window.draw(YP);
-            window.draw(BW1);
+        else if (gameID == 2) {
+            // Open the second game
         }
-
+        else if (gameID == 3) {
+            // Open the third game
+        }
         window.display();
+        dt = gameClock.getElapsedTime().asSeconds();
     }
 
     return 0;

@@ -17,25 +17,20 @@ using namespace sf;
 struct game
 {
 public:
-	game(string title, int& score);
-	void event(Event e);
-	void update(float dt, int& score);
-	void render();
+	game(RenderWindow* window, int& score);
+	void event(RenderWindow& window, Event e);
+	void update(RenderWindow* window, int& score);
+	void render(RenderWindow& window);
 	void reset();
-	void run(int& score);
+	void run(RenderWindow& window, Event e, int& score);
 	void playEffect(Vector2f position, float rotation);
 
-private:
-	// Window Variables
-	RenderWindow window;
-	Event e;
+	float deltaTime = 0.0f;
 
+private:
+	// Paused variables
 	bool paused = false;
 	bool pressed = false;
-
-	// Screen Dimensions
-	float width;
-	float height;
 
 	// Ball & Player Variables
 	CircleShape ball;
@@ -45,8 +40,8 @@ private:
 	Vector2f speed;
 
 	// Blocks' Variables
-	int blocksWidth = (int)width / 80;
-	int blocksHeight = (int)height / 112;
+	int blocksWidth = 0;
+	int blocksHeight = 0;
 	int blockWidth = 1;
 	const int number = blocksWidth * blocksHeight;
 	RectangleShape blocks[16][40];
@@ -56,7 +51,6 @@ private:
 	Text text, textLife;
 
 	// GameManager Variables
-	//int score = 0;
 	float speedfactor;
 	int lives = 1;
 	bool flag = true;
@@ -66,8 +60,8 @@ private:
 	int spriteIndex = 0;
 	float effectTimer = 0;
 	float effectDelay = 0.05f;
-	// special effects variables /////////////////////////////////////////
 	Sprite hitEffect;
 
+	// For WIN condition
 	int blockCount = 0;
 };

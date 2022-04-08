@@ -2,39 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<iostream>
-void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y/*, float dt*/) {
-	// layers
-	Texture GM;
-	GM.loadFromFile("game machine.png");
-	Sprite GM1(GM);
-	const float GMscale = 0.15f;
-	GM1.setScale(GMscale, GMscale);
-	GM1.setPosition(30, 80);
-	Texture Bluescreen;
-	Bluescreen.loadFromFile("Bluescreen.jpg");
-	Sprite BS1(Bluescreen);
-	const float BS1scale = 0.799f;
-	BS1.setScale(BS1scale, BS1scale);
-	BS1.setPosition(1100, 190);
-	Texture wall;
-	wall.loadFromFile("wall.jpg");
-	Sprite wall1(wall);
-	const float wallscale = 0.799f;
-	wall1.setScale(wallscale, wallscale);
-	wall1.setPosition(1040, 70);
-	Texture wall2;
-	wall2.loadFromFile("wall2.jpg");
-	Sprite wall3(wall2);
-	const float wall2scale = 0.799f;
-	wall3.setScale(wall2scale, wall2scale);
-	wall3.setPosition(1040, 520);
-	Texture wall4;
-	wall4.loadFromFile("wall3.jpg");
-	Sprite wall5(wall4);
-	const float wall3scale = 0.799f;
-	wall5.setScale(wall3scale, wall3scale);
-	wall5.setPosition(1040, 250);
-//end of layers
+void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y, Sprite GM1, Sprite BS1, Sprite wall1, Sprite wall3, Sprite wall5) {
 	int screenXBorders = 20;
 	int screenYBorders = 100;
 	const int speed = 15;

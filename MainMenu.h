@@ -68,7 +68,6 @@ struct Menu {
 };
 
 void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& isPLAY,Event& event) {
-    
         //The start of the program , basically all the menu stuff .
         if (isMENU) {
             switch (event.type) {
