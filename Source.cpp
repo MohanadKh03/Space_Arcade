@@ -31,12 +31,45 @@ int main()
     
     int score_BrickBreaker = 0;
     int x = 0, y = 0;
+    // layers
     Texture GM;
     GM.loadFromFile("game machine.png");
     Sprite GM1(GM);
     const float GMscale = 0.15f;
     GM1.setScale(GMscale, GMscale);
     GM1.setPosition(30, 80);
+    Texture botttomwall;
+    botttomwall.loadFromFile("bottomwall.jpg");
+    Sprite BW1(botttomwall);
+    const float BW1scale = 0.799f;
+    BW1.setScale(BW1scale, BW1scale);
+    BW1.setPosition(1046, 599.5);
+    Texture Bluescreen;
+    Bluescreen.loadFromFile("Bluescreen.jpg");
+    Sprite BS1(Bluescreen);
+    const float BS1scale = 0.799f;
+    BS1.setScale(BS1scale, BS1scale);
+    BS1.setPosition(1100, 190);
+    Texture wall;
+    wall.loadFromFile("wall.jpg");
+    Sprite wall1(wall);
+    const float wallscale = 0.799f;
+    wall1.setScale(wallscale, wallscale);
+    wall1.setPosition(1040, 70);
+    Texture wall2;
+    wall2.loadFromFile("wall2.jpg");
+    Sprite wall3(wall2);
+    const float wall2scale = 0.799f;
+    wall3.setScale(wall2scale, wall2scale);
+    wall3.setPosition(1040, 520);
+    Texture wall4;
+    wall4.loadFromFile("wall3.jpg");
+    Sprite wall5(wall4);
+    const float wall3scale = 0.799f;
+    wall5.setScale(wall3scale, wall3scale);
+    wall5.setPosition(1040, 250);
+
+    //end of layers
     Texture t;
     Texture Bg;
     Bg.loadFromFile("background2.jpg");
@@ -56,6 +89,7 @@ int main()
         Event event;
         while (window.pollEvent(event))
         {
+
             if (event.type == sf::Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
             RunMenuEvents(window, main, isMenuOpened, playPressed,event);
@@ -75,9 +109,14 @@ int main()
         if (playPressed) {
             window.setView(camera);
             window.draw(GM1);
+            window.draw(wall5);
+            window.draw(wall3);
+            window.draw(wall1);
+            window.draw(BS1);
             window.draw(Bg1);
             MovementSpaceShip(window, camera, YP, x, y);
             window.draw(YP);
+            window.draw(BW1);
         }
 
         window.display();
