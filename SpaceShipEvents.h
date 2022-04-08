@@ -2,10 +2,10 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<iostream>
-void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y, Sprite GM1, Sprite BS1, Sprite wall1, Sprite wall3, Sprite wall5) {
+void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y, Sprite& GM1, Sprite& BS1, Sprite& wall1, Sprite& wall3, Sprite& wall5) {
 	int screenXBorders = 20;
 	int screenYBorders = 100;
-	const int speed = 15;
+	const int speed = 12;
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < window.getSize().x - (screenXBorders + 650))
 	{
 		YP.move(speed, 0);

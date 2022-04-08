@@ -19,10 +19,10 @@ struct game
 public:
 	game(RenderWindow* window, int& score);
 	void event(RenderWindow& window, Event e);
-	void update(RenderWindow* window, int& score);
+	void update(RenderWindow* window, int& score,int& gameNUMBER);
 	void render(RenderWindow& window);
 	void reset();
-	void run(RenderWindow& window, Event e, int& score);
+	void run(RenderWindow& window, Event e, int& score,int& gameNUMBER);
 	void playEffect(Vector2f position, float rotation);
 
 	float deltaTime = 0.0f;

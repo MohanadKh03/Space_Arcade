@@ -114,12 +114,12 @@ void game::event(RenderWindow& window, Event e)
         speed.x = cos(angle) * defaultspeed;
         speed.y = sin(angle) * defaultspeed;
         flag = false;
-        cout << "Lives: " << lives << endl;
+        //cout << "Lives: " << lives << endl;
     }
 }
 
 // Update each frame of the game
-void game::update(RenderWindow* window, int& score)
+void game::update(RenderWindow* window, int& score,int& gameNUMBER)
 {
     // Don't update when paused
     if (paused) {
@@ -238,7 +238,7 @@ void game::update(RenderWindow* window, int& score)
             }
         }
         if (killedBlockCount == blockCount || lives <= 0) {
-            window->close();
+            gameNUMBER = 0;
         }
     }
 }
@@ -271,10 +271,10 @@ void game::reset()
 }
 
 // Run the whole game
-void game::run(RenderWindow& window, Event e, int& score)
+void game::run(RenderWindow& window, Event e, int& score,int& gameNUMBER)
 {
     render(window);
-    update(&window, score);
+    update(&window, score,gameNUMBER);
 }
 
 // Play the splash effect
