@@ -116,14 +116,15 @@ int main()
                 main.draw(window);
             }
             if (playPressed) {
-                window.draw(Background_Sprite);
-                window.setView(camera);
-                window.draw(YourPlayer);
                 window.draw(GM_Sprite);
                 window.draw(wall5);
                 window.draw(wall3);
                 window.draw(wall1);
                 window.draw(BS1);
+                window.draw(Background_Sprite);
+                window.setView(camera);
+                window.draw(YourPlayer);
+                
                 
                 MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite, BS1, wall1, wall3, wall5);
                 window.draw(BottomWall_Sprite);

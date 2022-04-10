@@ -1,4 +1,4 @@
-// ms2k lzez
+
 #include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
 #include<iostream>
