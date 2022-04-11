@@ -6,6 +6,13 @@
 using namespace std;
 using namespace sf;
 
+struct myPlayer {
+    string playerName;
+    int score_BrickBreaker = 0;
+    int score_2ndGame = 0;
+    int score_SpaceInvader = 0;
+};
+
 void setTextureNSprite(Texture& te, Sprite& se,const float& scale,int xPos,int yPos) {
     se.setTexture(te);
     se.setScale(scale, scale);
@@ -25,21 +32,20 @@ int main()
     Clock gameClock;
     float dt = 0.0f;
 
-    int gameID = 0;
+    int gameID = 0; // At the beginning
 
     //booleans for the Menu itself and Play  
-    Menu main((float)windowX, (float)windowY); bool isMenuOpened = true, playPressed = false;
+    Menu main((float)windowX, (float)windowY); 
+    bool isMenuOpened = true, UsernameTyping = false, isSpaceshipMap = false;
 
     //Main background
     Texture t_mainBG;
     t_mainBG.loadFromFile("BlackBG.jpg");
     Sprite s_mainBG(t_mainBG);
     s_mainBG.setScale(windowX / s_mainBG.getLocalBounds().width
-                     ,windowY / s_mainBG.getLocalBounds().height); //Scaling to the 
-                                                                             //difference between
-                                                                             //window AND photo
+                     ,windowY / s_mainBG.getLocalBounds().height);
     
-    // LAYERS
+    ///// LAYERS
         Texture GameMachine;
         GameMachine.loadFromFile("game machine.png");
         Sprite GM_Sprite;
@@ -71,7 +77,7 @@ int main()
         setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
     //END OF LAYERS
 
-    // Background Stuff
+    // Background's Stuff
         Texture Background;
         Background.loadFromFile("background2.jpg");
         Sprite Background_Sprite;
@@ -87,17 +93,38 @@ int main()
         View camera(Vector2f(0.0f, 0.0f), Vector2f((float)windowX / 2, (float)windowY / 2)); 
     
     //The 3 Games
-        int score_BrickBreaker = 0;
-        game brickBreakerGame(&window, score_BrickBreaker);
+        myPlayer user;
+        game brickBreakerGame(&window, user.score_BrickBreaker);
 
+    //
     while (window.isOpen())
     {
         gameClock.restart();
         Event event;
+        //Events
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
+
+            //EVENTS OF THE USERNAME TYPING
+            if (UsernameTyping) {
+                if (event.type == Event::TextEntered) {
+                    if (isprint(event.text.unicode)) //just checking if the text is in unicode
+                        user.playerName += event.text.unicode;
+                }
+                if (event.type == Event::KeyPressed) {
+                    if (event.key.code == Keyboard::BackSpace) {
+                        if (!user.playerName.empty())
+                            user.playerName.pop_back(); //remove letters ONLY if the string isnt empty
+                    }
+                    if (event.key.code == Keyboard::Enter) {
+                        //Save HERE THEN CHANGE THE FLOW FROM USERNAME TYPING TO MAP
+                        UsernameTyping = false;
+                        isSpaceshipMap = true;
+                    }
+                }
+            }
 
             if (Keyboard::isKeyPressed(Keyboard::R)) {
                 gameID = 1;
@@ -107,18 +134,36 @@ int main()
         }
 
         window.clear();
+
+        //NO game yet .. Only the beginning (Main and username) then the spaceship stuff
         if (gameID == 0) {
             // Open the main menu and the space ship
-            RunMenuEvents(window, main, isMenuOpened, playPressed, event);
+            RunMenuEvents(window, main, isMenuOpened,UsernameTyping, event);
             camera.setCenter(YourPlayer.getPosition());
             if (isMenuOpened) {
                 window.draw(s_mainBG);
                 main.draw(window);
             }
-            if (playPressed) {
+
+            if (UsernameTyping)
+            {
+                //DO ALL THE USERNAME SHOWING THEN ENTERING STUFF
+                Text ShowTheUser, Username;
+                Font SHOW_USER_FONT, USER_FONT;
+                SHOW_USER_FONT.loadFromFile("ARCADE_R.ttf");
+                USER_FONT.loadFromFile("ARCADE_I.ttf");
+                texts(ShowTheUser, "Enter your username", window.getSize().x / 4.f, window.getSize().y / 2.f, 50, SHOW_USER_FONT);
+                window.draw(ShowTheUser);
+                texts(Username, user.playerName, ShowTheUser.getPosition().x+250, ShowTheUser.getPosition().y + 100, 35, USER_FONT);
+                window.draw(Username);
+            }
+
+            if (isSpaceshipMap) {
                 window.draw(Background_Sprite);
                 window.setView(camera);
+
                 window.draw(YourPlayer);
+
                 window.draw(GM_Sprite);
                 window.draw(wall5);
                 window.draw(wall3);
@@ -129,21 +174,25 @@ int main()
                 window.draw(BottomWall_Sprite);
             }
         }
+        //Brick Breaker
         else if (gameID == 1) {
             // Open the first game
             window.setView(window.getDefaultView());
             brickBreakerGame.deltaTime = dt;
-            brickBreakerGame.run(window, event, score_BrickBreaker,gameID);
+            brickBreakerGame.run(window, event, user.score_BrickBreaker,gameID);
         }
+        //2nd Game
         else if (gameID == 2) {
             // Open the second game
         }
+        //Space Invader
         else if (gameID == 3) {
             // Open the third game
         }
+
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
     }
-
+    //cout << user.playerName << " : " << user.score_BrickBreaker << endl;
     return 0;
 }

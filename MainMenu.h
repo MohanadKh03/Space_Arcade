@@ -67,7 +67,7 @@ struct Menu {
     }
 };
 
-void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& isPLAY,Event& event) {
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU,bool& USERNAME,Event& event) {
         //The start of the program , basically all the menu stuff .
         if (isMENU) {
             switch (event.type) {
@@ -87,7 +87,7 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& isPLAY,
                 switch (main.getPressed()) {
                 case 0:
                     isMENU = false;
-                    isPLAY = true;
+                    USERNAME = true;
                     break;
                 case 1:
                     window.close();
