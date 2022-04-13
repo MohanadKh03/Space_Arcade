@@ -11,27 +11,23 @@ game::game(RenderWindow* window, int& score)
     blocksHeight = (int)window->getSize().y / 150;
     // Paddle (player) 
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
-    paddle.setFillColor(Color(80, 10, 10));
-    paddle.setOutlineThickness(1.0f);
-    paddle.setOutlineColor(Color(255, 255, 255));
+    paddle.setFillColor(Color::White);
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
-    ball.setOutlineThickness(1.0f);
-    ball.setOutlineColor(Color(255, 255, 255));
     speedfactor = 5.0f;
     defaultspeed = 500.0f;
     angle = 0.0f;
 
     // Draw the UI
-    font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
+    font.loadFromFile("fonts/JosefinSans-Bold.ttf");
     text.setFont(font);
     text.setString("Score : " + to_string(score));
     text.setFillColor(Color(50, 205, 50, 255));
     text.setCharacterSize(32);
     text.setPosition(10,10);
     lives = 3;
-    font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
+    font.loadFromFile("fonts/JosefinSans-Bold.ttf");
     textLife.setFont(font);
     textLife.setString("Lives : " + to_string(lives));
     textLife.setFillColor(Color(50, 205, 50, 255));
@@ -46,11 +42,14 @@ game::game(RenderWindow* window, int& score)
     hitEffect.setOrigin(18.5, 17);
     hitEffect.setRotation(90);
 
+    blockTex.loadFromFile("Square tile BB.jpg");
+
     reset();
 
     // Spawn Blocks
-    for (int y = 1; y < blocksHeight; y++)
+    for (int y = 0; y < blocksHeight; y++)
     {
+        int lastRandColor = 0;
         for (int x = 0; x < blocksWidth; x++)
         {
             // Create random variable for each block's size
@@ -62,11 +61,35 @@ game::game(RenderWindow* window, int& score)
                 randomSize = (rand() % 2) + 1;
             }
             // Set each block
-            blocks[y-1][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize, window->getSize().y / 18));
-            blocks[y-1][x].setOutlineThickness(1.0f);
-            blocks[y-1][x].setFillColor(Color::Red);
-            blocks[y-1][x].setOutlineColor(Color::White);
-            blocks[y-1][x].setPosition(Vector2f(x * (blocks[y-1][x].getSize().x / randomSize), y * (blocks[y-1][x].getSize().y)));
+            blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 18 - 2));
+            blocks[y][x].setOutlineThickness(1.0f);
+            //blocks[y][x].setTexture(&blockTex, true);
+            int randomColor = rand() % 5;
+            while (randomColor == lastRandColor)
+            {
+                randomColor = rand() % 5;
+            }
+            switch (randomColor)
+            {
+            case 0:
+                blocks[y][x].setFillColor(Color::Blue);
+                break;
+            case 1:
+                blocks[y][x].setFillColor(Color::Red);
+                break;
+            case 2:
+                blocks[y][x].setFillColor(Color::Green);
+                break;
+            case 3:
+                blocks[y][x].setFillColor(Color::Magenta);
+                break;
+            case 4:
+                blocks[y][x].setFillColor(Color::Yellow);
+                break;
+            }
+            lastRandColor = randomColor;
+            blocks[y][x].setOutlineColor(Color::White);
+            blocks[y][x].setPosition(Vector2f(x * ((blocks[y][x].getSize().x + 2) / randomSize), (y+1) * (blocks[y][x].getSize().y+2)));
             if (randomSize == 2) {
                 x++;
             }
@@ -175,7 +198,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             reset();
             lives--;
-            textLife.setString("Life: " + to_string(lives));
+            textLife.setString("Lives: " + to_string(lives));
 
         }
         //Ball Paddle Collisions 
