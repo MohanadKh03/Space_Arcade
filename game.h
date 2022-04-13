@@ -44,7 +44,6 @@ private:
 	int blocksHeight = 0;
 	int blockWidth = 1;
 	const int number = blocksWidth * blocksHeight;
-	Texture blockTex;
 	RectangleShape blocks[16][40];
 
 	// UI Variables

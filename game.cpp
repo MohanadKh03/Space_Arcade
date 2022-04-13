@@ -42,8 +42,6 @@ game::game(RenderWindow* window, int& score)
     hitEffect.setOrigin(18.5, 17);
     hitEffect.setRotation(90);
 
-    blockTex.loadFromFile("Square tile BB.jpg");
-
     reset();
 
     // Spawn Blocks
