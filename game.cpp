@@ -12,12 +12,22 @@ game::game(RenderWindow* window, int& score)
     // Paddle (player) 
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color::White);
+    paddle.setPosition(Vector2f(window->getSize().x/2 - (paddle.getSize().x / 2), window->getSize().y - 40));
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
     speedfactor = 5.0f;
     defaultspeed = 500.0f;
     angle = 0.0f;
+    // Ball Trail
+    ballTrail[0].setFillColor(Color::White);
+    ballTrail[0].setRadius(ball.getRadius());
+    ballTrail[0].setPosition(ball.getPosition());
+    for (int i = 1; i < 20; i++) {
+        ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
+        ballTrail[i].setFillColor(ballTrail[i-1].getFillColor() - Color(0,0,0,12));
+        ballTrail[i].setRadius(ballTrail[i - 1].getRadius() - 0.5f);
+    }
 
     // Draw the UI
     font.loadFromFile("fonts/JosefinSans-Bold.ttf");
@@ -61,7 +71,6 @@ game::game(RenderWindow* window, int& score)
             // Set each block
             blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 18 - 2));
             blocks[y][x].setOutlineThickness(1.0f);
-            //blocks[y][x].setTexture(&blockTex, true);
             int randomColor = rand() % 5;
             while (randomColor == lastRandColor)
             {
@@ -135,7 +144,6 @@ void game::event(RenderWindow& window, Event e)
         speed.x = cos(angle) * defaultspeed;
         speed.y = sin(angle) * defaultspeed;
         flag = false;
-        //cout << "Lives: " << lives << endl;
     }
 }
 
@@ -162,7 +170,16 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         ball.setPosition(Vector2f(paddle.getPosition().x + (paddle.getSize().x / 2) - ball.getRadius(), paddle.getPosition().y - paddle.getSize().y - ball.getRadius()));
     else
     {
+        // Ball position update
         ball.setPosition(Vector2f(ball.getPosition().x + (speed.x * deltaTime), ball.getPosition().y + (speed.y * deltaTime)));
+        
+        // Ball trail update
+        ballTrail[0].setPosition(ball.getPosition());
+        for (int i = 19; i > 0; i--) {
+            ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
+        }
+        
+
         //.......Ball Boundry Collision.......
         //Left Boundry
         if (ball.getPosition().x <= 0.0f)
@@ -274,11 +291,16 @@ void game::render(RenderWindow& window)
         {
             // Set each block
             window.draw(blocks[y][x]);
-
         }
     }
     window.draw(paddle);
     window.draw(ball);
+    if (speed.y != 0)
+        for (int i = 0; i < 20; i++)
+            window.draw(ballTrail[i]);
+    else 
+        for (int i = 0; i < 20; i++)
+            ballTrail[i].setPosition(ball.getPosition());
     window.draw(textLife);
     window.draw(text);
     window.draw(hitEffect);

@@ -28,7 +28,7 @@ public:
 	float deltaTime = 0.0f;
 
 private:
-	// Paused variables
+	// Paused Variables
 	bool paused = false;
 	bool pressed = false;
 
@@ -38,6 +38,9 @@ private:
 	float defaultspeed;
 	float angle;
 	Vector2f speed;
+
+	// Ball Trail Variables
+	CircleShape ballTrail[20];
 
 	// Blocks' Variables
 	int blocksWidth = 0;
