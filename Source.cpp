@@ -51,6 +51,16 @@ int main()
         Sprite GM_Sprite;
         setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
 
+        Sprite GM_Sprite2;
+        setTextureNSprite(GameMachine, GM_Sprite2, 0.18f, 1040, 80);
+        GM_Sprite2.setScale(-0.18f, 0.18f);
+        GM_Sprite2.setColor(Color::Red);
+
+        Texture GameMachine3;
+        GameMachine3.loadFromFile("SpaceInvaderMachineFinal.png");
+        Sprite GM_Sprite3(GameMachine3);
+        setTextureNSprite(GameMachine3, GM_Sprite3, 0.18f, 40, 500);
+        
         Texture bottomwall;
         bottomwall.loadFromFile("bottomwall.jpg");
         Sprite BottomWall_Sprite;
@@ -79,7 +89,7 @@ int main()
 
     // Background's Stuff
         Texture Background;
-        Background.loadFromFile("background2.jpg");
+        Background.loadFromFile("Background2 Final.jpg");
         Sprite Background_Sprite;
         setTextureNSprite(Background, Background_Sprite, 0.8f, 0, 0);
 
@@ -125,10 +135,10 @@ int main()
                     }
                 }
             }
-
-            if (Keyboard::isKeyPressed(Keyboard::R)) {
+            
+            /*if (Keyboard::isKeyPressed(Keyboard::R)) {
                 gameID = 1;
-            }
+            }*/
             if(gameID == 1)
                 brickBreakerGame.event(window, event);
         }
@@ -164,14 +174,13 @@ int main()
                 window.draw(wall3);
                 window.draw(wall1);
                 window.draw(BS1);
-
                 window.draw(Background_Sprite);
+                window.draw(GM_Sprite2);
+                window.draw(GM_Sprite3);
                 window.setView(camera);
-
                 window.draw(YourPlayer);
-
-                
-                MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite, BS1, wall1, wall3, wall5);
+                Text test;
+                MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite,GM_Sprite2, GM_Sprite3, BS1, wall1, wall3, wall5,gameID);
                 window.draw(BottomWall_Sprite);
             }
         }
@@ -191,9 +200,13 @@ int main()
             // Open the third game
         }
 
+
+        
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
-    }
+    
+        
+}
     //cout << user.playerName << " : " << user.score_BrickBreaker << endl;
     return 0;
 }
