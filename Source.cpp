@@ -129,6 +129,9 @@ int main()
             if (Keyboard::isKeyPressed(Keyboard::R)) {
                 gameID = 1;
             }
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                gameID = 0;
+            }
             if(gameID == 1)
                 brickBreakerGame.event(window, event);
         }

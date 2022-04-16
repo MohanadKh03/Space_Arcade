@@ -106,7 +106,7 @@ game::game(RenderWindow* window, int& score)
 }
 
 // Check for inputs
-void game::event(RenderWindow& window, Event e)
+void game::event(RenderWindow& window, Event& e)
 {
     // Check for pause input
     if (e.key.code == Keyboard::P) {
@@ -314,7 +314,7 @@ void game::reset()
 }
 
 // Run the whole game
-void game::run(RenderWindow& window, Event e, int& score,int& gameNUMBER)
+void game::run(RenderWindow& window, Event& e, int& score,int& gameNUMBER)
 {
     render(window);
     update(&window, score,gameNUMBER);
