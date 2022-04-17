@@ -3,6 +3,35 @@
 #include<SFML/Audio.hpp>
 #include<iostream>
 
+
+
+void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
+{
+	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			player.move(0, speed);
+			camera.move(0, speed);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			player.move(0, -speed);
+			camera.move(0, -speed);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			player.move(-speed, 0);
+			camera.move(-speed, 0);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+			player.move(speed, 0);
+			camera.move(speed, 0);
+		}
+	}
+}
+
 /**
 int ChoiceOfUser(string game, bool& gameCollision, int gameID) {
 	if (gameCollision) {
@@ -64,109 +93,21 @@ void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, i
 		YP.setTextureRect(IntRect(x * 64, y * 64, 64, 64));
 
 	}
+
+	Intersection(GM1, YP, camera, speed);
 	
-	if (GM1.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-			
-		if (Keyboard::isKeyPressed(Keyboard::Up)){
-			YP.move(0, speed);
-				camera.move(0, speed);
-				
-		}
+	Intersection(GM2, YP, camera, speed);
 	
-		if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			YP.move(speed, 0);
-				camera.move(speed, 0);
-		}
-		Font font; font.loadFromFile("ARCADE_R.ttf");
-		window.display();
-		texts(AskUser, "Press y to play BrickBreaker", -250, 70, 20, font);
-		window.draw(AskUser);
-		if(Keyboard::isKeyPressed(Keyboard::Y))
-			gameID = 1;
-		
-	}	
-	if (GM2.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-		gameCollision = true;
-		if (Keyboard::isKeyPressed(Keyboard::Up)){
-			YP.move(0, speed);
-				camera.move(0, speed);
-				
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-speed, 0);
-				camera.move(-speed, 0);
-		}
+	Intersection(GM3, YP, camera, speed);
+
+	Intersection(BS1, YP, camera, speed);
+	
+	Intersection(wall1, YP, camera, speed);
+	
+	Intersection(wall3, YP, camera, speed);
+	
+	Intersection(wall5, YP, camera, speed);
+	
 }
-if (GM3.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-	gameCollision = true;
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
-		YP.move(0, speed);
-		camera.move(0, speed);
 
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Left))
-	{
-		YP.move(speed, 0);
-		camera.move(speed, 0);
-	}else if (Keyboard::isKeyPressed(Keyboard::Down)) {
-		YP.move(0, -speed);
-		camera.move(0, -speed);
 
-	}
-}
-	if (BS1.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-		if (Keyboard::isKeyPressed(Keyboard::Up)) {
-			YP.move(0, speed);
-			camera.move(0, speed);
-
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-speed, 0);
-			camera.move(-speed, 0);
-		}
-	}
-	if (wall1.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-		 if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-speed, 0);
-			camera.move(-speed, 0);
-		}
-	}
-	if (wall3.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-		if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-speed, 0);
-			camera.move(-speed, 0);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			YP.move(speed, 0);
-			camera.move(speed, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Down)) {
-			YP.move(0, -speed);
-			camera.move(0, -speed);
-
-		}
-	}
-	if (wall5.getGlobalBounds().intersects(YP.getGlobalBounds())) {
-		if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			YP.move(-speed, 0);
-			camera.move(-speed, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			YP.move(speed, 0);
-			camera.move(speed, 0);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Up)) {
-			YP.move(0, speed);
-			camera.move(0, speed);
-
-		}
-	}
-}
