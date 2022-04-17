@@ -35,6 +35,9 @@ int main()
 
     int gameID = 0; // At the beginning
 
+    float spriteDelay = 0.1f;
+    float spriteTimer = 0.0f;
+
     //booleans for the Menu itself and Play  
     Menu main((float)windowX, (float)windowY); 
     bool isMenuOpened = true, UsernameTyping = false, isSpaceshipMap = false;
@@ -138,7 +141,7 @@ int main()
                 }
             }
             
-            /*if (Keyboard::isKeyPressed(Keyboard::R)) {
+            if (Keyboard::isKeyPressed(Keyboard::R)) {
                 gameID = 1;
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
@@ -188,7 +191,7 @@ int main()
                 window.setView(camera);
                 window.draw(YourPlayer);
                 Text test;
-                MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite,GM_Sprite2, GM_Sprite3, BS1, wall1, wall3, wall5,gameID);
+                MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite,GM_Sprite2, GM_Sprite3, BS1, wall1, wall3, wall5,gameID, dt, spriteTimer, spriteDelay);
                 window.draw(BottomWall_Sprite);
             }
         }
