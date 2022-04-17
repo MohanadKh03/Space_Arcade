@@ -3,6 +3,7 @@
 #include "MainMenu.h"
 #include "SpaceShipEvents.h"
 #include "game.h"
+#include "Duck.h"
 using namespace std;
 using namespace sf;
 
@@ -46,10 +47,10 @@ int main()
                      ,windowY / s_mainBG.getLocalBounds().height);
     
     ///// LAYERS
-        Texture GameMachine;
-        GameMachine.loadFromFile("game machine.png");
-        Sprite GM_Sprite;
-        setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
+    Texture GameMachine;
+    GameMachine.loadFromFile("game machine.png");
+    Sprite GM_Sprite;
+    setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
 
         Sprite GM_Sprite2;
         setTextureNSprite(GameMachine, GM_Sprite2, 0.18f, 1040, 80);
@@ -66,25 +67,25 @@ int main()
         Sprite BottomWall_Sprite;
         setTextureNSprite(bottomwall, BottomWall_Sprite, 0.799f, 1046, 599.5);
 
-        Texture Bluescreen;
-        Bluescreen.loadFromFile("Bluescreen.jpg");
-        Sprite BS1;
-        setTextureNSprite(Bluescreen, BS1, 0.799f, 1100, 190);
+    Texture Bluescreen;
+    Bluescreen.loadFromFile("Bluescreen.jpg");
+    Sprite BS1;
+    setTextureNSprite(Bluescreen, BS1, 0.799f, 1100, 190);
 
-        Texture wall;
-        wall.loadFromFile("wall.jpg");
-        Sprite wall1;
-        setTextureNSprite(wall, wall1, 0.799f, 1040, 70);
+    Texture wall;
+    wall.loadFromFile("wall.jpg");
+    Sprite wall1;
+    setTextureNSprite(wall, wall1, 0.799f, 1040, 70);
 
-        Texture wall2;
-        wall2.loadFromFile("wall2.jpg");
-        Sprite wall3;
-        setTextureNSprite(wall2, wall3, 0.799f, 1040, 520);
+    Texture wall2;
+    wall2.loadFromFile("wall2.jpg");
+    Sprite wall3;
+    setTextureNSprite(wall2, wall3, 0.799f, 1040, 520);
 
-        Texture wall4;
-        wall4.loadFromFile("wall3.jpg");
-        Sprite wall5;
-        setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
+    Texture wall4;
+    wall4.loadFromFile("wall3.jpg");
+    Sprite wall5;
+    setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
     //END OF LAYERS
 
     // Background's Stuff
@@ -94,17 +95,18 @@ int main()
         setTextureNSprite(Background, Background_Sprite, 0.8f, 0, 0);
 
     //Player's Stuff
-        Texture Player; 
-        Player.loadFromFile("yellow hair boy.png");
-        Sprite YourPlayer;
-        setTextureNSprite(Player, YourPlayer,1, windowX / 2.f, windowY / 2.f);
-        YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
-        int x = 0, y = 0; // For the sprite sheet
-        View camera(Vector2f(0.0f, 0.0f), Vector2f((float)windowX / 2, (float)windowY / 2)); 
+    Texture Player; 
+    Player.loadFromFile("yellow hair boy.png");
+    Sprite YourPlayer;
+    setTextureNSprite(Player, YourPlayer,1, windowX / 2.f, windowY / 2.f);
+    YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
+    int x = 0, y = 0; // For the sprite sheet
+    View camera(Vector2f(0.0f, 0.0f), Vector2f((float)windowX / 2, (float)windowY / 2)); 
     
     //The 3 Games
-        myPlayer user;
-        game brickBreakerGame(&window, user.score_BrickBreaker);
+    myPlayer user;
+    game brickBreakerGame(&window, user.score_BrickBreaker);
+    Duck duck(window);
 
     //
     while (window.isOpen())
@@ -138,7 +140,13 @@ int main()
             
             /*if (Keyboard::isKeyPressed(Keyboard::R)) {
                 gameID = 1;
-            }*/
+            }
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                gameID = 0;
+            }
+            if (Keyboard::isKeyPressed(Keyboard::W)) {
+                gameID = 2;
+            }
             if(gameID == 1)
                 brickBreakerGame.event(window, event);
         }
@@ -194,6 +202,9 @@ int main()
         //2nd Game
         else if (gameID == 2) {
             // Open the second game
+            window.setView(window.getDefaultView());
+            duck.Update(window, event, dt);
+           
         }
         //Space Invader
         else if (gameID == 3) {
