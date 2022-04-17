@@ -193,6 +193,7 @@ int main()
         //2nd Game
         else if (gameID == 2) {
             // Open the second game
+            window.setView(window.getDefaultView());
             duck.Update(window, event, dt);
            
         }
