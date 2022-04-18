@@ -21,12 +21,13 @@ private:
 struct Duck {
 public:
 	Duck(RenderWindow&);
-	void Update(RenderWindow&, Event&, float&);
-	void Render(RenderWindow&);
+	void Update(RenderWindow&, Event&, float&,int&);
+	void Render(RenderWindow&,int&);
 	void SpawnEnemy(RenderWindow&);
 	sf::Font font;
 	sf::Text text;
-	sf::Text dead;
+	sf::Text score_text;
+	//sf::Text dead;
 private:
 	Enemy enemies[20];
 	int directionIndex = 0;
@@ -38,6 +39,7 @@ private:
 	int maxEnemies = 10;
 	bool pressed = false;
 
+	int score = 0;
 	int health = 20;
 
 	RectangleShape crosshair;

@@ -11,15 +11,17 @@ Duck::Duck(RenderWindow& window) {
 	crosshair.setFillColor(Color::Red);
 	crosshair.setOrigin(Vector2f(crosshair.getSize().x / 2, crosshair.getSize().y / 2));
 	font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
+	score_text.setFont(font);
+	score_text.setPosition(500.0f, 0.f);
 	text.setFont(font);
 	text.setPosition(0.f, 0.f);
-	dead.setFont(font);
-	dead.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+	/*dead.setFont(font);
+	dead.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);*/
 	
 }
 
-void Duck::Update(RenderWindow& window, Event& e, float& dt) {
-	if (health > 0) {
+void Duck::Update(RenderWindow& window, Event& e, float& dt,int& gameID) {
+	if (health >= 0) {
 		if (e.type == Event::MouseMoved) {
 			crosshair.setPosition(Vector2f(Mouse::getPosition(window).x, Mouse::getPosition(window).y));
 		}
@@ -27,6 +29,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt) {
 			if (!pressed) {
 				for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 					if (enemies[i].duck.getGlobalBounds().contains(window.mapPixelToCoords(Mouse::getPosition(window))) && enemies[i].alive) {
+						score++;
 						enemiesCount--;
 						enemies[i].alive = false;
 					}
@@ -49,10 +52,11 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt) {
 				enemies[i].Update(window, dt, health, enemiesCount);
 			}
 		}
-		if(health > 0)
-		text.setString("Health" + to_string(health));
+		
+			text.setString("Health" + to_string(health));
+			score_text.setString("Score" + to_string(score));
 	}
-	Render(window);
+	Render(window,gameID);
 }
 
 void Duck::SpawnEnemy(RenderWindow& window) {
@@ -91,12 +95,14 @@ void Duck::SpawnEnemy(RenderWindow& window) {
 	}
 }
 
-void Duck::Render(RenderWindow& window)
+void Duck::Render(RenderWindow& window,int& gameID)
 {
 	window.draw(crosshair);
 	window.draw(text);
-	if(health == 0)
-	window.draw(dead);
+	window.draw(score_text);
+	if (health <= 0) 
+		gameID = 0;
+	
 }
 
 Enemy::Enemy() {

@@ -206,7 +206,7 @@ int main()
         else if (gameID == 2) {
             // Open the second game
             window.setView(window.getDefaultView());
-            duck.Update(window, event, dt);
+            duck.Update(window, event, dt,gameID);
            
         }
         //Space Invader
