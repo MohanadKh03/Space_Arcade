@@ -15,15 +15,15 @@ struct InvaderEnemy
 struct Player {
 	float posx, posy, speedx = 10.f;
 	sf::Texture playertexture;
-	sf::Sprite playersprite;
+	sf::RectangleShape playersprite;
 	bool Damaged;
 	int health;
 };
 struct Bullet {
-	sf::Vector2f speed;
+	sf::Vector2f speed = {0,-900};
 	sf::RectangleShape body;
-	sf::FloatRect rect;
-	bool collision;
+	//sf::FloatRect rect;
+	//bool collision;
 	bool released = false;
 	void Update(float&);
 };
@@ -37,14 +37,14 @@ struct SpaceInvader {
 	Player player;
 	Bullet bullets[NumOfBullets];
 	int bulletIndex = 0;
-	float bulletDelay = 0.5f;
+	float bulletDelay = 0.0f;
+	float bulletTimer = 0.1f;
 	SpaceInvader(sf::RenderWindow& window);
 	void EnemyMovement();
 	void PlayerMovement();
 	void ShootBullet(float&);
 	void bulletsFunction(sf::Event& event, float dt);
 	void Collision(sf::RenderWindow& w,int& gameID);
-	//bool shooting(sf::Event& event);
 
-	void run(sf::RenderWindow&, int&, sf::Event&, float&,int& gameID);
+	void Run(sf::RenderWindow&, int&, sf::Event&, float&,int& gameID);
 };

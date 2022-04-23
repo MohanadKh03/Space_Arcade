@@ -47,8 +47,9 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	player.posx = sf::VideoMode::getDesktopMode().width / 2;
 	player.posy = sf::VideoMode::getDesktopMode().height - 100;
 	player.playertexture.loadFromFile("blueship.png");
-	player.playersprite.setTexture(player.playertexture);
-	player.playersprite.setScale(sf::Vector2f(1.f, 1.f));
+	player.playersprite.setTexture(&player.playertexture);
+	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 21.68f, window.getSize().y / 14));
+	//player.playersprite.setScale(sf::Vector2f(1.f, 1.f));
 	player.playersprite.setPosition(sf::Vector2f(player.posx, player.posy));
 	//Bullets stuff
 	for (int i = 0; i < NumOfBullets; i++)
@@ -56,8 +57,10 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		bullets[i].released = false;
 		bullets[i].body.setSize(sf::Vector2f(2, 4));
 		bullets[i].body.setPosition(player.posx, player.posy);
-		bullets[i].rect = bullets[i].body.getGlobalBounds();
+		//bullets[i].rect = bullets[i].body.getGlobalBounds();
 	}
+	// Reset the score
+	score = 0;
 }
 
 void SpaceInvader::EnemyMovement() {
@@ -69,35 +72,35 @@ void SpaceInvader::EnemyMovement() {
 
 	}
 	//containing the enemies and moving them right/left and down if they reach the far end(right/left)
-		//the down statement with right and left booleans
-		if (enemies[0].posx <= 20 && movingleft)
+	//the down statement with right and left booleans
+	if (enemies[0].posx <= 20 && movingleft)
+	{
+		for (int i = 0; i < NumOfEnemies; i++)
+			enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
+		movingright = true;
+		movingleft = false;
+	}
+	if (enemies[NumOfEnemies - 1].posx >= side && movingright)
+	{
+		for (int i = 0; i < NumOfEnemies; i++)
+			enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
+		movingright = false;
+		movingleft = true;
+	}
+	//the right/left statements 
+		if (movingleft)
 		{
 			for (int i = 0; i < NumOfEnemies; i++)
-				enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
-			movingright = true;
-			movingleft = false;
-		}
-		if (enemies[NumOfEnemies - 1].posx >= side && movingright)
-		{
-			for (int i = 0; i < NumOfEnemies; i++)
-				enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
-			movingright = false;
-			movingleft = true;
-		}
-		//the right/left statements 
-			if (movingleft)
 			{
-				for (int i = 0; i < NumOfEnemies; i++)
-				{
-					enemies[i].enemy.move(sf::Vector2f(-enemies[i].speedx, 0.f));
-				}
+				enemies[i].enemy.move(sf::Vector2f(-enemies[i].speedx, 0.f));
 			}
-			else if (movingright)
-			{
-				for (int i = 0; i < NumOfEnemies; i++)
-					enemies[i].enemy.move(sf::Vector2f(enemies[i].speedx, 0.f));
+		}
+		else if (movingright)
+		{
+			for (int i = 0; i < NumOfEnemies; i++)
+				enemies[i].enemy.move(sf::Vector2f(enemies[i].speedx, 0.f));
 
-			}
+		}
 }
 
 void SpaceInvader::PlayerMovement() {
@@ -114,6 +117,7 @@ void SpaceInvader::PlayerMovement() {
 			player.playersprite.move(sf::Vector2f(player.speedx, 0));
 	}
 }
+
 void SpaceInvader::bulletsFunction(sf::Event& event, float dt)
 {
 	//setting the delta time and delay for each bullet when it is shot by LEFT 
@@ -123,20 +127,23 @@ void SpaceInvader::bulletsFunction(sf::Event& event, float dt)
 		}
 		if (bulletDelay <= 0) {
 			ShootBullet(dt);
-			bulletDelay = 0.5f;
+			bulletDelay = bulletTimer;
 		}
 		else {
-			bulletDelay -= 0.2f * dt;
+			bulletDelay -= 1.0f * dt;
 		}
+	}
+	else {
+		bulletDelay = 0;
 	}
 }
 
 void SpaceInvader::ShootBullet(float& dt) {
 	//moving the bullet FROM the player UPWARDS after it is shot
-	bullets[bulletIndex].body.setScale(sf::Vector2f(10.0f, 10.0f));
-	bullets[bulletIndex].body.setPosition(player.playersprite.getPosition());
-	bullets[bulletIndex].speed = sf::Vector2f(0, -300);
 	bullets[bulletIndex].released = true;
+	bullets[bulletIndex].body.setScale(sf::Vector2f(2.0f, 4.0f));
+	bullets[bulletIndex].body.setPosition(player.playersprite.getPosition() + sf::Vector2f(player.playersprite.getSize().x / 2 - 2, 0));
+	bullets[bulletIndex].speed = sf::Vector2f(0, -900);
 	bulletIndex++;
 }
 
@@ -146,6 +153,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w,int& gameID) {
 		for (int j = 0; j < NumOfEnemies; j++) {
 			if (bullets[i].body.getGlobalBounds().intersects(enemies[j].enemy.getGlobalBounds())) {
 				enemies[j].enemy.setScale(sf::Vector2f(0.f, 0.f));
+				bullets[i].released = false;
 				score++;
 				scoretext.setString("Score: " + to_string(score));
 			}
@@ -163,7 +171,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w,int& gameID) {
 }
 
 
-void SpaceInvader::run(sf::RenderWindow& win, int& score, sf::Event& e, float& dt,int& gameID) {
+void SpaceInvader::Run(sf::RenderWindow& win, int& score, sf::Event& e, float& dt,int& gameID) {
 	for (int i = 0; i < NumOfEnemies; i++)
 		win.draw(enemies[i].enemy);
 	for (int i = 0; i < NumOfBullets; i++) {
@@ -179,5 +187,11 @@ void SpaceInvader::run(sf::RenderWindow& win, int& score, sf::Event& e, float& d
 }
 
 void Bullet::Update(float& dt) {
+	if (!released) {
+		body.setScale(sf::Vector2f(0, 0));
+	}
+	else {
+		body.setScale(sf::Vector2f(2.0f, 4.0f));
+	}
 	body.move(speed * dt);
 }

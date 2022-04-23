@@ -152,8 +152,12 @@ int main()
             if (Keyboard::isKeyPressed(Keyboard::W)) {
                 gameID = 2;
             }
-            if (Keyboard::isKeyPressed(Keyboard::K))
+            if (Keyboard::isKeyPressed(Keyboard::K)) {
+                // Reset game when pressed again
+                if(gameID!=3)
+                    new (&sp) SpaceInvader(window);
                 gameID = 3;
+            }
             if(gameID == 1)
                 brickBreakerGame.event(window, event);
         }
@@ -216,7 +220,7 @@ int main()
         //Space Invader
         else if (gameID == 3) {
             window.setView(window.getDefaultView());
-            sp.run(window, user.score_SpaceInvader, event, dt,gameID);
+            sp.Run(window, user.score_SpaceInvader, event, dt,gameID);
         }
 
 
