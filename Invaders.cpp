@@ -10,6 +10,7 @@ int side = sf::VideoMode::getDesktopMode().width - 20;
 int z = 0;
 
 SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
+	//show the score
 	scoretext.setPosition(sf::Vector2f(window.getSize().x - 300, 0));
 	scoretext.setString("Score: " + to_string(score));
 	font.loadFromFile("ARCADE_R.ttf");
@@ -37,7 +38,7 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		else if (i % 10 == 0)
 		{
 			enemies[i].posx = enemies[0].posx;
-			enemies[i].posy = enemies[i - 1].posy + 70 * WindowFactor;
+			enemies[i].posy = enemies[i - 1].posy + 90 * WindowFactor;
 		}
 
 		enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy));
@@ -60,43 +61,47 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 }
 
 void SpaceInvader::EnemyMovement() {
-
+	//setting the x,y positions for the *already* set in the constructor ones
 	for (int i = 0; i < NumOfEnemies; i++)
 	{
 		enemies[i].posx = enemies[i].enemy.getPosition().x;
 		enemies[i].posy = enemies[i].enemy.getPosition().y;
 
 	}
-	if (enemies[0].posx <= 20 && movingleft)
-	{
-		for (int i = 0; i < NumOfEnemies; i++)
-			enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
-		movingright = true;
-		movingleft = false;
-	}
-	if (enemies[NumOfEnemies - 1].posx >= side && movingright)
-	{
-		for (int i = 0; i < NumOfEnemies; i++)
-			enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
-		movingright = false;
-		movingleft = true;
-	}
-	if (movingleft)
-	{
-		for (int i = 0; i < NumOfEnemies; i++)
+	//containing the enemies and moving them right/left and down if they reach the far end(right/left)
+		//the down statement with right and left booleans
+		if (enemies[0].posx <= 20 && movingleft)
 		{
-			enemies[i].enemy.move(sf::Vector2f(-enemies[i].speedx, 0.f));
+			for (int i = 0; i < NumOfEnemies; i++)
+				enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
+			movingright = true;
+			movingleft = false;
 		}
-	}
-	else if (movingright)
-	{
-		for (int i = 0; i < NumOfEnemies; i++)
-			enemies[i].enemy.move(sf::Vector2f(enemies[i].speedx, 0.f));
+		if (enemies[NumOfEnemies - 1].posx >= side && movingright)
+		{
+			for (int i = 0; i < NumOfEnemies; i++)
+				enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy + 20));
+			movingright = false;
+			movingleft = true;
+		}
+		//the right/left statements 
+			if (movingleft)
+			{
+				for (int i = 0; i < NumOfEnemies; i++)
+				{
+					enemies[i].enemy.move(sf::Vector2f(-enemies[i].speedx, 0.f));
+				}
+			}
+			else if (movingright)
+			{
+				for (int i = 0; i < NumOfEnemies; i++)
+					enemies[i].enemy.move(sf::Vector2f(enemies[i].speedx, 0.f));
 
-	}
+			}
 }
 
 void SpaceInvader::PlayerMovement() {
+	//setting the position of the player and containing between the borders .. also its movement
 	player.posx = player.playersprite.getPosition().x;
 	if (player.posx > 0)
 	{
@@ -111,6 +116,7 @@ void SpaceInvader::PlayerMovement() {
 }
 void SpaceInvader::bulletsFunction(sf::Event& event, float dt)
 {
+	//setting the delta time and delay for each bullet when it is shot by LEFT 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		if (bulletIndex >= NumOfBullets - 1) {
 			bulletIndex = 0;
@@ -120,12 +126,13 @@ void SpaceInvader::bulletsFunction(sf::Event& event, float dt)
 			bulletDelay = 0.5f;
 		}
 		else {
-			bulletDelay -= 1 * dt;
+			bulletDelay -= 0.2f * dt;
 		}
 	}
 }
 
 void SpaceInvader::ShootBullet(float& dt) {
+	//moving the bullet FROM the player UPWARDS after it is shot
 	bullets[bulletIndex].body.setScale(sf::Vector2f(10.0f, 10.0f));
 	bullets[bulletIndex].body.setPosition(player.playersprite.getPosition());
 	bullets[bulletIndex].speed = sf::Vector2f(0, -300);
@@ -134,6 +141,7 @@ void SpaceInvader::ShootBullet(float& dt) {
 }
 
 void SpaceInvader::Collision(sf::RenderWindow& w,int& gameID) {
+	//checking if the bullet hit the enemy or not (By going through all the bullets and all the enemies)
 	for (int i = 0; i < NumOfBullets; i++) {
 		for (int j = 0; j < NumOfEnemies; j++) {
 			if (bullets[i].body.getGlobalBounds().intersects(enemies[j].enemy.getGlobalBounds())) {
@@ -143,6 +151,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w,int& gameID) {
 			}
 		}
 	}
+	//checking if the enemy hits the player or if the score is max(All enemies are hit)
 	for (int i = 0; i < NumOfEnemies; i++) {
 		if (enemies[i].enemy.getScale().x != 0 && enemies[i].enemy.getScale().y != 0) 
 			if (enemies[i].enemy.getGlobalBounds().intersects(player.playersprite.getGlobalBounds()))
