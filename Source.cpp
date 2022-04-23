@@ -4,6 +4,7 @@
 #include "SpaceShipEvents.h"
 #include "game.h"
 #include "Duck.h"
+#include "Invaders.h"
 using namespace std;
 using namespace sf;
 
@@ -110,6 +111,7 @@ int main()
     myPlayer user;
     game brickBreakerGame(&window, user.score_BrickBreaker);
     Duck duck(window);
+    SpaceInvader sp(window);
 
     //
     while (window.isOpen())
@@ -150,6 +152,8 @@ int main()
             if (Keyboard::isKeyPressed(Keyboard::W)) {
                 gameID = 2;
             }
+            if (Keyboard::isKeyPressed(Keyboard::K))
+                gameID = 3;
             if(gameID == 1)
                 brickBreakerGame.event(window, event);
         }
@@ -211,7 +215,8 @@ int main()
         }
         //Space Invader
         else if (gameID == 3) {
-            // Open the third game
+            window.setView(window.getDefaultView());
+            sp.run(window, user.score_SpaceInvader, event, dt,gameID);
         }
 
 

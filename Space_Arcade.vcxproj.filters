@@ -24,6 +24,9 @@
     <ClCompile Include="Ducks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Invaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -36,6 +39,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Duck.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Invaders.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
