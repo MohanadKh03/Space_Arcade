@@ -109,9 +109,9 @@ int main()
     
     //The 3 Games
     myPlayer user;
-    game brickBreakerGame(&window, user.score_BrickBreaker);
-    Duck duck(window);
-    SpaceInvader sp(window);
+    game* brickBreakerGame = new game(&window, user.score_BrickBreaker);
+    Duck* duck = new Duck(window);
+    SpaceInvader* sp = new SpaceInvader(window);
 
     //
     while (window.isOpen())
@@ -154,12 +154,12 @@ int main()
             }
             if (Keyboard::isKeyPressed(Keyboard::K)) {
                 // Reset game when pressed again
-                if(gameID!=3)
-                    new (&sp) SpaceInvader(window);
+                /*if(gameID!=3)
+                    new (&sp) SpaceInvader(window);*/
                 gameID = 3;
             }
             if(gameID == 1)
-                brickBreakerGame.event(window, event);
+                brickBreakerGame->event(window, event);
         }
 
         window.clear();
@@ -168,6 +168,18 @@ int main()
         if (gameID == 0) {
             // Open the main menu and the space ship
             RunMenuEvents(window, main, isMenuOpened,UsernameTyping, event);
+            if (sp) {
+                delete sp;
+                sp = NULL;
+            }
+            if (brickBreakerGame) {
+                delete brickBreakerGame;
+                brickBreakerGame = NULL;
+            }
+            if (duck) {
+                delete duck;
+                duck = NULL;
+            }
             camera.setCenter(YourPlayer.getPosition());
             if (isMenuOpened) {
                 window.draw(s_mainBG);
@@ -206,21 +218,28 @@ int main()
         //Brick Breaker
         else if (gameID == 1) {
             // Open the first game
+            if(!brickBreakerGame)
+                brickBreakerGame = new game(&window, user.score_BrickBreaker);
+
             window.setView(window.getDefaultView());
-            brickBreakerGame.deltaTime = dt;
-            brickBreakerGame.run(window, event, user.score_BrickBreaker,gameID);
+            brickBreakerGame->deltaTime = dt;
+            brickBreakerGame->run(window, event, user.score_BrickBreaker,gameID);
         }
         //2nd Game
         else if (gameID == 2) {
+            if(!duck)
+                duck = new Duck(window);
             // Open the second game
             window.setView(window.getDefaultView());
-            duck.Update(window, event, dt,gameID);
+            duck->Update(window, event, dt,gameID);
            
         }
         //Space Invader
         else if (gameID == 3) {
+            if(!sp)
+                sp = new SpaceInvader(window);
             window.setView(window.getDefaultView());
-            sp.Run(window, user.score_SpaceInvader, event, dt,gameID);
+            sp->Run(window, user.score_SpaceInvader, event, dt,gameID);
         }
 
 
