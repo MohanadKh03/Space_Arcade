@@ -227,9 +227,6 @@ int main()
         
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
-    
-        
 }
-    //cout << user.playerName << " : " << user.score_BrickBreaker << endl;
     return 0;
 }

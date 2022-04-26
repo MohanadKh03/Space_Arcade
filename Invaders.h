@@ -22,8 +22,6 @@ struct Player {
 struct Bullet {
 	sf::Vector2f speed = {0,-900};
 	sf::RectangleShape body;
-	//sf::FloatRect rect;
-	//bool collision;
 	bool released = false;
 	void Update(float&);
 };

@@ -42,19 +42,6 @@ void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
 	}
 }
 
-/**
-int ChoiceOfUser(string game, bool& gameCollision, int gameID) {
-	if (gameCollision) {
-		Text AskUser;
-		Font font;
-		font.loadFromFile("ARCADE_R.ttf");
-		texts(AskUser, "Press y to play " + game, 50, 50, 30, font);
-		if (Keyboard::isKeyPressed(Keyboard::Y))
-			gameID = (game == "BrickBreaker" ? 1 : (game == "SpaceShooter" ? 2 : game == "SpaceInvader" ? 3 : 0));
-	}
-	return gameID;
-}
-**/
 Text AskUser;
 void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y, Sprite& GM1, Sprite& GM2, Sprite& GM3, Sprite& BS1, Sprite& wall1, Sprite& wall3, Sprite& wall5,int& gameID, float dt, float& spriteTimer, float spriteDelay) {
 	int screenXBorders = 20;
