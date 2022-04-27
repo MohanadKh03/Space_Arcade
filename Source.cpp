@@ -8,19 +8,6 @@
 using namespace std;
 using namespace sf;
 
-struct myPlayer {
-    string playerName;
-    int score_BrickBreaker = 0;
-    int score_2ndGame = 0;
-    int score_SpaceInvader = 0;
-};
-
-void setTextureNSprite(Texture& te, Sprite& se,const float& scale,int xPos,int yPos) {
-    se.setTexture(te);
-    se.setScale(scale, scale);
-    se.setPosition(xPos, yPos);
-}
-
 int main()
 {
     //RenderWindow window(VideoMode(1600,900), "Space Arcade");
@@ -34,84 +21,33 @@ int main()
     Clock gameClock;
     float dt = 0.0f;
 
-    int gameID = 0; // At the beginning
-
-    float spriteDelay = 0.1f;
+    float spriteDelay = 0.09f;
     float spriteTimer = 0.0f;
+
+    int gameID = 0; // At the beginning
 
     //booleans for the Menu itself and Play  
     Menu main((float)windowX, (float)windowY); 
     bool isMenuOpened = true, UsernameTyping = false, isSpaceshipMap = false;
 
+    View camera(Vector2f(0.0f, 0.0f), Vector2f((float)window.getSize().x / 2, (float)window.getSize().y / 2));
+
     //Main background
     Texture t_mainBG;
     t_mainBG.loadFromFile("BlackBG.jpg");
     Sprite s_mainBG(t_mainBG);
-    s_mainBG.setScale(windowX / s_mainBG.getLocalBounds().width
-                     ,windowY / s_mainBG.getLocalBounds().height);
-    
-    ///// LAYERS
-    Texture GameMachine;
-    GameMachine.loadFromFile("game machine.png");
-    Sprite GM_Sprite;
-    setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
+    s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
+        , window.getSize().y / s_mainBG.getLocalBounds().height);
 
-        Sprite GM_Sprite2;
-        setTextureNSprite(GameMachine, GM_Sprite2, 0.18f, 1040, 80);
-        GM_Sprite2.setScale(-0.18f, 0.18f);
-        GM_Sprite2.setColor(Color::Red);
-
-        Texture GameMachine3;
-        GameMachine3.loadFromFile("SpaceInvaderMachineFinal.png");
-        Sprite GM_Sprite3(GameMachine3);
-        setTextureNSprite(GameMachine3, GM_Sprite3, 0.18f, 40, 500);
-        
-        Texture bottomwall;
-        bottomwall.loadFromFile("bottomwall.jpg");
-        Sprite BottomWall_Sprite;
-        setTextureNSprite(bottomwall, BottomWall_Sprite, 0.799f, 1046, 599.5);
-
-    Texture Bluescreen;
-    Bluescreen.loadFromFile("Bluescreen.jpg");
-    Sprite BS1;
-    setTextureNSprite(Bluescreen, BS1, 0.799f, 1100, 190);
-
-    Texture wall;
-    wall.loadFromFile("wall.jpg");
-    Sprite wall1;
-    setTextureNSprite(wall, wall1, 0.799f, 1040, 70);
-
-    Texture wall2;
-    wall2.loadFromFile("wall2.jpg");
-    Sprite wall3;
-    setTextureNSprite(wall2, wall3, 0.799f, 1040, 520);
-
-    Texture wall4;
-    wall4.loadFromFile("wall3.jpg");
-    Sprite wall5;
-    setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
-    //END OF LAYERS
-
-    // Background's Stuff
-        Texture Background;
-        Background.loadFromFile("Background2 Final.jpg");
-        Sprite Background_Sprite;
-        setTextureNSprite(Background, Background_Sprite, 0.8f, 0, 0);
-
-    //Player's Stuff
-    Texture Player; 
-    Player.loadFromFile("yellow hair boy.png");
-    Sprite YourPlayer;
-    setTextureNSprite(Player, YourPlayer,1, windowX / 2.f, windowY / 2.f);
-    YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
-    int x = 0, y = 0; // For the sprite sheet
-    View camera(Vector2f(0.0f, 0.0f), Vector2f((float)windowX / 2, (float)windowY / 2)); 
+    bool spaceShip = false;
+    SpaceShip spaceShipStruct(window, gameID, dt, camera, spaceShip);
     
     //The 3 Games
     myPlayer user;
     game* brickBreakerGame = new game(&window, user.score_BrickBreaker);
     Duck* duck = new Duck(window);
     SpaceInvader* sp = new SpaceInvader(window);
+
 
     //
     while (window.isOpen())
@@ -180,7 +116,12 @@ int main()
                 delete duck;
                 duck = NULL;
             }
-            camera.setCenter(YourPlayer.getPosition());
+
+            if (isSpaceshipMap) {
+                spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, spriteTimer, spriteDelay);
+            }
+
+            camera.setCenter(spaceShipStruct.YourPlayer.getPosition());
             if (isMenuOpened) {
                 window.draw(s_mainBG);
                 main.draw(window);
@@ -199,21 +140,6 @@ int main()
                 window.draw(Username);
             }
 
-            if (isSpaceshipMap) {
-                window.draw(GM_Sprite);
-                window.draw(wall5);
-                window.draw(wall3);
-                window.draw(wall1);
-                window.draw(BS1);
-                window.draw(Background_Sprite);
-                window.draw(GM_Sprite2);
-                window.draw(GM_Sprite3);
-                window.setView(camera);
-                window.draw(YourPlayer);
-                Text test;
-                MovementSpaceShip(window, camera, YourPlayer, x, y, GM_Sprite,GM_Sprite2, GM_Sprite3, BS1, wall1, wall3, wall5,gameID, dt, spriteTimer, spriteDelay);
-                window.draw(BottomWall_Sprite);
-            }
         }
         //Brick Breaker
         else if (gameID == 1) {

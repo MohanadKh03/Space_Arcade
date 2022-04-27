@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ducks.cpp" />
+    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="Source.cpp" />

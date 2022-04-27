@@ -3,6 +3,19 @@
 #include<SFML/Audio.hpp>
 #include<iostream>
 
+struct myPlayer {
+	string playerName;
+	int score_BrickBreaker = 0;
+	int score_2ndGame = 0;
+	int score_SpaceInvader = 0;
+};
+
+void setTextureNSprite(Texture& te, Sprite& se, const float& scale, int xPos, int yPos) {
+	se.setTexture(te);
+	se.setScale(scale, scale);
+	se.setPosition(xPos, yPos);
+}
+
 void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, float& spriteDelay) {
 	if (spriteTimer <= 0) {
 		x++;
@@ -42,8 +55,44 @@ void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
 	}
 }
 
-Text AskUser;
-void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, int& y, Sprite& GM1, Sprite& GM2, Sprite& GM3, Sprite& BS1, Sprite& wall1, Sprite& wall3, Sprite& wall5,int& gameID, float dt, float& spriteTimer, float spriteDelay) {
+// Define the space ship struct
+struct SpaceShip {
+	// Define Textures
+	Texture GameMachine;
+	Texture GameMachine3;
+	Texture bottomwall;
+	Texture Bluescreen;
+	Texture wall;
+	Texture wall2;
+	Texture wall4;
+	Texture Background;
+	Texture Player;
+
+	// Define Sprites
+	Sprite GM_Sprite;
+	Sprite GM_Sprite2;
+	Sprite GM_Sprite3;
+	Sprite BottomWall_Sprite;
+	Sprite BS1;
+	Sprite wall1;
+	Sprite wall3;
+	Sprite wall5;
+	Sprite Background_Sprite;
+	Sprite YourPlayer;
+
+	// Define Texts
+	Text test;
+	Text AskUser;
+
+	int x = 0, y = 0; // For the sprite sheet
+
+	// Define functions
+	SpaceShip(RenderWindow&, int&, float&, View&, bool&);
+	void MovementSpaceShip(RenderWindow&, View&, int&, float, float&, float);
+	void Render(RenderWindow&, View&);
+};
+// Define the Update function of the space ship
+void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameID, float dt, float& spriteTimer, float spriteDelay) {
 	int screenXBorders = 20;
 	int screenYBorders = 100;
 	int speed = 500 * dt;
@@ -51,49 +100,119 @@ void MovementSpaceShip(RenderWindow& window, View& camera, Sprite& YP, int& x, i
 	////
 
 	////
-	if (Keyboard::isKeyPressed(Keyboard::Right) && YP.getPosition().x < window.getSize().x - (screenXBorders + 650))
+	if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
 	{
-		YP.move(speed, 0);
+		YourPlayer.move(speed, 0);
 		camera.move(speed, 0);
 		y = 2;
-		ChangeSprite(YP, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Left) && YP.getPosition().x > screenXBorders)
+	else if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > screenXBorders)
 	{
-		YP.move(-speed, 0);
+		YourPlayer.move(-speed, 0);
 		camera.move(-speed, 0);
 		y = 1;
-		ChangeSprite(YP, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Up) && YP.getPosition().y > screenYBorders)
+	else if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > screenYBorders)
 	{
-		YP.move(0, -speed);
+		YourPlayer.move(0, -speed);
 		camera.move(0, -speed);
 		y = 3;
-		ChangeSprite(YP, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Down) && YP.getPosition().y < window.getSize().y - (screenYBorders + 300))
+	else if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < window.getSize().y - (screenYBorders + 300))
 	{
-		YP.move(0, speed);
+		YourPlayer.move(0, speed);
 		camera.move(0, speed);
 		y = 0;
-		ChangeSprite(YP, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
+	}
+	else {
+		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
 
-	Intersection(GM1, YP, camera, speed);
+	Intersection(GM_Sprite, YourPlayer, camera, speed);
 	
-	Intersection(GM2, YP, camera, speed);
+	Intersection(GM_Sprite2, YourPlayer, camera, speed);
 	
-	Intersection(GM3, YP, camera, speed);
+	Intersection(GM_Sprite3, YourPlayer, camera, speed);
 
-	Intersection(BS1, YP, camera, speed);
+	Intersection(BS1, YourPlayer, camera, speed);
 	
-	Intersection(wall1, YP, camera, speed);
+	Intersection(wall1, YourPlayer, camera, speed);
 	
-	Intersection(wall3, YP, camera, speed);
+	Intersection(wall3, YourPlayer, camera, speed);
 	
-	Intersection(wall5, YP, camera, speed);
+	Intersection(wall5, YourPlayer, camera, speed);
 	
+	Render(window, camera);
+}
+
+// Define the constructor of the space ship
+SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera, bool& spaceShip) {
+	///// LAYERS
+	
+	GameMachine.loadFromFile("game machine.png");
+	
+	setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
+	setTextureNSprite(GameMachine, GM_Sprite2, 0.18f, 1040, 80);
+	GM_Sprite2.setScale(-0.18f, 0.18f);
+	GM_Sprite2.setColor(Color::Red);
+
+	GameMachine3.loadFromFile("SpaceInvaderMachineFinal.png");
+	
+	// GM_Sprite3.setTexture(GameMachine3);
+	setTextureNSprite(GameMachine3, GM_Sprite3, 0.18f, 40, 500);
+
+	bottomwall.loadFromFile("bottomwall.jpg");
+	
+	setTextureNSprite(bottomwall, BottomWall_Sprite, 0.799f, 1046, 599.5);
+
+	Bluescreen.loadFromFile("Bluescreen.jpg");
+	
+	setTextureNSprite(Bluescreen, BS1, 0.799f, 1100, 190);
+
+	wall.loadFromFile("wall.jpg");
+	
+	setTextureNSprite(wall, wall1, 0.799f, 1040, 70);
+
+	wall2.loadFromFile("wall2.jpg");
+	
+	setTextureNSprite(wall2, wall3, 0.799f, 1040, 520);
+
+	wall4.loadFromFile("wall3.jpg");
+	
+	setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
+	//END OF LAYERS
+
+	// Background's Stuff
+	
+	Background.loadFromFile("Background2 Final.jpg");
+	
+	setTextureNSprite(Background, Background_Sprite, 0.8f, 0, 0);
+
+	//Player's Stuff
+	
+	Player.loadFromFile("yellow hair boy.png");
+	
+	setTextureNSprite(Player, YourPlayer, 1, window.getSize().x / 2.f, window.getSize().y / 2.f);
+	YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
+}
+
+// Define the Render function of the space ship
+void SpaceShip::Render(RenderWindow& window, View& camera) {
+	window.draw(GM_Sprite);
+	window.draw(wall5);
+	window.draw(wall3);
+	window.draw(wall1);
+	window.draw(BS1);
+	window.draw(Background_Sprite);
+	window.draw(GM_Sprite2);
+	window.draw(GM_Sprite3);
+	window.setView(camera);
+	window.draw(YourPlayer);
+	window.draw(BottomWall_Sprite);
 }
 
 
