@@ -3,6 +3,7 @@
 #include<SFML/Audio.hpp>
 #include<iostream>
 
+// Create a struct to hold every Shapceship action
 struct myPlayer {
 	string playerName;
 	int score_BrickBreaker = 0;
