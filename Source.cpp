@@ -1,5 +1,6 @@
 #include <fstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "MainMenu.h"
 #include "SpaceShipEvents.h"
 #include "game.h"
@@ -48,10 +49,16 @@ int main()
     Duck* duck = new Duck(window);
     SpaceInvader* sp = new SpaceInvader(window);
 
+    Music MainMenu;
+    MainMenu.openFromFile("meet-the-princess.wav");
 
     //
     while (window.isOpen())
     {
+        
+        //MainMenu.play();
+       // MainMenu.setLoop(true);
+
         cout << "Collision : " << collison << endl;
         cout << "\t" << canPlay << endl;
 
@@ -137,8 +144,13 @@ int main()
 
             camera.setCenter(spaceShipStruct.YourPlayer.getPosition());
             if (isMenuOpened) {
+
+                
+
                 window.draw(s_mainBG);
                 main.draw(window);
+
+                
             }
 
             if (UsernameTyping)

@@ -69,6 +69,40 @@ void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
 	}
 }
 
+void Collision(Sprite& body, Sprite& player, View& camera, int speed)
+{
+	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			player.move(0, speed);
+			camera.move(0, speed);
+			
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			player.move(0, -speed);
+			camera.move(0, -speed);
+			
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			player.move(-speed, 0);
+			camera.move(-speed, 0);
+			
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+			player.move(speed, 0);
+			camera.move(speed, 0);
+			
+		}
+		/*else {
+			canPlay = false;
+		}*/
+	}
+}
+
 // Define the space ship struct
 struct SpaceShip {
 	// Define Textures
@@ -164,11 +198,11 @@ void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameI
 
 	Intersection(BS1, YourPlayer, camera, speed);
 	
-	Intersection(wall1, YourPlayer, camera, speed);
+	Collision(wall1, YourPlayer, camera, speed);
 	
-	Intersection(wall3, YourPlayer, camera, speed);
+	Collision(wall3, YourPlayer, camera, speed);
 	
-	Intersection(wall5, YourPlayer, camera, speed);
+	Collision(wall5, YourPlayer, camera, speed);
 	
 	Render(window, camera);
 }
