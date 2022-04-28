@@ -28,6 +28,8 @@ void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, floa
 		spriteTimer -= 1 * dt;
 	}
 }
+bool collison = false;
+bool canPlay = false;
 
 void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
 {
@@ -37,22 +39,33 @@ void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
 		{
 			player.move(0, speed);
 			camera.move(0, speed);
+			collison = true;
+			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, -speed);
 			camera.move(0, -speed);
+			collison = true;
+			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 			player.move(-speed, 0);
 			camera.move(-speed, 0);
+			collison = true;
+			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			player.move(speed, 0);
 			camera.move(speed, 0);
+			collison = true;
+			canPlay = true;
 		}
+		/*else {
+			canPlay = false;
+		}*/
 	}
 }
 
@@ -68,6 +81,7 @@ struct SpaceShip {
 	Texture wall4;
 	Texture Background;
 	Texture Player;
+	Texture DialougeBox;
 
 	// Define Sprites
 	Sprite GM_Sprite;
@@ -80,10 +94,17 @@ struct SpaceShip {
 	Sprite wall5;
 	Sprite Background_Sprite;
 	Sprite YourPlayer;
+	Sprite DB1;
+	Sprite DB2;
+	Sprite DB3;
 
 	// Define Texts
+	Font Dialouge;
 	Text test;
 	Text AskUser;
+	Text PlayGame1;
+	Text PlayGame2;
+	Text PlayGame3;
 
 	int x = 0, y = 0; // For the sprite sheet
 
@@ -185,7 +206,21 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	wall4.loadFromFile("wall3.jpg");
 	
 	setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
+
+	DialougeBox.loadFromFile("White box2.png");
+	setTextureNSprite(DialougeBox, DB1, 3.2, 35, 70);
+	setTextureNSprite(DialougeBox, DB2, 3.2, 1000, 40);
+	setTextureNSprite(DialougeBox, DB3, 3.2, 40, 460);
 	//END OF LAYERS
+	Dialouge.loadFromFile("ARCADE_N.TTF");
+	
+
+	texts(PlayGame1, "Press 'R' to play\n Brick Breaker", 40, 80, 8, Dialouge);
+	PlayGame1.setFillColor(Color::Black);
+	texts(PlayGame2, "Press 'W' to play\n Duck", 1005, 50, 8, Dialouge);
+	PlayGame2.setFillColor(Color::Black);
+	texts(PlayGame3, "Press 'K' to play\n Space Invader", 46, 470, 8, Dialouge);
+	PlayGame3.setFillColor(Color::Black);
 
 	// Background's Stuff
 	
@@ -214,6 +249,15 @@ void SpaceShip::Render(RenderWindow& window, View& camera) {
 	window.setView(camera);
 	window.draw(YourPlayer);
 	window.draw(BottomWall_Sprite);
+	
+	if (collison) {
+		window.draw(DB1);
+		window.draw(PlayGame1);
+		window.draw(DB2);
+		window.draw(PlayGame2);
+		window.draw(DB3);
+		window.draw(PlayGame3);
+	}
 }
 
 

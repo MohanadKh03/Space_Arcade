@@ -52,6 +52,9 @@ int main()
     //
     while (window.isOpen())
     {
+        cout << "Collision : " << collison << endl;
+        cout << "\t" << canPlay << endl;
+
         gameClock.restart();
         Event event;
         //Events
@@ -59,6 +62,14 @@ int main()
         {
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
+            if (event.type == Event::KeyPressed) {
+                 collison = false;
+                 //canPlay = false;
+                if (Keyboard::isKeyPressed(Keyboard::R) || Keyboard::isKeyPressed(Keyboard::K) || Keyboard::isKeyPressed(Keyboard::W)) {
+                  collison = true;
+                  //canPlay = true;
+                }
+            }
 
             //EVENTS OF THE USERNAME TYPING
             if (UsernameTyping) {
@@ -79,20 +90,23 @@ int main()
                 }
             }
             
-            if (Keyboard::isKeyPressed(Keyboard::R)) {
+            if (Keyboard::isKeyPressed(Keyboard::R) && canPlay && collison) {
                 gameID = 1;
+                canPlay = false;
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
             }
-            if (Keyboard::isKeyPressed(Keyboard::W)) {
+            if (Keyboard::isKeyPressed(Keyboard::W) && canPlay && collison) {
                 gameID = 2;
+                canPlay = false;
             }
-            if (Keyboard::isKeyPressed(Keyboard::K)) {
+            if (Keyboard::isKeyPressed(Keyboard::K) && canPlay && collison) {
                 // Reset game when pressed again
                 /*if(gameID!=3)
                     new (&sp) SpaceInvader(window);*/
                 gameID = 3;
+                canPlay = false;
             }
             if(gameID == 1)
                 brickBreakerGame->event(window, event);
