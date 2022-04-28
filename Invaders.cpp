@@ -61,7 +61,6 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	}
 	// Reset the score
 	score = 0;
-	cout << "lolol\n";
 }
 
 void SpaceInvader::EnemyMovement() {
