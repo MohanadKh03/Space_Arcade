@@ -51,12 +51,12 @@ int main()
 
     Music MainMenu;
     MainMenu.openFromFile("meet-the-princess.wav");
-
+    MainMenu.play();
     //
     while (window.isOpen())
     {
         
-        //MainMenu.play();
+        
        // MainMenu.setLoop(true);
 
         cout << "Collision : " << collison << endl;
@@ -93,6 +93,7 @@ int main()
                         //Save HERE THEN CHANGE THE FLOW FROM USERNAME TYPING TO MAP
                         UsernameTyping = false;
                         isSpaceshipMap = true;
+                        MainMenu.stop();
                     }
                 }
             }
