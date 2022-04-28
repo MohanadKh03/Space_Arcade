@@ -97,6 +97,7 @@ struct SpaceShip {
 	Sprite DB1;
 	Sprite DB2;
 	Sprite DB3;
+	Sprite DB4;
 
 	// Define Texts
 	Font Dialouge;
@@ -105,6 +106,7 @@ struct SpaceShip {
 	Text PlayGame1;
 	Text PlayGame2;
 	Text PlayGame3;
+	Text LeaderBoard;
 
 	int x = 0, y = 0; // For the sprite sheet
 
@@ -193,7 +195,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 
 	Bluescreen.loadFromFile("Bluescreen.jpg");
 	
-	setTextureNSprite(Bluescreen, BS1, 0.799f, 1100, 190);
+	setTextureNSprite(Bluescreen, BS1, 0.799f, 1110, 190);
 
 	wall.loadFromFile("wall.jpg");
 	
@@ -211,6 +213,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	setTextureNSprite(DialougeBox, DB1, 3.2, 35, 70);
 	setTextureNSprite(DialougeBox, DB2, 3.2, 1000, 40);
 	setTextureNSprite(DialougeBox, DB3, 3.2, 40, 460);
+	setTextureNSprite(DialougeBox, DB4, 3.5, 1120, 175);
 	//END OF LAYERS
 	Dialouge.loadFromFile("ARCADE_N.TTF");
 	
@@ -221,6 +224,8 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	PlayGame2.setFillColor(Color::Black);
 	texts(PlayGame3, "Press 'K' to play\n Space Invader", 46, 470, 8, Dialouge);
 	PlayGame3.setFillColor(Color::Black);
+	texts(LeaderBoard, "Press 'Y' to open\n Leaderboard", 1125, 185, 9, Dialouge);
+	LeaderBoard.setFillColor(Color::Black);
 
 	// Background's Stuff
 	
@@ -257,6 +262,8 @@ void SpaceShip::Render(RenderWindow& window, View& camera) {
 		window.draw(PlayGame2);
 		window.draw(DB3);
 		window.draw(PlayGame3);
+		window.draw(DB4);
+		window.draw(LeaderBoard);
 	}
 }
 
