@@ -195,8 +195,6 @@ int main()
             sp->Run(window, user.score_SpaceInvader, event, dt,gameID);
         }
 
-
-        
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
 }
