@@ -31,45 +31,37 @@ void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, floa
 bool collison = false;
 bool canPlay = false;
 
-void Intersection(Sprite& body, Sprite& player, View& camera, int speed)
+int Intersection(Sprite& body, Sprite& player, View& camera, int speed, int id)
 {
 	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
 	{
+		collison = true;
+		canPlay = true;
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		{
 			player.move(0, speed);
 			camera.move(0, speed);
-			collison = true;
-			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, -speed);
 			camera.move(0, -speed);
-			collison = true;
-			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 			player.move(-speed, 0);
 			camera.move(-speed, 0);
-			collison = true;
-			canPlay = true;
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			player.move(speed, 0);
 			camera.move(speed, 0);
-			collison = true;
-			canPlay = true;
 		}
-		/*else {
-			canPlay = false;
-		}*/
+		return id;
 	}
 }
 
-void Collision(Sprite& body, Sprite& player, View& camera, int speed)
+int Collision(Sprite& body, Sprite& player, View& camera, int speed, int id = 0, bool GM = false)
 {
 	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
 	{
@@ -77,30 +69,29 @@ void Collision(Sprite& body, Sprite& player, View& camera, int speed)
 		{
 			player.move(0, speed);
 			camera.move(0, speed);
-			
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, -speed);
 			camera.move(0, -speed);
-			
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 			player.move(-speed, 0);
 			camera.move(-speed, 0);
-			
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			player.move(speed, 0);
 			camera.move(speed, 0);
-			
 		}
-		/*else {
-			canPlay = false;
-		}*/
 	}
+	if (body.getGlobalBounds().intersects(FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 50, player.getGlobalBounds().height + 50)) && GM) {
+		collison = true;
+		canPlay = true;
+		return id;
+	}
+	return 0;
 }
 
 // Define the space ship struct
@@ -144,20 +135,45 @@ struct SpaceShip {
 
 	int x = 0, y = 0; // For the sprite sheet
 
+	int screenXBorders = 20;
+	int screenYBorders = 100;
+	int speed;
+	bool gameCollision = false;
+
+	float spriteDelay = 0.09f;
+	float spriteTimer = 0.0f;
+
 	// Define functions
 	SpaceShip(RenderWindow&, int&, float&, View&, bool&);
-	void MovementSpaceShip(RenderWindow&, View&, int&, float, float&, float);
+	void MovementSpaceShip(RenderWindow&, View&, int&, float, int&);
+	void Update(RenderWindow&, View&, float);
 	void Render(RenderWindow&, View&);
 };
 // Define the Update function of the space ship
-void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameID, float dt, float& spriteTimer, float spriteDelay) {
-	int screenXBorders = 20;
-	int screenYBorders = 100;
-	int speed = 500 * dt;
-	bool gameCollision = false;
-	////
+void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameID, float dt, int& currentID) {
 
-	////
+	//currentID = 0;
+
+	currentID = Collision(GM_Sprite, YourPlayer, camera, speed, 1, true);
+	
+	currentID = Collision(GM_Sprite2, YourPlayer, camera, speed, 2, true);
+	
+	currentID = Collision(GM_Sprite3, YourPlayer, camera, speed, 3, true);
+
+	currentID = Collision(BS1, YourPlayer, camera, speed, 0, true);
+	
+	Collision(wall1, YourPlayer, camera, speed);
+	
+	Collision(wall3, YourPlayer, camera, speed);
+	
+	Collision(wall5, YourPlayer, camera, speed);
+
+	//cout << currentID << endl;
+
+}
+
+void SpaceShip::Update(RenderWindow& window, View& camera, float dt) {
+	speed = 500 * dt;
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
 	{
 		YourPlayer.move(speed, 0);
@@ -190,20 +206,6 @@ void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameI
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
 
-	Intersection(GM_Sprite, YourPlayer, camera, speed);
-	
-	Intersection(GM_Sprite2, YourPlayer, camera, speed);
-	
-	Intersection(GM_Sprite3, YourPlayer, camera, speed);
-
-	Intersection(BS1, YourPlayer, camera, speed);
-	
-	Collision(wall1, YourPlayer, camera, speed);
-	
-	Collision(wall3, YourPlayer, camera, speed);
-	
-	Collision(wall5, YourPlayer, camera, speed);
-	
 	Render(window, camera);
 }
 

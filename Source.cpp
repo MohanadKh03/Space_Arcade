@@ -22,10 +22,12 @@ int main()
     Clock gameClock;
     float dt = 0.0f;
 
-    float spriteDelay = 0.09f;
-    float spriteTimer = 0.0f;
-
     int gameID = 0; // At the beginning
+                    // 0 - Main Menu and Spaceship
+                    // 1 - Brick Breaker game
+                    // 2 - Duck Shooter game
+                    // 3 - Space Invaders game
+    int collisionID = 0;
 
     //booleans for the Menu itself and Play  
     Menu main((float)windowX, (float)windowY); 
@@ -55,13 +57,6 @@ int main()
     //
     while (window.isOpen())
     {
-        
-        
-       
-
-       /* cout << "Collision : " << collison << endl;
-        cout << "\t" << canPlay << endl;*/
-
         gameClock.restart();
         Event event;
         //Events
@@ -97,23 +92,24 @@ int main()
                     }
                 }
             }
-            
+            spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, collisionID);
+            cout << collisionID << endl;
             if (Keyboard::isKeyPressed(Keyboard::R) && canPlay && collison) {
-                gameID = 1;
+                gameID = collisionID;
                 canPlay = false;
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
             }
             if (Keyboard::isKeyPressed(Keyboard::W) && canPlay && collison) {
-                gameID = 2;
+                gameID = collisionID;
                 canPlay = false;
             }
             if (Keyboard::isKeyPressed(Keyboard::K) && canPlay && collison) {
                 // Reset game when pressed again
                 /*if(gameID!=3)
                     new (&sp) SpaceInvader(window);*/
-                gameID = 3;
+                gameID = collisionID;
                 canPlay = false;
             }
             if(gameID == 1)
@@ -140,7 +136,8 @@ int main()
             }
 
             if (isSpaceshipMap) {
-                spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, spriteTimer, spriteDelay);
+                spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, collisionID);
+                spaceShipStruct.Update(window, camera, dt);
             }
 
             camera.setCenter(spaceShipStruct.YourPlayer.getPosition());
