@@ -57,10 +57,10 @@ int main()
     {
         
         
-       // MainMenu.setLoop(true);
+       
 
-        cout << "Collision : " << collison << endl;
-        cout << "\t" << canPlay << endl;
+       /* cout << "Collision : " << collison << endl;
+        cout << "\t" << canPlay << endl;*/
 
         gameClock.restart();
         Event event;

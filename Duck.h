@@ -13,6 +13,11 @@ public:
 	Vector2f speed = { 0,0 };
 	bool alive = false;
 	RectangleShape duck;
+	sf::Texture texture1;
+	sf::Texture texture2;
+	sf::Texture texture3;
+	sf::Texture texture4;
+
 private:
 	bool check_in = false;
 
@@ -21,23 +26,36 @@ private:
 struct Duck {
 public:
 	Duck(RenderWindow&);
-	void Update(RenderWindow&, Event&, float&,int&);
-	void Render(RenderWindow&,int&);
+	void ChooseTexture(Enemy, int);
+	void Update(RenderWindow&, Event&, float&, int&);
+	void Render(RenderWindow&, int&);
 	void SpawnEnemy(RenderWindow&);
+	void playEffect(Vector2f position);
 	sf::Font font;
 	sf::Text text;
 	sf::Text score_text;
 	//sf::Text dead;
 private:
+	int texture_index = 0;
 	Enemy enemies[20];
 	int directionIndex = 0;
 	int positionIndex = 0;
 	float enemyDelay = 0;
-	float delay = 1.0f;
+	float delay = 0.1f;
 	float enemySpeed = 200.0f;
 	int enemiesCount = 0;
 	int maxEnemies = 10;
 	bool pressed = false;
+	sf::Texture cross;
+	sf::Texture background;
+	sf::Sprite backgroundsp;
+
+	// special effect variables /////////////////////////////////////////
+	Texture hitEffectTex;
+	int spriteIndex = 0;
+	float effectTimer = 0;
+	float effectDelay = 0.05f;
+	Sprite hitEffect;
 
 	int score = 0;
 	int health = 20;
