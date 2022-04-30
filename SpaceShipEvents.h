@@ -61,7 +61,8 @@ int Intersection(Sprite& body, Sprite& player, View& camera, int speed, int id)
 	}
 }
 
-void Collision(Sprite& body, Sprite& player, View& camera, int speed, int& collisionID, int id = 0, bool GM = false)
+int* temp_ptr;
+void Collision(Sprite& body, Sprite& player, View& camera, int speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
 {
 	if (GM) {
 		//FloatRect rect = FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 40, player.getGlobalBounds().height + 40);
@@ -196,11 +197,11 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 
 	Collision(BS1, YourPlayer, camera, speed, collisionID, 4, true);
 
-	Collision(wall1, YourPlayer, camera, speed, collisionID);
+	Collision(wall1, YourPlayer, camera, speed);
 
-	Collision(wall3, YourPlayer, camera, speed, collisionID);
+	Collision(wall3, YourPlayer, camera, speed);
 
-	Collision(wall5, YourPlayer, camera, speed, collisionID);
+	Collision(wall5, YourPlayer, camera, speed);
 	
 	Render(window, camera, collisionID);
 }
