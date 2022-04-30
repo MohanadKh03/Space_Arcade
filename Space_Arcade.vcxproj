@@ -147,13 +147,13 @@
   <ItemGroup>
     <ClCompile Include="Ducks.cpp" />
     <ClCompile Include="Functions.cpp" />
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Breaker.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Duck.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="Breaker.h" />
     <ClInclude Include="Invaders.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="SpaceShipEvents.h" />

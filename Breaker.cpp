@@ -1,4 +1,4 @@
-#include "game.h"
+#include "Breaker.h"
 #include <math.h>
 #include <time.h>
 
@@ -53,6 +53,7 @@ game::game(RenderWindow* window, int& score)
     hitEffect.setRotation(90);
 
     reset();
+    score = 0;
 
     // Spawn Blocks
     for (int y = 0; y < blocksHeight; y++)
@@ -134,6 +135,25 @@ void game::event(RenderWindow& window, Event& e)
             {
                 paddle.setPosition(Vector2f(window.getSize().x - paddle.getSize().x, paddle.getPosition().y));
             }
+            if (moveCheck % 5 == 0) {
+                lastPosition = currentPosition;
+            }
+            if (moveCheck >= 500) {
+                moveCheck = 0;
+            }
+            moveCheck++;
+
+            if (currentPosition < lastPosition) {
+                direction = -1;
+            }
+            else if (currentPosition > lastPosition) {
+                direction = 1;
+            }
+            else
+            {
+                direction = 0;
+            }
+            currentPosition = paddle.getPosition().x;
         }
     }
     else if (e.type == Event::MouseButtonPressed && lives > 0 && flag)
@@ -235,6 +255,12 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
                 speed.y += speedfactor * ratio;
             ball.setPosition(Vector2f(ball.getPosition().x, paddle.getPosition().y - (ball.getRadius() * 2.0f)));
             speed.y = -abs(speed.y);
+            if (direction == 1) {
+                speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed;
+            }
+            else if (direction == -1) {
+                speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed;
+            }
         }
 
         //Ball - Block Collision

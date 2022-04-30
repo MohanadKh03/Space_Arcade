@@ -3,7 +3,7 @@
 #include <SFML/Audio.hpp>
 #include "MainMenu.h"
 #include "SpaceShipEvents.h"
-#include "game.h"
+#include "Breaker.h"
 #include "Duck.h"
 #include "Invaders.h"
 using namespace std;

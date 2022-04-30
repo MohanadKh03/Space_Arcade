@@ -18,7 +18,7 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="Breaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Ducks.cpp">
@@ -38,7 +38,7 @@
     <ClInclude Include="SpaceShipEvents.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="Breaker.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Duck.h">

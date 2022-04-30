@@ -38,6 +38,10 @@ private:
 	float defaultspeed;
 	float angle;
 	Vector2f speed;
+	float lastPosition;
+	float currentPosition;
+	int direction = 0;
+	int moveCheck = 0;
 
 	// Ball Trail Variables
 	CircleShape ballTrail[20];
