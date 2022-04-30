@@ -243,21 +243,21 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
 
 	DialougeBox.loadFromFile("White box2.png");
-	setTextureNSprite(DialougeBox, DB1, 3.2, 35, 70);
-	setTextureNSprite(DialougeBox, DB2, 3.2, 1000, 40);
-	setTextureNSprite(DialougeBox, DB3, 3.2, 40, 460);
+	setTextureNSprite(DialougeBox, DB1, 3.5, 35, 70);
+	setTextureNSprite(DialougeBox, DB2, 3.5, 1000, 40);
+	setTextureNSprite(DialougeBox, DB3, 3.5, 40, 460);
 	setTextureNSprite(DialougeBox, DB4, 3.5, 1120, 175);
 	//END OF LAYERS
 	Dialouge.loadFromFile("ARCADE_N.TTF");
 	
 
-	texts(PlayGame1, "Press 'Enter' to play\n Brick Breaker", 40, 80, 8, Dialouge);
+	texts(PlayGame1, "Press 'Enter' to \nplay Brick Breaker", 40, 80, 8, Dialouge);
 	PlayGame1.setFillColor(Color::Black);
-	texts(PlayGame2, "Press 'Enter' to play\n Duck", 1005, 50, 8, Dialouge);
+	texts(PlayGame2, "Press 'Enter' to \nplay Duck", 1005, 50, 8, Dialouge);
 	PlayGame2.setFillColor(Color::Black);
-	texts(PlayGame3, "Press 'Enter' to play\n Space Invader", 46, 470, 8, Dialouge);
+	texts(PlayGame3, "Press 'Enter' to \nplay Space Invader", 46, 470, 8, Dialouge);
 	PlayGame3.setFillColor(Color::Black);
-	texts(LeaderBoard, "Press 'Enter' to open\n Leaderboard", 1125, 185, 9, Dialouge);
+	texts(LeaderBoard, "Press 'Enter' to \nopen Leaderboard", 1125, 185, 9, Dialouge);
 	LeaderBoard.setFillColor(Color::Black);
 
 	// Background's Stuff
