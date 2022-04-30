@@ -61,8 +61,17 @@ int Intersection(Sprite& body, Sprite& player, View& camera, int speed, int id)
 	}
 }
 
-int Collision(Sprite& body, Sprite& player, View& camera, int speed, int id = 0, bool GM = false)
+void Collision(Sprite& body, Sprite& player, View& camera, int speed, int& collisionID, int id = 0, bool GM = false)
 {
+	if (GM) {
+		//FloatRect rect = FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 40, player.getGlobalBounds().height + 40);
+		FloatRect rect = FloatRect(body.getGlobalBounds().left - 25, body.getGlobalBounds().top - 25, body.getGlobalBounds().width + 50, body.getGlobalBounds().height + 50);
+		if (rect.contains(player.getPosition())) {
+			collison = true;
+			canPlay = true;
+			collisionID = id;
+		}
+	}
 	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Up))
@@ -86,12 +95,6 @@ int Collision(Sprite& body, Sprite& player, View& camera, int speed, int id = 0,
 			camera.move(speed, 0);
 		}
 	}
-	if (body.getGlobalBounds().intersects(FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 50, player.getGlobalBounds().height + 50)) && GM) {
-		collison = true;
-		canPlay = true;
-		return id;
-	}
-	return 0;
 }
 
 // Define the space ship struct
@@ -145,34 +148,11 @@ struct SpaceShip {
 
 	// Define functions
 	SpaceShip(RenderWindow&, int&, float&, View&, bool&);
-	void MovementSpaceShip(RenderWindow&, View&, int&, float, int&);
-	void Update(RenderWindow&, View&, float);
-	void Render(RenderWindow&, View&);
+	void Update(RenderWindow&, View&, float, int&);
+	void Render(RenderWindow&, View&, int);
 };
-// Define the Update function of the space ship
-void SpaceShip::MovementSpaceShip(RenderWindow& window, View& camera, int& gameID, float dt, int& currentID) {
 
-	//currentID = 0;
-
-	currentID = Collision(GM_Sprite, YourPlayer, camera, speed, 1, true);
-	
-	currentID = Collision(GM_Sprite2, YourPlayer, camera, speed, 2, true);
-	
-	currentID = Collision(GM_Sprite3, YourPlayer, camera, speed, 3, true);
-
-	currentID = Collision(BS1, YourPlayer, camera, speed, 0, true);
-	
-	Collision(wall1, YourPlayer, camera, speed);
-	
-	Collision(wall3, YourPlayer, camera, speed);
-	
-	Collision(wall5, YourPlayer, camera, speed);
-
-	//cout << currentID << endl;
-
-}
-
-void SpaceShip::Update(RenderWindow& window, View& camera, float dt) {
+void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collisionID) {
 	speed = 500 * dt;
 	if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
 	{
@@ -205,8 +185,24 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt) {
 	else {
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
+	collisionID = 0;
+	collison = false;
 
-	Render(window, camera);
+	Collision(GM_Sprite, YourPlayer, camera, speed, collisionID, 1, true);
+
+	Collision(GM_Sprite2, YourPlayer, camera, speed, collisionID, 2, true);
+
+	Collision(GM_Sprite3, YourPlayer, camera, speed, collisionID, 3, true);
+
+	Collision(BS1, YourPlayer, camera, speed, collisionID, 4, true);
+
+	Collision(wall1, YourPlayer, camera, speed, collisionID);
+
+	Collision(wall3, YourPlayer, camera, speed, collisionID);
+
+	Collision(wall5, YourPlayer, camera, speed, collisionID);
+	
+	Render(window, camera, collisionID);
 }
 
 // Define the constructor of the space ship
@@ -254,13 +250,13 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	Dialouge.loadFromFile("ARCADE_N.TTF");
 	
 
-	texts(PlayGame1, "Press 'R' to play\n Brick Breaker", 40, 80, 8, Dialouge);
+	texts(PlayGame1, "Press 'Enter' to play\n Brick Breaker", 40, 80, 8, Dialouge);
 	PlayGame1.setFillColor(Color::Black);
-	texts(PlayGame2, "Press 'W' to play\n Duck", 1005, 50, 8, Dialouge);
+	texts(PlayGame2, "Press 'Enter' to play\n Duck", 1005, 50, 8, Dialouge);
 	PlayGame2.setFillColor(Color::Black);
-	texts(PlayGame3, "Press 'K' to play\n Space Invader", 46, 470, 8, Dialouge);
+	texts(PlayGame3, "Press 'Enter' to play\n Space Invader", 46, 470, 8, Dialouge);
 	PlayGame3.setFillColor(Color::Black);
-	texts(LeaderBoard, "Press 'Y' to open\n Leaderboard", 1125, 185, 9, Dialouge);
+	texts(LeaderBoard, "Press 'Enter' to open\n Leaderboard", 1125, 185, 9, Dialouge);
 	LeaderBoard.setFillColor(Color::Black);
 
 	// Background's Stuff
@@ -278,7 +274,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 }
 
 // Define the Render function of the space ship
-void SpaceShip::Render(RenderWindow& window, View& camera) {
+void SpaceShip::Render(RenderWindow& window, View& camera, int collisionID) {
 	window.draw(GM_Sprite);
 	window.draw(wall5);
 	window.draw(wall3);
@@ -292,14 +288,25 @@ void SpaceShip::Render(RenderWindow& window, View& camera) {
 	window.draw(BottomWall_Sprite);
 	
 	if (collison) {
-		window.draw(DB1);
-		window.draw(PlayGame1);
-		window.draw(DB2);
-		window.draw(PlayGame2);
-		window.draw(DB3);
-		window.draw(PlayGame3);
-		window.draw(DB4);
-		window.draw(LeaderBoard);
+		switch (collisionID)
+		{
+		case 1:
+			window.draw(DB1);
+			window.draw(PlayGame1);
+			break;
+		case 2:
+			window.draw(DB2);
+			window.draw(PlayGame2);
+			break;
+		case 3:
+			window.draw(DB3);
+			window.draw(PlayGame3);
+			break;
+		case 4:
+			window.draw(DB4);
+			window.draw(LeaderBoard);
+			break;
+		}
 	}
 }
 

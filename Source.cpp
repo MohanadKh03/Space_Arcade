@@ -59,19 +59,12 @@ int main()
     {
         gameClock.restart();
         Event event;
+
         //Events
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
-            if (event.type == Event::KeyPressed) {
-                 collison = false;
-                 //canPlay = false;
-                if (Keyboard::isKeyPressed(Keyboard::R) || Keyboard::isKeyPressed(Keyboard::K) || Keyboard::isKeyPressed(Keyboard::W)) {
-                  collison = true;
-                  //canPlay = true;
-                }
-            }
 
             //EVENTS OF THE USERNAME TYPING
             if (UsernameTyping) {
@@ -86,31 +79,18 @@ int main()
                     }
                     if (event.key.code == Keyboard::Enter) {
                         //Save HERE THEN CHANGE THE FLOW FROM USERNAME TYPING TO MAP
-                        UsernameTyping = false;
                         isSpaceshipMap = true;
                         MainMenu.stop();
+                        UsernameTyping = false;
                     }
                 }
             }
-            spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, collisionID);
-            cout << collisionID << endl;
-            if (Keyboard::isKeyPressed(Keyboard::R) && canPlay && collison) {
+            if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison) {
                 gameID = collisionID;
                 canPlay = false;
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::W) && canPlay && collison) {
-                gameID = collisionID;
-                canPlay = false;
-            }
-            if (Keyboard::isKeyPressed(Keyboard::K) && canPlay && collison) {
-                // Reset game when pressed again
-                /*if(gameID!=3)
-                    new (&sp) SpaceInvader(window);*/
-                gameID = collisionID;
-                canPlay = false;
             }
             if(gameID == 1)
                 brickBreakerGame->event(window, event);
@@ -136,8 +116,7 @@ int main()
             }
 
             if (isSpaceshipMap) {
-                spaceShipStruct.MovementSpaceShip(window, camera, gameID, dt, collisionID);
-                spaceShipStruct.Update(window, camera, dt);
+                spaceShipStruct.Update(window, camera, dt, collisionID);
             }
 
             camera.setCenter(spaceShipStruct.YourPlayer.getPosition());
@@ -191,7 +170,6 @@ int main()
             window.setView(window.getDefaultView());
             sp->Run(window, user.score_SpaceInvader, event, dt,gameID);
         }
-
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
 }
