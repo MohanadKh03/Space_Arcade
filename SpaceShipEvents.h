@@ -31,43 +31,14 @@ void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, floa
 bool collison = false;
 bool canPlay = false;
 
-int Intersection(Sprite& body, Sprite& player, View& camera, int speed, int id)
-{
-	if (body.getGlobalBounds().intersects(player.getGlobalBounds()))
-	{
-		collison = true;
-		canPlay = true;
-		if (Keyboard::isKeyPressed(Keyboard::Up))
-		{
-			player.move(0, speed);
-			camera.move(0, speed);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Down))
-		{
-			player.move(0, -speed);
-			camera.move(0, -speed);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			player.move(-speed, 0);
-			camera.move(-speed, 0);
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Left))
-		{
-			player.move(speed, 0);
-			camera.move(speed, 0);
-		}
-		return id;
-	}
-}
-
 int* temp_ptr;
 void Collision(Sprite& body, Sprite& player, View& camera, int speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
 {
 	if (GM) {
 		//FloatRect rect = FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 40, player.getGlobalBounds().height + 40);
-		FloatRect rect = FloatRect(body.getGlobalBounds().left - 25, body.getGlobalBounds().top - 25, body.getGlobalBounds().width + 50, body.getGlobalBounds().height + 50);
-		if (rect.contains(player.getPosition())) {
+		FloatRect rect = FloatRect(body.getGlobalBounds().left - 50, body.getGlobalBounds().top - 50, body.getGlobalBounds().width + 100, body.getGlobalBounds().height + 100);
+		Vector2f playerPos = { player.getPosition().x + (player.getGlobalBounds().width / 2), player.getPosition().y + (player.getGlobalBounds().height / 2) };
+		if (rect.contains(playerPos)) {
 			collison = true;
 			canPlay = true;
 			collisionID = id;
