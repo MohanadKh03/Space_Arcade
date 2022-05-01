@@ -48,25 +48,16 @@ Duck::Duck(RenderWindow& window) {
 			enemies[i].texture1.loadFromFile("Enemy1.png");
 			enemies[i].duck.setTexture(&enemies[i].texture1);
 			enemies[i].duck.setScale(2.0,2.0);
-			friendlies[i].texture5.loadFromFile("Friendly1.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture5);
-			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 1:
 			enemies[i].texture2.loadFromFile("Enemy2.png");
 			enemies[i].duck.setTexture(&enemies[i].texture2);
 			enemies[i].duck.setScale(2.0, 2.0);
-			friendlies[i].texture6.loadFromFile("Friendly2.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture6);
-			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 2:
 			enemies[i].texture3.loadFromFile("Enemy3.png");
 			enemies[i].duck.setTexture(&enemies[i].texture3);
 			enemies[i].duck.setScale(2.0, 2.0);
-			friendlies[i].texture7.loadFromFile("Friendly3.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture7);
-			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 3:
 			enemies[i].texture4.loadFromFile("Enemy4.png");
@@ -76,19 +67,25 @@ Duck::Duck(RenderWindow& window) {
 		
 		}
 	}
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		texture_index = rand() % 3;
 		switch (texture_index)
 		{
 		case 0:
-			
+			friendlies[i].texture5.loadFromFile("Friendly1.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture5);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 1:
-			
+			friendlies[i].texture6.loadFromFile("Friendly2.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture6);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 2:
-			
+			friendlies[i].texture7.loadFromFile("Friendly3.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture7);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		}
 	}
