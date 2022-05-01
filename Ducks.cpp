@@ -7,6 +7,8 @@
 
 using namespace std;
 
+Text test;
+
 SoundBuffer duckExpo;
 Sound ExpolosionDuck(duckExpo);
 
@@ -32,26 +34,61 @@ Duck::Duck(RenderWindow& window) {
 	score_text.setPosition(500.0f, 0.f);
 	text.setFont(font);
 	text.setPosition(0.f, 0.f);
+
+	test.setFont(font);
+	test.setString(to_string(friendliesCount));
+	test.setPosition(300.0f, 0.f);
+
 	for (int i = 0; i < 20; i++)
 	{
-		texture_index = rand() % 4;
+		texture_index = rand() % 7;
 		switch (texture_index)
 		{
 		case 0:
-			enemies[i].texture1.loadFromFile("v-police.png");
+			enemies[i].texture1.loadFromFile("Enemy1.png");
 			enemies[i].duck.setTexture(&enemies[i].texture1);
+			enemies[i].duck.setScale(2.0,2.0);
+			friendlies[i].texture5.loadFromFile("Friendly1.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture5);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 1:
-			enemies[i].texture2.loadFromFile("v-red.png");
+			enemies[i].texture2.loadFromFile("Enemy2.png");
 			enemies[i].duck.setTexture(&enemies[i].texture2);
+			enemies[i].duck.setScale(2.0, 2.0);
+			friendlies[i].texture6.loadFromFile("Friendly2.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture6);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 2:
-			enemies[i].texture3.loadFromFile("v-truck.png");
+			enemies[i].texture3.loadFromFile("Enemy3.png");
 			enemies[i].duck.setTexture(&enemies[i].texture3);
+			enemies[i].duck.setScale(2.0, 2.0);
+			friendlies[i].texture7.loadFromFile("Friendly3.png");
+			friendlies[i].duck.setTexture(&friendlies[i].texture7);
+			friendlies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 3:
-			enemies[i].texture4.loadFromFile("v-yellow.png");
+			enemies[i].texture4.loadFromFile("Enemy4.png");
 			enemies[i].duck.setTexture(&enemies[i].texture4);
+			enemies[i].duck.setScale(2.0, 2.0);
+			break;
+		
+		}
+	}
+	for (int i = 0; i < 20; i++)
+	{
+		texture_index = rand() % 3;
+		switch (texture_index)
+		{
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
 			break;
 		}
 	}
@@ -86,7 +123,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 
 		hitEffect.setTextureRect(IntRect(spriteIndex * 128, 0, 128, 128));
 		if (enemyDelay <= 0) {
-			SpawnEnemy(window);
+			SpawnShips(window);
 			enemyDelay = delay;
 		}
 		else {
@@ -94,7 +131,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 		}
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (enemies[i].alive) {
-				enemies[i].Update(window, dt, health, enemiesCount);
+				enemies[i].Update(window, dt, health, enemiesCount, friendliesCount);
 			}
 		}
 
@@ -114,7 +151,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 	Render(window, gameID);
 }
 
-void Duck::SpawnEnemy(RenderWindow& window) {
+void Duck::SpawnShips(RenderWindow& window) {
 
 	if (enemiesCount < maxEnemies) {
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
@@ -124,31 +161,31 @@ void Duck::SpawnEnemy(RenderWindow& window) {
 				{
 				case 0:
 					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
-					enemies[i].speed = Vector2f(0, enemySpeed);
+					enemies[i].speed = Vector2f(0, shipSpeed);
 					enemies[i].position = Vector2f(positionIndex, -10.0f);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
-					enemies[i].duck.setRotation(-90);
+					enemies[i].duck.setRotation(180);
 					break;
 				case 1:
 					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
-					enemies[i].speed = Vector2f(-enemySpeed, 0);
+					enemies[i].speed = Vector2f(-shipSpeed, 0);
 					enemies[i].position = Vector2f(window.getSize().x + 10.0f, positionIndex);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
-					enemies[i].duck.setRotation(0);
+					enemies[i].duck.setRotation(-90);
 					break;
 				case 2:
 					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
-					enemies[i].speed = Vector2f(0, -enemySpeed);
+					enemies[i].speed = Vector2f(0, -shipSpeed);
 					enemies[i].position = Vector2f(positionIndex, window.getSize().y + 10.0f);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
-					enemies[i].duck.setRotation(90);
+					enemies[i].duck.setRotation(0);
 					break;
 				case 3:
 					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
-					enemies[i].speed = Vector2f(enemySpeed, 0);
+					enemies[i].speed = Vector2f(shipSpeed, 0);
 					enemies[i].position = Vector2f(-10.0f, positionIndex);
 					enemies[i].duck.setScale(-abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
-					enemies[i].duck.setRotation(0);
+					enemies[i].duck.setRotation(90);
 					break;
 				}
 				enemies[i].duck.setPosition(enemies[i].position);
@@ -157,11 +194,56 @@ void Duck::SpawnEnemy(RenderWindow& window) {
 			}
 		}
 	}
+	if (friendliesCount < maxFriendlies)
+	{
+		for (int i = 0; i < (sizeof(friendlies) / sizeof(friendlies[i])); i++)
+		{
+			if (!friendlies[i].alive && friendliesCount < maxFriendlies)
+			{
+				int x = rand() % 4;
+				switch (x)
+				{
+				case 0:
+					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
+					friendlies[i].speed = Vector2f(0, shipSpeed);
+					friendlies[i].position = Vector2f(positionIndex, -10.0f);
+					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
+					friendlies[i].duck.setRotation(180);
+					break;
+				case 1:
+					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
+					friendlies[i].speed = Vector2f(-shipSpeed, 0);
+					friendlies[i].position = Vector2f(window.getSize().x + 10.0f, positionIndex);
+					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
+					friendlies[i].duck.setRotation(-90);
+					break;
+				case 2:
+					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
+					friendlies[i].speed = Vector2f(0, -shipSpeed);
+					friendlies[i].position = Vector2f(positionIndex, window.getSize().y + 10.0f);
+					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
+					friendlies[i].duck.setRotation(0);
+					break;
+				case 3:
+					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
+					friendlies[i].speed = Vector2f(shipSpeed, 0);
+					friendlies[i].position = Vector2f(-10.0f, positionIndex);
+					friendlies[i].duck.setScale(-abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
+					friendlies[i].duck.setRotation(90);
+					break;
+				}
+				friendlies[i].duck.setPosition(friendlies[i].position);
+				friendliesCount++;
+				friendlies[i].alive = true;
+			}
+		}
+	}
 }
 
 void Duck::Render(RenderWindow& window, int& gameID)
 {
 	window.draw(crosshair);
+	window.draw(test);
 	window.draw(text);
 	window.draw(score_text);
 	window.draw(hitEffect);
@@ -170,13 +252,14 @@ void Duck::Render(RenderWindow& window, int& gameID)
 
 }
 
-Enemy::Enemy() {
+
+Ship::Ship() {
 	duck.setSize(Vector2f(100, 100));
 	duck.setFillColor(Color::White);
 	duck.setPosition(position);
 }
 
-void Enemy::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount)
+void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount, int& friendliesCount)
 {
 	duck.move(speed * dt);
 	Death_Check(window);
@@ -210,11 +293,11 @@ void Enemy::Update(RenderWindow& window, float& dt, int& health, int& enemiesCou
 			}
 		}
 	}
-
+	
 	window.draw(duck);
 }
 
-void Enemy::Death_Check(RenderWindow& window) {
+void Ship::Death_Check(RenderWindow& window) {
 	if (check_in)
 		return;
 	if (duck.getPosition().x >= 30 && duck.getPosition().y >= 30

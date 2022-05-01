@@ -11,8 +11,8 @@ using namespace sf;
 
 int main()
 {
-    //RenderWindow window(VideoMode(1600,900), "Space Arcade");
-    RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
+    RenderWindow window(VideoMode(1600,900), "Space Arcade");
+    //RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
 

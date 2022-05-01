@@ -237,7 +237,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
 
         }
         //Ball Paddle Collisions 
-        //If The Ball position Greater than The Paddle Thickness set Position To The Top Of The Paddle And The Change It's 
+        //If The Ball position Greater than The Paddle Thickness set Position To The Top Of The Paddle And The Change Its 
         //Speed Direction in Y axis 
         if (ball.getPosition().x + (ball.getRadius() * 2.0f) >= paddle.getPosition().x &&
             ball.getPosition().y + (ball.getRadius() * 2.0f) >= paddle.getPosition().y &&

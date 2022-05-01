@@ -4,10 +4,10 @@
 
 using namespace sf;
 
-struct Enemy {
+struct Ship {
 public:
-	Enemy();
-	void Update(RenderWindow&, float&, int&, int&);
+	Ship();
+	void Update(RenderWindow&, float&, int&, int&, int&);
 	void Death_Check(RenderWindow&);
 	Vector2f position = { 0,0 };
 	Vector2f speed = { 0,0 };
@@ -17,6 +17,10 @@ public:
 	Texture texture2;
 	Texture texture3;
 	Texture texture4;
+	Texture texture5;
+	Texture texture6;
+	Texture texture7;
+
 
 private:
 	bool check_in = false;
@@ -26,10 +30,10 @@ private:
 struct Duck {
 public:
 	Duck(RenderWindow&);
-	void ChooseTexture(Enemy, int);
+	void ChooseTexture(Ship, int);
 	void Update(RenderWindow&, Event&, float&, int&);
 	void Render(RenderWindow&, int&);
-	void SpawnEnemy(RenderWindow&);
+	void SpawnShips(RenderWindow&);
 	void playEffect(Vector2f position);
 	Font font;
 	Text text;
@@ -37,14 +41,17 @@ public:
 
 private:
 	int texture_index = 0;
-	Enemy enemies[20];
+	Ship enemies[20];
+	Ship friendlies[20];
 	int directionIndex = 0;
 	int positionIndex = 0;
 	float enemyDelay = 0;
 	float delay = 0.1f;
-	float enemySpeed = 200.0f;
+	float shipSpeed = 200.0f;
 	int enemiesCount = 0;
-	int maxEnemies = 10;
+	int friendliesCount = 0;
+	int maxEnemies = 9;
+	int maxFriendlies = 3;
 	bool pressed = false;
 	Texture cross;
 	Texture background;
