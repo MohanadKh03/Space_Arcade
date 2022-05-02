@@ -7,10 +7,10 @@ const int NumOfBullets = 20;
 
 struct InvaderEnemy
 {
-	float posx, posy, speedx = 10.25f, speedy = 10.25f, health;
+	float posx = 0, posy = 0, speedx = 10.25f, speedy = 10.25f, health;
 	sf::Texture enemytexture;
 	sf::Sprite enemy;
-	bool Damaged;
+	bool Damaged = false;
 };
 struct Player {
 	float posx, posy, speedx = 10.f;
@@ -26,7 +26,7 @@ struct Bullet {
 	void Update(float&);
 };
 struct SpaceInvader {
-	float WindowFactor = sf::VideoMode::getDesktopMode().width / sf::VideoMode::getDesktopMode().height;
+	float WindowFactor = (float)(sf::VideoMode::getDesktopMode().width / sf::VideoMode::getDesktopMode().height);
 	int score = 0;
 
 	sf::Text scoretext;

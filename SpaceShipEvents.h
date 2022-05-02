@@ -11,7 +11,7 @@ struct myPlayer {
 	int score_SpaceInvader = 0;
 };
 
-void setTextureNSprite(Texture& te, Sprite& se, const float& scale, int xPos, int yPos) {
+void setTextureNSprite(Texture& te, Sprite& se, const float& scale, float xPos, float yPos) {
 	se.setTexture(te);
 	se.setScale(scale, scale);
 	se.setPosition(xPos, yPos);
@@ -32,7 +32,7 @@ bool collison = false;
 bool canPlay = false;
 
 int* temp_ptr;
-void Collision(Sprite& body, Sprite& player, View& camera, int speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
+void Collision(Sprite& body, Sprite& player, View& camera, float speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
 {
 	if (GM) {
 		//FloatRect rect = FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 40, player.getGlobalBounds().height + 40);
@@ -112,7 +112,7 @@ struct SpaceShip {
 
 	int screenXBorders = 20;
 	int screenYBorders = 100;
-	int speed;
+	float speed = 100.0f;
 	bool gameCollision = false;
 
 	float spriteDelay = 0.09f;
