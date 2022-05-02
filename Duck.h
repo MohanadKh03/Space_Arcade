@@ -42,7 +42,7 @@ public:
 private:
 	int texture_index = 0;
 	int friend_index = 0;
-	Ship enemies[20];
+	Ship enemies[40];
 	//Ship friendlies[20];
 	int directionIndex = 0;
 	int positionIndex = 0;
@@ -50,7 +50,7 @@ private:
 	float delay = 0.1f;
 	float shipSpeed = 200.0f;
 	int enemiesCount = 0;
-	int friendliesMaxCount = 5;
+	int friendliesMaxCount = 4;
 	int maxEnemies = 9;
 	//int maxFriendlies = 3;
 	bool pressed = false;
@@ -66,7 +66,7 @@ private:
 	Sprite hitEffect;
 
 	int score = 0;
-	int health = 20;
+	int health = 40;
 
 	RectangleShape crosshair;
 };
