@@ -36,62 +36,71 @@ Duck::Duck(RenderWindow& window) {
 	text.setPosition(0.f, 0.f);
 
 	test.setFont(font);
-	test.setString(to_string(friendliesCount));
 	test.setPosition(300.0f, 0.f);
 
 	for (int i = 0; i < 20; i++)
 	{
-		texture_index = rand() % 7;
+		friend_index = rand() % 2;
+		if (friendliesMaxCount > 0) {
+			switch (friend_index)
+			{
+			case 0:
+				enemies[i].friendly = true;
+				friendliesMaxCount--;
+				break;
+			case 1:
+				enemies[i].friendly = false;
+				break;
+			}
+		}
+		else {
+			enemies[i].friendly = false;
+		}
+		texture_index = rand() % 4;
 		switch (texture_index)
 		{
 		case 0:
-			enemies[i].texture1.loadFromFile("Enemy1.png");
-			enemies[i].duck.setTexture(&enemies[i].texture1);
+			
+			if (enemies[i].friendly) {
+				enemies[i].texture5.loadFromFile("Friendly1.png");
+				enemies[i].duck.setTexture(&enemies[i].texture5);
+			} 
+			else {
+				enemies[i].texture1.loadFromFile("Enemy1.png");
+				enemies[i].duck.setTexture(&enemies[i].texture1);
+			}
 			enemies[i].duck.setScale(2.0,2.0);
 			break;
 		case 1:
-			enemies[i].texture2.loadFromFile("Enemy2.png");
-			enemies[i].duck.setTexture(&enemies[i].texture2);
+			if (enemies[i].friendly) {
+				enemies[i].texture6.loadFromFile("Friendly2.png");
+				enemies[i].duck.setTexture(&enemies[i].texture6);
+			} 
+			else {
+				enemies[i].duck.setTexture(&enemies[i].texture2);
+				enemies[i].texture2.loadFromFile("Enemy2.png");
+			}
 			enemies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 2:
-			enemies[i].texture3.loadFromFile("Enemy3.png");
-			enemies[i].duck.setTexture(&enemies[i].texture3);
+			if (enemies[i].friendly) {
+				enemies[i].texture7.loadFromFile("Friendly3.png");
+				enemies[i].duck.setTexture(&enemies[i].texture7);
+			}
+			else {
+				enemies[i].texture3.loadFromFile("Enemy3.png");
+				enemies[i].duck.setTexture(&enemies[i].texture3);
+			}
 			enemies[i].duck.setScale(2.0, 2.0);
 			break;
 		case 3:
+			enemies[i].friendly = false;
 			enemies[i].texture4.loadFromFile("Enemy4.png");
 			enemies[i].duck.setTexture(&enemies[i].texture4);
 			enemies[i].duck.setScale(2.0, 2.0);
 			break;
-		
 		}
 	}
-	for (int i = 0; i < 10; i++)
-	{
-		texture_index = rand() % 3;
-		switch (texture_index)
-		{
-		case 0:
-			friendlies[i].texture5.loadFromFile("Friendly1.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture5);
-			friendlies[i].duck.setScale(2.0, 2.0);
-			break;
-		case 1:
-			friendlies[i].texture6.loadFromFile("Friendly2.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture6);
-			friendlies[i].duck.setScale(2.0, 2.0);
-			break;
-		case 2:
-			friendlies[i].texture7.loadFromFile("Friendly3.png");
-			friendlies[i].duck.setTexture(&friendlies[i].texture7);
-			friendlies[i].duck.setScale(2.0, 2.0);
-			break;
-		}
-	}
-	/*dead.setFont(font);
-	dead.setPosition(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
-*/
 }
 
 void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
@@ -126,16 +135,16 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 		else {
 			enemyDelay -= 1 * dt;
 		}
+
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (enemies[i].alive) {
-				enemies[i].Update(window, dt, health, enemiesCount, friendliesCount);
+				enemies[i].Update(window, dt, health, enemiesCount);
 			}
 		}
 
 		text.setString("Health" + to_string(health));
 		score_text.setString("Score" + to_string(score));
 	}
-	//Nour
 	if (effectTimer <= 0 && spriteIndex < 8) {
 		spriteIndex++;
 		effectTimer = effectDelay;
@@ -191,50 +200,6 @@ void Duck::SpawnShips(RenderWindow& window) {
 			}
 		}
 	}
-	if (friendliesCount < maxFriendlies)
-	{
-		for (int i = 0; i < (sizeof(friendlies) / sizeof(friendlies[i])); i++)
-		{
-			if (!friendlies[i].alive && friendliesCount < maxFriendlies)
-			{
-				int x = rand() % 4;
-				switch (x)
-				{
-				case 0:
-					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
-					friendlies[i].speed = Vector2f(0, shipSpeed);
-					friendlies[i].position = Vector2f(positionIndex, -10.0f);
-					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
-					friendlies[i].duck.setRotation(180);
-					break;
-				case 1:
-					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
-					friendlies[i].speed = Vector2f(-shipSpeed, 0);
-					friendlies[i].position = Vector2f(window.getSize().x + 10.0f, positionIndex);
-					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
-					friendlies[i].duck.setRotation(-90);
-					break;
-				case 2:
-					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
-					friendlies[i].speed = Vector2f(0, -shipSpeed);
-					friendlies[i].position = Vector2f(positionIndex, window.getSize().y + 10.0f);
-					friendlies[i].duck.setScale(abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
-					friendlies[i].duck.setRotation(0);
-					break;
-				case 3:
-					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
-					friendlies[i].speed = Vector2f(shipSpeed, 0);
-					friendlies[i].position = Vector2f(-10.0f, positionIndex);
-					friendlies[i].duck.setScale(-abs(friendlies[i].duck.getScale().x), abs(friendlies[i].duck.getScale().y));
-					friendlies[i].duck.setRotation(90);
-					break;
-				}
-				friendlies[i].duck.setPosition(friendlies[i].position);
-				friendliesCount++;
-				friendlies[i].alive = true;
-			}
-		}
-	}
 }
 
 void Duck::Render(RenderWindow& window, int& gameID)
@@ -256,7 +221,7 @@ Ship::Ship() {
 	duck.setPosition(position);
 }
 
-void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount, int& friendliesCount)
+void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount)
 {
 	duck.move(speed * dt);
 	Death_Check(window);
@@ -309,5 +274,4 @@ void Duck::playEffect(Vector2f position)
 	effectTimer = effectDelay;
 	spriteIndex = 0;
 	hitEffect.setPosition(position);
-	//hitEffect.setRotation(rotation);
 }
