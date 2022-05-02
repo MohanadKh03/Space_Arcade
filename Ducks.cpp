@@ -38,7 +38,12 @@ Duck::Duck(RenderWindow& window) {
 	test.setFont(font);
 	test.setPosition(300.0f, 0.f);
 
-	for (int i = 0; i < 20; i++)
+	enemies[0].friendly = false;
+	enemies[0].texture1.loadFromFile("Enemy1.png");
+	enemies[0].duck.setTexture(&enemies[0].texture1);
+	enemies[0].duck.setScale(enemiesScale);
+
+	for (int i = 1; i < 20; i++)
 	{
 		friend_index = rand() % 2;
 		if (friendliesMaxCount > 0) {
@@ -69,7 +74,7 @@ Duck::Duck(RenderWindow& window) {
 				enemies[i].texture1.loadFromFile("Enemy1.png");
 				enemies[i].duck.setTexture(&enemies[i].texture1);
 			}
-			enemies[i].duck.setScale(2.0, 2.0);
+			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 1:
 			if (enemies[i].friendly) {
@@ -80,7 +85,7 @@ Duck::Duck(RenderWindow& window) {
 				enemies[i].duck.setTexture(&enemies[i].texture2);
 				enemies[i].texture2.loadFromFile("Enemy2.png");
 			}
-			enemies[i].duck.setScale(2.0, 2.0);
+			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 2:
 			if (enemies[i].friendly) {
@@ -91,13 +96,13 @@ Duck::Duck(RenderWindow& window) {
 				enemies[i].texture3.loadFromFile("Enemy3.png");
 				enemies[i].duck.setTexture(&enemies[i].texture3);
 			}
-			enemies[i].duck.setScale(2.0, 2.0);
+			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 3:
 			enemies[i].friendly = false;
 			enemies[i].texture4.loadFromFile("Enemy4.png");
 			enemies[i].duck.setTexture(&enemies[i].texture4);
-			enemies[i].duck.setScale(2.0, 2.0);
+			enemies[i].duck.setScale(enemiesScale);
 			break;
 		}
 	}
@@ -137,6 +142,28 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 			pressed = false;
 		}
 
+		// Leveling
+		if (score >= 1 && level == 0) {
+			maxEnemies = 4;
+			level=1;
+		}
+		else if (score >= 10 && level == 1) {
+			maxEnemies = 8;
+			level=2;
+		}
+		else if (score >= 20 && level == 2) {
+			maxEnemies = 12;
+			level=3;
+		}
+		else if (score >= 30 && level == 3) {
+			maxEnemies = 16;
+			level=4;
+		}
+		else if (score >= 40 && level == 4) {
+			maxEnemies = 20;
+			level=5;
+		}
+
 		hitEffect.setTextureRect(IntRect(spriteIndex * 128, 0, 128, 128));
 		if (enemyDelay <= 0) {
 			SpawnShips(window);
@@ -151,6 +178,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 				enemies[i].Update(window, dt, health, enemiesCount);
 			}
 		}
+
 
 		text.setString("Health" + to_string(health));
 		score_text.setString("Score" + to_string(score));
@@ -169,7 +197,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 
 void Duck::SpawnShips(RenderWindow& window) {
 
-	if (enemiesCount < maxEnemies) {
+	if (enemiesCount <= maxEnemies) {
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (!enemies[i].alive && enemiesCount < maxEnemies) {
 				directionIndex = rand() % 4;
@@ -205,8 +233,8 @@ void Duck::SpawnShips(RenderWindow& window) {
 					break;
 				}
 				enemies[i].duck.setPosition(enemies[i].position);
-				enemiesCount++;
 				enemies[i].alive = true;
+				enemiesCount++;
 			}
 		}
 	}
@@ -237,7 +265,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 	Death_Check(window);
 	if (check_in) {
 		if (speed.x > 0) {
-			if (duck.getPosition().x >= window.getSize().x + 100) {
+			if (duck.getPosition().x >= window.getSize().x + 300) {
 				alive = false;
 				if(!friendly)
 				{
@@ -247,7 +275,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 			}
 		}
 		else if (speed.x < 0) {
-			if (duck.getPosition().x <= -100) {
+			if (duck.getPosition().x <= -300) {
 				alive = false;
 				if (!friendly)
 				{
@@ -257,7 +285,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 			}
 		}
 		else if (speed.y > 0) {
-			if (duck.getPosition().y >= window.getSize().y + 100) {
+			if (duck.getPosition().y >= window.getSize().y + 300) {
 				alive = false;
 				if (!friendly)
 				{
@@ -267,7 +295,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 			}
 		}
 		else if (speed.y < 0) {
-			if (duck.getPosition().y <= -100) {
+			if (duck.getPosition().y <= -300) {
 				alive = false;
 				if (!friendly)
 				{
