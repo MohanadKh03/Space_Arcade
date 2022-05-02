@@ -42,8 +42,7 @@ public:
 private:
 	int texture_index = 0;
 	int friend_index = 0;
-	Ship enemies[40];
-	//Ship friendlies[20];
+	Ship enemies[20];
 	int directionIndex = 0;
 	int positionIndex = 0;
 	float enemyDelay = 0;
@@ -52,7 +51,6 @@ private:
 	int enemiesCount = 0;
 	int friendliesMaxCount = 4;
 	int maxEnemies = 9;
-	//int maxFriendlies = 3;
 	bool pressed = false;
 	Texture cross;
 	Texture background;
