@@ -8,14 +8,29 @@
 using namespace std;
 
 Text test;
-
+bool gameStart = true;
+Text start;
+Font duckMenu;
+Event eve;
 SoundBuffer duckExpo;
 Sound ExpolosionDuck(duckExpo);
 
 
 Duck::Duck(RenderWindow& window) {
 
+	duckMenu.loadFromFile("AshetyPersonaluse-Medium.otf");
+	
+	start.setString("These are hostile ships, shoot them down! \t These are allied ships, take care not to hit them \n \n \n \t Press 'Enter' to continue");
+	start.setFont(duckMenu);
+	start.setCharacterSize(8);
+	start.setFillColor(Color::White);
+	start.setPosition(50.f, 100.f);
+
+	if (Keyboard::isKeyPressed(Keyboard::Enter))
+		gameStart = false;
+
 	duckExpo.loadFromFile("Duck explosion.wav");
+
 	// special effects calls  /////////////////////////////////////////
 	hitEffectTex.loadFromFile("Explosion Red.png");
 	hitEffect.setTexture(hitEffectTex);
@@ -24,19 +39,22 @@ Duck::Duck(RenderWindow& window) {
 
 	background.loadFromFile("Space Background.png");
 	backgroundsp.setTexture(background);
+
 	crosshair.setSize(Vector2f(35, 35));
 	crosshair.setFillColor(Color::Red);
 	cross.loadFromFile("SeekPng.com_crosshair-png_140906.png");
 	crosshair.setTexture(&cross);
 	crosshair.setOrigin(Vector2f(crosshair.getSize().x / 2, crosshair.getSize().y / 2));
+	
 	font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
+	
 	score_text.setFont(font);
 	score_text.setPosition(500.0f, 0.f);
 	text.setFont(font);
 	text.setPosition(0.f, 0.f);
 
-	test.setFont(font);
-	test.setPosition(300.0f, 0.f);
+	/*test.setFont(font);
+	test.setPosition(300.0f, 0.f);*/
 
 	enemies[0].friendly = false;
 	enemies[0].texture1.loadFromFile("Enemy1.png");
@@ -118,18 +136,12 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 			if (!pressed) {
 				for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 					if (enemies[i].duck.getGlobalBounds().contains(window.mapPixelToCoords(Mouse::getPosition(window))) && enemies[i].alive) {
-						playEffect(enemies[i].duck.getPosition() + Vector2f(enemies[i].duck.getSize().x / 2, enemies[i].duck.getSize().y / 2));
+						playEffect(crosshair.getPosition());
 						if(!enemies[i].friendly)
-						{
 							score++;
-						}
 						else
-						{
-							if (score > 0)
-								score--;
-							else
-								health--;
-						}
+							health--;
+						
 						enemies[i].alive = false;
 						enemiesCount--;
 						ExpolosionDuck.play();
@@ -242,11 +254,15 @@ void Duck::SpawnShips(RenderWindow& window) {
 
 void Duck::Render(RenderWindow& window, int& gameID)
 {
-	window.draw(crosshair);
-	window.draw(test);
-	window.draw(text);
-	window.draw(score_text);
-	window.draw(hitEffect);
+	if (gameStart)
+		window.draw(start);
+	else {
+		window.draw(crosshair);
+		window.draw(test);
+		window.draw(text);
+		window.draw(score_text);
+		window.draw(hitEffect);
+	}
 	if (health <= 0)
 		gameID = 0;
 

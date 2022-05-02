@@ -4,6 +4,9 @@
 
 using namespace sf;
 
+//bool gameStart;
+//bool gameOver = false;
+
 struct Ship {
 public:
 	Ship();
