@@ -27,6 +27,7 @@ int main()
                     // 1 - Brick Breaker game
                     // 2 - Duck Shooter game
                     // 3 - Space Invaders game
+                    // 4 - Leaderboard
     int collisionID = 0;
 
     //booleans for the Menu itself and Play  
@@ -54,11 +55,36 @@ int main()
     Music MainMenu;
     MainMenu.openFromFile("meet-the-princess.wav");
     MainMenu.play();
+    Music DuckGame;
+    DuckGame.openFromFile("127706__cydon__spacebattle-with-laserwaepons001.wav");
     //
     while (window.isOpen())
     {
+        cout << gameID << endl;
+
         gameClock.restart();
         Event event;
+
+
+        //// Music
+        //switch (gameID)
+        //{
+        //case 0:
+        //    DuckGame.stop();
+        //    //break;
+        //case 1:
+
+        //    //break;
+        //case 2:
+        //    DuckGame.play();
+        //    DuckGame.setLoop(true);
+        //    break;
+        //case 3:
+
+        //    break;
+        //}
+        ////
+       
 
         //Events
         while (window.pollEvent(event))
@@ -81,6 +107,7 @@ int main()
                         //Save HERE THEN CHANGE THE FLOW FROM USERNAME TYPING TO MAP
                         isSpaceshipMap = true;
                         MainMenu.stop();
+                        
                         UsernameTyping = false;
                     }
                 }
@@ -88,6 +115,11 @@ int main()
             if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison) {
                 gameID = collisionID;
                 canPlay = false;
+                if (gameID == 2)
+                {
+                    DuckGame.play();
+                    DuckGame.setLoop(true);
+                }
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
@@ -100,6 +132,7 @@ int main()
 
         //NO game yet .. Only the beginning (Main and username) then the spaceship stuff
         if (gameID == 0) {
+            
             // Open the main menu and the space ship
             RunMenuEvents(window, main, isMenuOpened,UsernameTyping, event);
             if (sp) {
@@ -113,6 +146,7 @@ int main()
             if (duck) {
                 delete duck;
                 duck = NULL;
+                DuckGame.stop();
             }
 
             if (isSpaceshipMap) {
@@ -156,12 +190,14 @@ int main()
         }
         //2nd Game
         else if (gameID == 2) {
+            
             if(!duck)
                 duck = new Duck(window);
             // Open the second game
             window.setView(window.getDefaultView());
             duck->Update(window, event, dt,gameID);
-           
+            
+          
         }
         //Space Invader
         else if (gameID == 3) {
@@ -172,6 +208,9 @@ int main()
         }
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
+
+        
+
 }
     return 0;
 }

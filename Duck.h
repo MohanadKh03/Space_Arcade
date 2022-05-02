@@ -7,6 +7,7 @@ using namespace sf;
 //bool gameStart;
 //bool gameOver = false;
 
+
 struct Ship {
 public:
 	Ship();
@@ -41,6 +42,7 @@ public:
 	Font font;
 	Text text;
 	Text score_text;
+	
 
 private:
 	int texture_index = 0;
@@ -59,7 +61,7 @@ private:
 	Texture cross;
 	Texture background;
 	Sprite backgroundsp;
-
+	
 	// special effect variables /////////////////////////////////////////
 	Texture hitEffectTex;
 	int spriteIndex = 0;

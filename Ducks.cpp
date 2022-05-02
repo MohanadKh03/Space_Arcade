@@ -6,12 +6,14 @@
 #include <ctime>
 
 using namespace std;
-
+//Testing
 Text test;
 bool gameStart = true;
 Text start;
 Font duckMenu;
 Event eve;
+//
+
 SoundBuffer duckExpo;
 Sound ExpolosionDuck(duckExpo);
 
@@ -20,14 +22,10 @@ Duck::Duck(RenderWindow& window) {
 
 	duckMenu.loadFromFile("AshetyPersonaluse-Medium.otf");
 	
-	start.setString("These are hostile ships, shoot them down! \t These are allied ships, take care not to hit them \n \n \n \t Press 'Enter' to continue");
-	start.setFont(duckMenu);
-	start.setCharacterSize(8);
-	start.setFillColor(Color::White);
-	start.setPosition(50.f, 100.f);
+	
 
-	if (Keyboard::isKeyPressed(Keyboard::Enter))
-		gameStart = false;
+	/*if (Keyboard::isKeyPressed(Keyboard::Enter))
+		gameStart = false;*/
 
 	duckExpo.loadFromFile("Duck explosion.wav");
 
@@ -37,8 +35,9 @@ Duck::Duck(RenderWindow& window) {
 	hitEffect.setOrigin(64, 64);
 	hitEffect.setScale(Vector2f(window.getSize().x / 700, window.getSize().x / 700));
 
-	background.loadFromFile("Space Background.png");
+	background.loadFromFile("Space Background2.png");
 	backgroundsp.setTexture(background);
+
 
 	crosshair.setSize(Vector2f(35, 35));
 	crosshair.setFillColor(Color::Red);
@@ -128,11 +127,14 @@ Duck::Duck(RenderWindow& window) {
 
 void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 	window.draw(backgroundsp);
+	
 	if (health >= 0) {
+		
 		if (e.type == Event::MouseMoved) {
 			crosshair.setPosition(Vector2f(Mouse::getPosition(window).x, Mouse::getPosition(window).y));
 		}
 		if (Mouse::isButtonPressed(Mouse::Left)) {
+
 			if (!pressed) {
 				for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 					if (enemies[i].duck.getGlobalBounds().contains(window.mapPixelToCoords(Mouse::getPosition(window))) && enemies[i].alive) {
@@ -254,17 +256,19 @@ void Duck::SpawnShips(RenderWindow& window) {
 
 void Duck::Render(RenderWindow& window, int& gameID)
 {
-	if (gameStart)
+		
 		window.draw(start);
-	else {
+	
 		window.draw(crosshair);
-		window.draw(test);
+		
 		window.draw(text);
 		window.draw(score_text);
 		window.draw(hitEffect);
-	}
-	if (health <= 0)
-		gameID = 0;
+	
+		if (health <= 0) {
+			gameID = 0;
+			
+		}
 
 }
 
