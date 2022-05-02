@@ -49,8 +49,9 @@ private:
 	float delay = 0.1f;
 	float shipSpeed = 200.0f;
 	int enemiesCount = 0;
+	Vector2f enemiesScale = { 1.8f,1.8f };
 	int friendliesMaxCount = 4;
-	int maxEnemies = 12;
+	int maxEnemies = 2;
 	bool pressed = false;
 	Texture cross;
 	Texture background;
@@ -65,6 +66,8 @@ private:
 
 	int score = 0;
 	int health = 20;
+
+	int level = 0;
 
 	RectangleShape crosshair;
 };

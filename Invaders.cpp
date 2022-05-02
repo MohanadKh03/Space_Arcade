@@ -11,7 +11,7 @@ int z = 0;
 
 SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	//show the score
-	scoretext.setPosition(sf::Vector2f(window.getSize().x - 300, 0));
+	scoretext.setPosition(sf::Vector2f((window.getSize().x - 300.0f), 0.0f));
 	scoretext.setString("Score: " + to_string(score));
 	font.loadFromFile("ARCADE_R.ttf");
 	scoretext.setFont(font);
@@ -28,7 +28,7 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 
 		enemies[i].enemytexture.loadFromFile("enemyBlack.png");
 		enemies[i].enemy.setTexture(enemies[i].enemytexture);
-		enemies[i].enemy.setScale(sf::Vector2f(0.75 * WindowFactor, 0.75 * WindowFactor));
+		enemies[i].enemy.setScale(sf::Vector2f(0.75f * WindowFactor, 0.75f * WindowFactor));
 
 		if (i == 0 || i % 10 != 0)
 		{
@@ -44,11 +44,11 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		enemies[i].enemy.setPosition(sf::Vector2f(enemies[i].posx, enemies[i].posy));
 	}
 	//Player Stuff
-	player.posx = sf::VideoMode::getDesktopMode().width / 2;
-	player.posy = sf::VideoMode::getDesktopMode().height - 100;
+	player.posx = (float)(sf::VideoMode::getDesktopMode().width / 2);
+	player.posy = sf::VideoMode::getDesktopMode().height - 100.0f;
 	player.playertexture.loadFromFile("blueship.png");
 	player.playersprite.setTexture(&player.playertexture);
-	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 21.68f, window.getSize().y / 14));
+	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 21.68f, window.getSize().y / 14.0f));
 	//player.playersprite.setScale(sf::Vector2f(1.f, 1.f));
 	player.playersprite.setPosition(sf::Vector2f(player.posx, player.posy));
 	//Bullets stuff
