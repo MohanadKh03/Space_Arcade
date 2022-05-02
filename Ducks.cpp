@@ -117,9 +117,8 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 						if(!enemies[i].friendly)
 						{
 							score++;
-							enemiesCount--;
 						}
-						else if(enemies[i].friendly)
+						else
 						{
 							if (score > 0)
 								score--;
@@ -127,6 +126,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 								health--;
 						}
 						enemies[i].alive = false;
+						enemiesCount--;
 						ExpolosionDuck.play();
 					}
 				}
@@ -242,8 +242,8 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 				if(!friendly)
 				{
 					health--;
-					enemiesCount--;
 				}
+				enemiesCount--;
 			}
 		}
 		else if (speed.x < 0) {
@@ -252,8 +252,8 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 				if (!friendly)
 				{
 					health--;
-					enemiesCount--;
 				}
+				enemiesCount--;
 			}
 		}
 		else if (speed.y > 0) {
@@ -262,8 +262,8 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 				if (!friendly)
 				{
 					health--;
-					enemiesCount--;
 				}
+				enemiesCount--;
 			}
 		}
 		else if (speed.y < 0) {
@@ -272,8 +272,8 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 				if (!friendly)
 				{
 					health--;
-					enemiesCount--;
 				}
+				enemiesCount--;
 			}
 		}
 	}
