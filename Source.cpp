@@ -117,7 +117,7 @@ int main()
                 {
                     DuckGame.play();
                     DuckGame.setLoop(true);
-                    DuckGame.setVolume(3.0f);
+                    DuckGame.setVolume(4.0);
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {

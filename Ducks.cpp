@@ -17,6 +17,7 @@ Event eve;
 SoundBuffer duckExpo;
 Sound ExpolosionDuck(duckExpo);
 
+
 SoundBuffer hahaSound;
 Sound haha(hahaSound);
 
@@ -26,11 +27,13 @@ Duck::Duck(RenderWindow& window) {
 	duckMenu.loadFromFile("AshetyPersonaluse-Medium.otf");
 	
 	hahaSound.loadFromFile("haha.wav");
+	haha.setVolume(10.0);
 
 	/*if (Keyboard::isKeyPressed(Keyboard::Enter))
 		gameStart = false;*/
 
 	duckExpo.loadFromFile("Duck explosion.wav");
+	ExpolosionDuck.setVolume(12.0);
 
 	// special effects calls  /////////////////////////////////////////
 	hitEffectTex.loadFromFile("Explosion Red.png");
