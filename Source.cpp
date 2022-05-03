@@ -60,8 +60,6 @@ int main()
     //
     while (window.isOpen())
     {
-        cout << gameID << endl;
-
         gameClock.restart();
         Event event;
 
@@ -119,6 +117,7 @@ int main()
                 {
                     DuckGame.play();
                     DuckGame.setLoop(true);
+                    DuckGame.setVolume(3.0f);
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {

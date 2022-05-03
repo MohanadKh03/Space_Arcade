@@ -17,12 +17,15 @@ Event eve;
 SoundBuffer duckExpo;
 Sound ExpolosionDuck(duckExpo);
 
+SoundBuffer hahaSound;
+Sound haha(hahaSound);
+
 
 Duck::Duck(RenderWindow& window) {
 
 	duckMenu.loadFromFile("AshetyPersonaluse-Medium.otf");
 	
-	
+	hahaSound.loadFromFile("haha.wav");
 
 	/*if (Keyboard::isKeyPressed(Keyboard::Enter))
 		gameStart = false;*/
@@ -139,14 +142,17 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
 				for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 					if (enemies[i].duck.getGlobalBounds().contains(window.mapPixelToCoords(Mouse::getPosition(window))) && enemies[i].alive) {
 						playEffect(crosshair.getPosition());
-						if(!enemies[i].friendly)
+						if (!enemies[i].friendly) {
+							ExpolosionDuck.play();
 							score++;
-						else
+						}
+						else {
+							haha.play();
 							health--;
+						}
 						
 						enemies[i].alive = false;
 						enemiesCount--;
-						ExpolosionDuck.play();
 					}
 				}
 				pressed = true;
