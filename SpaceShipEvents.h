@@ -17,11 +17,11 @@ void setTextureNSprite(Texture& te, Sprite& se, const float& scale, float xPos, 
 	se.setPosition(xPos, yPos);
 }
 
-void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, float& spriteDelay) {
+void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, float& spriteDelay, int sizeX ,int sizeY) {
 	if (spriteTimer <= 0) {
 		x++;
 		x %= 4;
-		YP.setTextureRect(IntRect(x * 64, y * 64, 64, 64));
+		YP.setTextureRect(IntRect(x * sizeX, y * sizeY, sizeX, sizeY));
 		spriteTimer = spriteDelay;
 	}
 	else {
@@ -30,6 +30,9 @@ void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, floa
 }
 bool collison = false;
 bool canPlay = false;
+
+Clock animationClock;
+int animationCount = 0;
 
 int* temp_ptr;
 void Collision(Sprite& body, Sprite& player, View& camera, float speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
@@ -82,6 +85,7 @@ struct SpaceShip {
 	Texture Background;
 	Texture Player;
 	Texture DialougeBox;
+	Texture NPC1;
 
 	// Define Sprites
 	Sprite GM_Sprite;
@@ -98,6 +102,7 @@ struct SpaceShip {
 	Sprite DB2;
 	Sprite DB3;
 	Sprite DB4;
+	Sprite Alien1;
 
 	// Define Texts
 	Font Dialouge;
@@ -131,32 +136,35 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 		YourPlayer.move(speed, 0);
 		camera.move(speed, 0);
 		y = 2;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64);
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > screenXBorders)
 	{
 		YourPlayer.move(-speed, 0);
 		camera.move(-speed, 0);
 		y = 1;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64);
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > screenYBorders)
 	{
 		YourPlayer.move(0, -speed);
 		camera.move(0, -speed);
 		y = 3;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64);
 	}
 	else if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < window.getSize().y - (screenYBorders + 300))
 	{
 		YourPlayer.move(0, speed);
 		camera.move(0, speed);
 		y = 0;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay);
+		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64);
 	}
 	else {
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
+	int l = 0;
+	ChangeSprite(Alien1, dt, x, l, spriteTimer, spriteDelay, 32, 32);
+	
 	collisionID = 0;
 	collison = false;
 
@@ -243,6 +251,16 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera,
 	
 	setTextureNSprite(Player, YourPlayer, 1, window.getSize().x / 2.f, window.getSize().y / 2.f);
 	YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
+
+	//NPCs' stuff
+	NPC1.loadFromFile("Alien_idle.png");
+	int l = 0;
+	ChangeSprite(Alien1, dt, x, l, spriteTimer, spriteDelay, 32, 32);
+	setTextureNSprite(NPC1, Alien1, 3.5, 900.0, 400.0);
+	Alien1.setScale(-3.5, 3.5);
+	Alien1.setTextureRect(IntRect(0 * 32, 0 * 32, 32, 32));
+	
+	
 }
 
 // Define the Render function of the space ship
@@ -256,6 +274,7 @@ void SpaceShip::Render(RenderWindow& window, View& camera, int collisionID) {
 	window.draw(GM_Sprite2);
 	window.draw(GM_Sprite3);
 	window.setView(camera);
+	window.draw(Alien1);
 	window.draw(YourPlayer);
 	window.draw(BottomWall_Sprite);
 	
