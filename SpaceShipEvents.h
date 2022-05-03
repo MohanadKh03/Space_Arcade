@@ -162,8 +162,9 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	else {
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
-	int l = 0;
-	ChangeSprite(Alien1, dt, x, l, spriteTimer, spriteDelay, 32, 32);
+	int t = 4, l = 0;
+	float a = 0.09f, b = 0;
+	ChangeSprite(Alien1, dt, t, l, a, b, 32, 32);
 	
 	collisionID = 0;
 	collison = false;
