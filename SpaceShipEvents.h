@@ -34,6 +34,11 @@ bool canPlay = false;
 Clock animationClock;
 int animationCount = 0;
 
+int l = 0;
+int n = 0;
+float alienSpriteDelay = 0.09f;
+float alienSpriteTimer = 0.0f;
+
 int* temp_ptr;
 void Collision(Sprite& body, Sprite& player, View& camera, float speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
 {
@@ -162,8 +167,7 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	else {
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
-	int l = 0;
-	ChangeSprite(Alien1, dt, x, l, spriteTimer, spriteDelay, 32, 32);
+	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 32, 32);
 	
 	collisionID = 0;
 	collison = false;
