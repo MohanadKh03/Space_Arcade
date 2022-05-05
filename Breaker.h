@@ -69,6 +69,14 @@ private:
 	float effectDelay = 0.05f;
 	Sprite hitEffect;
 
+	// Music and Sound effects variables
+	SoundBuffer bgBuffer;
+	Sound bgMusic;
+	SoundBuffer effectBuffer;
+	Sound effectSound;
+	SoundBuffer loseBuffer;
+	Sound loseSound;
+
 	// For WIN condition
 	int blockCount = 0;
 };

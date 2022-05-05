@@ -52,6 +52,17 @@ game::game(RenderWindow* window, int& score)
     hitEffect.setOrigin(18.5, 17);
     hitEffect.setRotation(90);
 
+    bgBuffer.loadFromFile("Music/Breaker.wav");
+    bgMusic.setBuffer(bgBuffer);
+    bgMusic.setVolume(10.0f);
+    bgMusic.play();
+
+    effectBuffer.loadFromFile("Music/Brick.wav");
+    effectSound.setBuffer(effectBuffer);
+
+    loseBuffer.loadFromFile("Music/Breaker-Lose.wav");
+    loseSound.setBuffer(loseBuffer);
+
     reset();
     score = 0;
 
@@ -135,7 +146,7 @@ void game::event(RenderWindow& window, Event& e)
             {
                 paddle.setPosition(Vector2f(window.getSize().x - paddle.getSize().x, paddle.getPosition().y));
             }
-            if (moveCheck % 5 == 0) {
+            if (moveCheck % 2 == 0) {
                 lastPosition = currentPosition;
             }
             if (moveCheck >= 500) {
@@ -143,16 +154,12 @@ void game::event(RenderWindow& window, Event& e)
             }
             moveCheck++;
 
-            if (currentPosition < lastPosition) {
+            if (currentPosition < lastPosition)
                 direction = -1;
-            }
-            else if (currentPosition > lastPosition) {
+            else if (currentPosition > lastPosition)
                 direction = 1;
-            }
             else
-            {
                 direction = 0;
-            }
             currentPosition = paddle.getPosition().x;
         }
     }
@@ -206,6 +213,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(0, ball.getPosition().y), 90);
+            effectSound.play();
 
             ball.setPosition(Vector2f(0.0f, ball.getPosition().y));
             speed.x = abs(speed.x);
@@ -215,6 +223,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(ball.getPosition().x, 0), 180);
+            effectSound.play();
 
             ball.setPosition(Vector2f(ball.getPosition().x, 0.0f));
             speed.y = abs(speed.y);
@@ -224,6 +233,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(window->getSize().x, ball.getPosition().y), -90);
+            effectSound.play();
 
             ball.setPosition(Vector2f(window->getSize().x - (ball.getRadius() * 2.0f), ball.getPosition().y));
             speed.x = -abs(speed.x);
@@ -231,6 +241,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         //Lower Boundery
         else if (ball.getPosition().y + (ball.getRadius() * 2.0f) >= window->getSize().y)
         {
+            loseSound.play();
             reset();
             lives--;
             textLife.setString("Lives: " + to_string(lives));
@@ -244,6 +255,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
             ball.getPosition().x < paddle.getPosition().x + paddle.getSize().x &&
             ball.getPosition().y < paddle.getPosition().y + paddle.getSize().y)
         {
+            effectSound.play();
             float ratio = abs(speed.x) / abs(speed.y);
             if (speed.x < 0)
                 speed.x -= speedfactor;
@@ -256,10 +268,10 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
             ball.setPosition(Vector2f(ball.getPosition().x, paddle.getPosition().y - (ball.getRadius() * 2.0f)));
             speed.y = -abs(speed.y);
             if (direction == 1) {
-                speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed;
+                speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed + speedfactor * ratio;
             }
             else if (direction == -1) {
-                speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed;
+                speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed - speedfactor * ratio;
             }
         }
 
@@ -287,6 +299,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
                         playEffect(Vector2f(ball.getPosition().x, ball.getPosition().y), 0);
                         speed.y = -speed.y;
                     }
+                    effectSound.play();
                     score++;
                     text.setString("Score : " + to_string(score));
                 }
