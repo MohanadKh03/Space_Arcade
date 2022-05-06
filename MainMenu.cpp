@@ -61,6 +61,14 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     s_mainBG.setTexture(t_mainBG);
     s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
         , window.getSize().y / s_mainBG.getLocalBounds().height);
+    float SpaceX = window.getSize().x * 0.75;
+    float SpaceY = window.getSize().y * 0.5;
+    SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
+    Spacer.setTexture(SpaceMan);
+    Spacer.setScale(2.0, 2.0);
+    Spacer.setPosition(SpaceX, SpaceY);
+    factor = 1;
+
     if (!font[0].loadFromFile("Fonts/Planet 37.ttf") || !font[1].loadFromFile("Fonts/Planet 37.ttf")) {
         exit(1);
     }
@@ -94,7 +102,13 @@ void Menu::draw(RenderWindow& window, bool& isMENU) {
         for (int i = 0; i < 3; i++) {
             window.draw(menu[i]);
         }
-        
+        if (RotationClock.getElapsedTime().asSeconds() > 0.1) {
+            factor += 1;
+            RotationClock.restart();
+        }
+
+        Spacer.setRotation(1 + factor);
+        window.draw(Spacer);
     }
 }
 //Moving Up and Down using arrows

@@ -34,6 +34,7 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	GameOverFont.loadFromFile("Fonts/ARCADE_R.ttf");
 	GameOverText.setFont(GameOverFont);
 	GameOverText.setFillColor(sf::Color(255, 0, 0));
+	score = 0;
 	scoretext.setPosition(sf::Vector2f(window.getSize().x - 300, 0));
 	scoretext.setString("Score: " + to_string(score));
 	scorefont.loadFromFile("Fonts/ARCADE_R.ttf");
@@ -128,8 +129,8 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		bullets[i].body.setPosition(player.posx, player.posy);
 
 	}
-	// Reset the score
-	score = 0;
+	//// Reset the score
+	//score = 0;
 
 }
 
@@ -298,7 +299,8 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 
 }
 
-void SpaceInvader::Run(sf::RenderWindow& win, int& score, sf::Event& e, float& dt, int& gameID) {
+void SpaceInvader::Run(sf::RenderWindow& win, int& GAMEscore, sf::Event& e, float& dt, int& gameID) {
+	GAMEscore = score;
 	win.draw(boss.Boss);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
@@ -346,7 +348,6 @@ void Bullet::Update(float& dt) {
 
 void SpaceInvader::GameOver(sf::RenderWindow& w, int& gameID)
 {
-
 	for (int i = 0; i < NumOfEnemies; i++)
 	{
 		if (enemies[i].enemy.getScale().x != 0 && enemies[i].enemy.getScale().y != 0)

@@ -131,9 +131,9 @@ Duck::Duck(RenderWindow& window) {
 	}
 }
 
-void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& score) {
+void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& GAMEscore) {
 	window.draw(backgroundsp);
-	
+	GAMEscore = score;
 	if (health >= 0) {
 		
 		if (e.type == Event::MouseMoved) {

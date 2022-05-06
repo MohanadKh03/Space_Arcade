@@ -4,13 +4,7 @@
 #include<iostream>
 
 // Create a struct to hold every Shapceship action
-struct myPlayer {
-	string playerName;
-	int score_BrickBreaker = 0;
-	int scoreDuck = 0;
-	int score_SpaceInvader = 0;
-	int sum;
-};
+
 
 void setTextureNSprite(Texture& te, Sprite& se, const float& scale, float xPos, float yPos) {
 	se.setTexture(te);
@@ -182,7 +176,7 @@ struct SpaceShip {
 	float spriteTimer = 0.0f;
 
 	// Define functions
-	SpaceShip(RenderWindow&, int&, float&, View&, bool&);
+	SpaceShip(RenderWindow&, int&, float&, View&);
 	void Update(RenderWindow&, View&, float, int&);
 	void Render(RenderWindow&, View&, int);
 };
@@ -271,7 +265,7 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 }
 
 // Define the constructor of the space ship
-SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera, bool& spaceShip) {
+SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera) {
 	///// LAYERS
 	BackScreen.loadFromFile("Textures/Main/bcg1@2x.png");
 	setTextureNSprite(BackScreen, BackS, 1, -500, -400);

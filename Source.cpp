@@ -9,13 +9,38 @@
 using namespace std;
 using namespace sf;
 
+struct myPlayer {
+    string playerName;
+    int score_BrickBreaker = 0;
+    int scoreDuck = 0;
+    int score_SpaceInvader = 0;
+    int sum;
+};
+
+void TypeUsername(Event& event,bool& isSpaceshipMap,bool& UsernameTyping,myPlayer& user) {
+    if (event.type == Event::TextEntered) {
+        if (event.text.unicode != '\b') //just checking if the text is in unicode
+            user.playerName += event.text.unicode;
+    }
+    if (event.type == Event::KeyPressed) {
+        if (event.key.code == Keyboard::BackSpace) {
+            if (!user.playerName.empty())
+                user.playerName.pop_back(); //remove letters ONLY if the string isnt empty
+        }
+
+        if (event.key.code == Keyboard::Enter) {
+            isSpaceshipMap = true;
+            UsernameTyping = false;
+        }
+    }
+}
+
 void Save(myPlayer& mp) {
     ofstream file("Data/scoreboard.txt", ios::app);
     mp.sum = mp.score_BrickBreaker + mp.scoreDuck + mp.score_SpaceInvader;
     file << mp.playerName << " " << mp.score_BrickBreaker << " " << mp.scoreDuck << " " << mp.score_SpaceInvader << " " << mp.sum << endl;
     file.close();
 }
-
 
 bool compareAll(myPlayer& a, myPlayer& b) {
     return a.sum > b.sum;
@@ -47,12 +72,6 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     texts(Games[1], "SPACE SHOOTER", 750, 100, 50, font);
     texts(Games[2], "SPACE INVADER", 1150, 100, 50, font);
     texts(Games[3], "SUM", 1550, 100, 50, font);
-
-    //The 3 Games 
-    myPlayer user;
-    game* brickBreakerGame = NULL;
-    Duck* duck = NULL;
-    SpaceInvader* sp = NULL;
 
     window.draw(Name);
     for (int i = 0; i < 4; i++) {
@@ -106,9 +125,7 @@ int main()
     View camera(Vector2f(0.0f, 0.0f), Vector2f((float)window.getSize().x / 2, (float)window.getSize().y / 2));
 
     
-    
-    bool spaceShip = false;
-    SpaceShip spaceShipStruct(window, gameID, dt, camera, spaceShip);
+    SpaceShip spaceShipStruct(window, gameID, dt, camera);
     
     //The 3 Games
     myPlayer user;
@@ -126,64 +143,28 @@ int main()
     Music MainMap;
     MainMap.openFromFile("Sounds/Main/MapMusic.wav");
     MainMap.setLoop(true);
-    Clock RotationClock;
-    Texture SpaceMan;
-    SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
-    Sprite Spacer;
-    Spacer.setTexture(SpaceMan);
-
-    
-
-    float SpaceX = window.getSize().x * 0.75;
-    float SpaceY = window.getSize().y * 0.5;
-    Spacer.setScale(2.0, 2.0);
-    Spacer.setPosition(SpaceX, SpaceY);
-    int factor = 1;
     
     //
     while (window.isOpen())
     {
         gameClock.restart();
         Event event;
-        if (RotationClock.getElapsedTime().asSeconds() > 0.1) {
-            factor += 1;
-            RotationClock.restart();
-        }
-        
-        Spacer.setRotation(1 + factor);
-
+       
         //Events
         while (window.pollEvent(event))
         {
-            //if(Keyboard::isKeyPressed(Keyboard::T))
                 
-
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
 
             //EVENTS OF THE USERNAME TYPING
             if (UsernameTyping) {
-                if (event.type == Event::TextEntered) {
-                    if (isprint(event.text.unicode)) //just checking if the text is in unicode
-                        user.playerName += event.text.unicode;
+                TypeUsername(event, isSpaceshipMap, UsernameTyping, user);
+                if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/ && gameID == 0) {
+                    MainMap.play();
                 }
-                if (event.type == Event::KeyPressed) {
-                    if (event.key.code == Keyboard::BackSpace) {
-                        if (!user.playerName.empty())
-                            user.playerName.pop_back(); //remove letters ONLY if the string isnt empty
-                    }
-                    if (event.key.code == Keyboard::Enter) {
-                        //Save HERE THEN CHANGE THE FLOW FROM USERNAME TYPING TO MAP
-                        isSpaceshipMap = true;
-                        MainMenu.stop();
-                       // MainMap.play();
-                        
-                        UsernameTyping = false;
-                    }
-                    if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/  && gameID == 0) {
-                        MainMap.play();
-                    }
-                }
+                else
+                    MainMenu.stop();
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison) {
@@ -198,16 +179,16 @@ int main()
                     
                 }
             }
+
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
-               // MainMap.play();
+               
             }
+
             if (gameID == 1)
             {
                 MainMap.pause();
                 brickBreakerGame->event(window, event);
-               
-                
             }
             
         }
@@ -267,7 +248,6 @@ int main()
 
         }
         
-
         //Brick Breaker
         else if (gameID == 1) {
             // Open the first game
@@ -275,7 +255,6 @@ int main()
             {
                 brickBreakerGame = new game(&window, user.score_BrickBreaker);
                 GamePlayed = true;
-                user.score_BrickBreaker = 0;
             }
             window.setView(window.getDefaultView());
             brickBreakerGame->deltaTime = dt;
@@ -288,13 +267,11 @@ int main()
             {
                 duck = new Duck(window);
                 GamePlayed = true;
-                user.scoreDuck = 0;
             }
                 // Open the second game
             window.setView(window.getDefaultView());
             duck->Update(window, event, dt,gameID, user.scoreDuck);
-            
-          
+        
         }
         //Space Invader
         else if (gameID == 3) {
@@ -303,24 +280,20 @@ int main()
             {
                 sp = new SpaceInvader(window);
                 GamePlayed = true;
-                user.score_SpaceInvader = 0;
             }
             window.setView(window.getDefaultView());
             sp->Run(window, user.score_SpaceInvader, event, dt,gameID);
         }
+        //Leaderboard
         else if (gameID == 4) {
             window.setView(window.getDefaultView());
             myPlayer temporary[30];
             Load(window, temporary);
         }
-        if(isMenuOpened)
-            window.draw(Spacer);
 
         window.display();
         dt = gameClock.getElapsedTime().asSeconds();
 
-        
-        
 
     }
     return 0;

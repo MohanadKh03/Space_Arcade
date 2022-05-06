@@ -8,10 +8,11 @@ struct Menu {
     Font font[2];
     Text menu[3];
     Texture t_mainBG;
-    
     Sprite s_mainBG;
-    
-
+    int factor;
+    Texture SpaceMan;
+    Sprite Spacer;
+    Clock RotationClock;
 
     
     
