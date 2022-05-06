@@ -112,9 +112,9 @@ int main()
     
     //The 3 Games
     myPlayer user;
-    game* brickBreakerGame = new game(&window, user.score_BrickBreaker);
-    Duck* duck = new Duck(window);
-    SpaceInvader* sp = new SpaceInvader(window);
+    game* brickBreakerGame = NULL;
+    Duck* duck = NULL;
+    SpaceInvader* sp = NULL;
 
     Music MainMenu;
     MainMenu.openFromFile("Sounds/Main/meet-the-princess.wav");
@@ -323,6 +323,6 @@ int main()
         
         
 
-}
+    }
     return 0;
 }
