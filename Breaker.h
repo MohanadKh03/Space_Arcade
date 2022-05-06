@@ -14,6 +14,9 @@
 using namespace std;
 using namespace sf;
 #pragma once
+
+
+
 struct game
 {
 public:
@@ -68,6 +71,14 @@ private:
 	float effectTimer = 0;
 	float effectDelay = 0.05f;
 	Sprite hitEffect;
+
+	//Music and sfx
+	SoundBuffer bgBuffer;
+	Sound bgMusic;
+	SoundBuffer effectBuffer;
+	Sound effectSound;
+	SoundBuffer loseBuffer;
+	Sound loseSound;
 
 	// For WIN condition
 	int blockCount = 0;

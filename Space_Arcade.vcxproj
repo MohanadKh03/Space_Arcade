@@ -146,10 +146,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ducks.cpp" />
-    <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Breaker.cpp" />
     <ClCompile Include="Invaders.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Duck.h" />

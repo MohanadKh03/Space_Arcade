@@ -23,8 +23,8 @@ Sound haha(hahaSound);
 
 
 Duck::Duck(RenderWindow& window) {
-
-	duckMenu.loadFromFile("AshetyPersonaluse-Medium.otf");
+	score = 0;
+	duckMenu.loadFromFile("Fonts/AshetyPersonaluse-Medium.otf");
 	
 	hahaSound.loadFromFile("haha.wav");
 	haha.setVolume(10.0);
@@ -32,26 +32,26 @@ Duck::Duck(RenderWindow& window) {
 	/*if (Keyboard::isKeyPressed(Keyboard::Enter))
 		gameStart = false;*/
 
-	duckExpo.loadFromFile("Duck explosion.wav");
+	duckExpo.loadFromFile("Sounds/Duck/Duck explosion.wav");
 	ExpolosionDuck.setVolume(12.0);
 
 	// special effects calls  /////////////////////////////////////////
-	hitEffectTex.loadFromFile("Explosion Red.png");
+	hitEffectTex.loadFromFile("Textures/Duck/Explosion Red.png");
 	hitEffect.setTexture(hitEffectTex);
 	hitEffect.setOrigin(64, 64);
 	hitEffect.setScale(Vector2f(window.getSize().x / 700, window.getSize().x / 700));
 
-	background.loadFromFile("Space Background2.png");
+	background.loadFromFile("Textures/Duck/Space Background2.png");
 	backgroundsp.setTexture(background);
 
 
 	crosshair.setSize(Vector2f(35, 35));
 	crosshair.setFillColor(Color::Red);
-	cross.loadFromFile("SeekPng.com_crosshair-png_140906.png");
+	cross.loadFromFile("Textures/Duck/SeekPng.com_crosshair-png_140906.png");
 	crosshair.setTexture(&cross);
 	crosshair.setOrigin(Vector2f(crosshair.getSize().x / 2, crosshair.getSize().y / 2));
 	
-	font.loadFromFile("fonts/BodoniFLF-Bold.ttf");
+	font.loadFromFile("Fonts/BodoniFLF-Bold.ttf");
 	
 	score_text.setFont(font);
 	score_text.setPosition(500.0f, 0.f);
@@ -62,7 +62,7 @@ Duck::Duck(RenderWindow& window) {
 	test.setPosition(300.0f, 0.f);*/
 
 	enemies[0].friendly = false;
-	enemies[0].texture1.loadFromFile("Enemy1.png");
+	enemies[0].texture1.loadFromFile("Textures/Duck/Enemy1.png");
 	enemies[0].duck.setTexture(&enemies[0].texture1);
 	enemies[0].duck.setScale(enemiesScale);
 
@@ -90,40 +90,40 @@ Duck::Duck(RenderWindow& window) {
 		case 0:
 
 			if (enemies[i].friendly) {
-				enemies[i].texture5.loadFromFile("Friendly1.png");
+				enemies[i].texture5.loadFromFile("Textures/Duck/Friendly1.png");
 				enemies[i].duck.setTexture(&enemies[i].texture5);
 			}
 			else {
-				enemies[i].texture1.loadFromFile("Enemy1.png");
+				enemies[i].texture1.loadFromFile("Textures/Duck/Enemy1.png");
 				enemies[i].duck.setTexture(&enemies[i].texture1);
 			}
 			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 1:
 			if (enemies[i].friendly) {
-				enemies[i].texture6.loadFromFile("Friendly2.png");
+				enemies[i].texture6.loadFromFile("Textures/Duck/Friendly2.png");
 				enemies[i].duck.setTexture(&enemies[i].texture6);
 			}
 			else {
 				enemies[i].duck.setTexture(&enemies[i].texture2);
-				enemies[i].texture2.loadFromFile("Enemy2.png");
+				enemies[i].texture2.loadFromFile("Textures/Duck/Enemy2.png");
 			}
 			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 2:
 			if (enemies[i].friendly) {
-				enemies[i].texture7.loadFromFile("Friendly3.png");
+				enemies[i].texture7.loadFromFile("Textures/Duck/Friendly3.png");
 				enemies[i].duck.setTexture(&enemies[i].texture7);
 			}
 			else {
-				enemies[i].texture3.loadFromFile("Enemy3.png");
+				enemies[i].texture3.loadFromFile("Textures/Duck/Enemy3.png");
 				enemies[i].duck.setTexture(&enemies[i].texture3);
 			}
 			enemies[i].duck.setScale(enemiesScale);
 			break;
 		case 3:
 			enemies[i].friendly = false;
-			enemies[i].texture4.loadFromFile("Enemy4.png");
+			enemies[i].texture4.loadFromFile("Textures/Duck/Enemy4.png");
 			enemies[i].duck.setTexture(&enemies[i].texture4);
 			enemies[i].duck.setScale(enemiesScale);
 			break;
@@ -131,7 +131,7 @@ Duck::Duck(RenderWindow& window) {
 	}
 }
 
-void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID) {
+void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& score) {
 	window.draw(backgroundsp);
 	
 	if (health >= 0) {

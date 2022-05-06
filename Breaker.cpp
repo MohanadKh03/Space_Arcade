@@ -12,7 +12,7 @@ game::game(RenderWindow* window, int& score)
     // Paddle (player) 
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color::White);
-    paddle.setPosition(Vector2f(window->getSize().x/2 - (paddle.getSize().x / 2), window->getSize().y - 40));
+    paddle.setPosition(Vector2f(window->getSize().x / 2 - (paddle.getSize().x / 2), window->getSize().y - 40));
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
@@ -25,19 +25,20 @@ game::game(RenderWindow* window, int& score)
     ballTrail[0].setPosition(ball.getPosition());
     for (int i = 1; i < 20; i++) {
         ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
-        ballTrail[i].setFillColor(ballTrail[i-1].getFillColor() - Color(0,0,0,12));
+        ballTrail[i].setFillColor(ballTrail[i - 1].getFillColor() - Color(0, 0, 0, 12));
         ballTrail[i].setRadius(ballTrail[i - 1].getRadius() - 0.5f);
     }
 
     // Draw the UI
-    font.loadFromFile("fonts/JosefinSans-Bold.ttf");
+    font.loadFromFile("Fonts/JosefinSans-Bold.ttf");
     text.setFont(font);
+    score = 0;
     text.setString("Score : " + to_string(score));
     text.setFillColor(Color(50, 205, 50, 255));
     text.setCharacterSize(32);
-    text.setPosition(10,10);
+    text.setPosition(10, 10);
     lives = 3;
-    font.loadFromFile("fonts/JosefinSans-Bold.ttf");
+    font.loadFromFile("Fonts/JosefinSans-Bold.ttf");
     textLife.setFont(font);
     textLife.setString("Lives : " + to_string(lives));
     textLife.setFillColor(Color(50, 205, 50, 255));
@@ -46,11 +47,22 @@ game::game(RenderWindow* window, int& score)
     textLife.setPosition(window->getSize().x - 10, textLife.getLocalBounds().height + 10);
 
     // special effects calls  /////////////////////////////////////////
-    hitEffectTex.loadFromFile("effect.png");
+    hitEffectTex.loadFromFile("Textures/Brick Breaker/effect.png");
     hitEffect.setTexture(hitEffectTex);
     hitEffect.setScale(Vector2f(window->getSize().x / 800, window->getSize().y / 800));
     hitEffect.setOrigin(18.5, 17);
     hitEffect.setRotation(90);
+
+    bgBuffer.loadFromFile("Sounds/Brick Breaker/Breaker.wav");
+    bgMusic.setBuffer(bgBuffer);
+    bgMusic.setVolume(10.0f);
+    bgMusic.play();
+
+    effectBuffer.loadFromFile("Sounds/Brick Breaker/Brick.wav");
+    effectSound.setBuffer(effectBuffer);
+
+    loseBuffer.loadFromFile("Sounds/Brick Breaker/Breaker-Lose.wav");
+    loseSound.setBuffer(loseBuffer);
 
     reset();
     score = 0;
@@ -97,7 +109,7 @@ game::game(RenderWindow* window, int& score)
             }
             lastRandColor = randomColor;
             blocks[y][x].setOutlineColor(Color::White);
-            blocks[y][x].setPosition(Vector2f(x * ((blocks[y][x].getSize().x + 2) / randomSize), (y+1) * (blocks[y][x].getSize().y+2)));
+            blocks[y][x].setPosition(Vector2f(x * ((blocks[y][x].getSize().x + 2) / randomSize), (y + 1) * (blocks[y][x].getSize().y + 2)));
             if (randomSize == 2) {
                 x++;
             }
@@ -135,7 +147,7 @@ void game::event(RenderWindow& window, Event& e)
             {
                 paddle.setPosition(Vector2f(window.getSize().x - paddle.getSize().x, paddle.getPosition().y));
             }
-            if (moveCheck % 5 == 0) {
+            if (moveCheck % 2 == 0) {
                 lastPosition = currentPosition;
             }
             if (moveCheck >= 500) {
@@ -143,16 +155,12 @@ void game::event(RenderWindow& window, Event& e)
             }
             moveCheck++;
 
-            if (currentPosition < lastPosition) {
+            if (currentPosition < lastPosition)
                 direction = -1;
-            }
-            else if (currentPosition > lastPosition) {
+            else if (currentPosition > lastPosition)
                 direction = 1;
-            }
             else
-            {
                 direction = 0;
-            }
             currentPosition = paddle.getPosition().x;
         }
     }
@@ -168,7 +176,7 @@ void game::event(RenderWindow& window, Event& e)
 }
 
 // Update each frame of the game
-void game::update(RenderWindow* window, int& score,int& gameNUMBER)
+void game::update(RenderWindow* window, int& score, int& gameNUMBER)
 {
     // Don't update when paused
     if (paused) {
@@ -192,13 +200,13 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
     {
         // Ball position update
         ball.setPosition(Vector2f(ball.getPosition().x + (speed.x * deltaTime), ball.getPosition().y + (speed.y * deltaTime)));
-        
+
         // Ball trail update
         ballTrail[0].setPosition(ball.getPosition());
         for (int i = 19; i > 0; i--) {
             ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
         }
-        
+
 
         //.......Ball Boundry Collision.......
         //Left Boundry
@@ -206,6 +214,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(0, ball.getPosition().y), 90);
+            effectSound.play();
 
             ball.setPosition(Vector2f(0.0f, ball.getPosition().y));
             speed.x = abs(speed.x);
@@ -215,6 +224,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(ball.getPosition().x, 0), 180);
+            effectSound.play();
 
             ball.setPosition(Vector2f(ball.getPosition().x, 0.0f));
             speed.y = abs(speed.y);
@@ -224,6 +234,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         {
             // play the effect
             playEffect(Vector2f(window->getSize().x, ball.getPosition().y), -90);
+            effectSound.play();
 
             ball.setPosition(Vector2f(window->getSize().x - (ball.getRadius() * 2.0f), ball.getPosition().y));
             speed.x = -abs(speed.x);
@@ -231,6 +242,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
         //Lower Boundery
         else if (ball.getPosition().y + (ball.getRadius() * 2.0f) >= window->getSize().y)
         {
+            loseSound.play();
             reset();
             lives--;
             textLife.setString("Lives: " + to_string(lives));
@@ -244,6 +256,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
             ball.getPosition().x < paddle.getPosition().x + paddle.getSize().x &&
             ball.getPosition().y < paddle.getPosition().y + paddle.getSize().y)
         {
+            effectSound.play();
             float ratio = abs(speed.x) / abs(speed.y);
             if (speed.x < 0)
                 speed.x -= speedfactor;
@@ -256,10 +269,10 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
             ball.setPosition(Vector2f(ball.getPosition().x, paddle.getPosition().y - (ball.getRadius() * 2.0f)));
             speed.y = -abs(speed.y);
             if (direction == 1) {
-                speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed;
+                speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed + speedfactor * ratio;
             }
             else if (direction == -1) {
-                speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed;
+                speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed - speedfactor * ratio;
             }
         }
 
@@ -287,6 +300,7 @@ void game::update(RenderWindow* window, int& score,int& gameNUMBER)
                         playEffect(Vector2f(ball.getPosition().x, ball.getPosition().y), 0);
                         speed.y = -speed.y;
                     }
+                    effectSound.play();
                     score++;
                     text.setString("Score : " + to_string(score));
                 }
@@ -324,7 +338,7 @@ void game::render(RenderWindow& window)
     if (speed.y != 0)
         for (int i = 0; i < 20; i++)
             window.draw(ballTrail[i]);
-    else 
+    else
         for (int i = 0; i < 20; i++)
             ballTrail[i].setPosition(ball.getPosition());
     window.draw(textLife);
@@ -340,10 +354,10 @@ void game::reset()
 }
 
 // Run the whole game
-void game::run(RenderWindow& window, Event& e, int& score,int& gameNUMBER)
+void game::run(RenderWindow& window, Event& e, int& score, int& gameNUMBER)
 {
     render(window);
-    update(&window, score,gameNUMBER);
+    update(&window, score, gameNUMBER);
 }
 
 // Play the splash effect
