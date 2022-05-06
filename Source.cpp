@@ -180,9 +180,9 @@ int main()
                         
                         UsernameTyping = false;
                     }
-                    //if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/  && gameID == 0) {
-                    //    MainMap.play();
-                    //}
+                    if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/  && gameID == 0) {
+                        MainMap.play();
+                    }
                 }
             }
 
@@ -200,14 +200,13 @@ int main()
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
-                //MainMap.play();
+               // MainMap.play();
             }
             if (gameID == 1)
             {
                 MainMap.pause();
                 brickBreakerGame->event(window, event);
-               /* BrickBreakerMusic.play();
-                BrickBreakerMusic.setLoop(true);*/
+               
                 
             }
             

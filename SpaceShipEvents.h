@@ -256,6 +256,8 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	Collision(Alien1, YourPlayer, camera, speed, collisionID, 5, true);
 
 	Collision(HellBoy, YourPlayer, camera, speed);
+
+	Collision(Nurse, YourPlayer, camera, speed);
 	
 	Collision(Elf, YourPlayer, camera, speed, collisionID, 9, true);
 	
