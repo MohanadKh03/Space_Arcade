@@ -57,10 +57,12 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAM
 }
 //constructor of the Menu 
 Menu::Menu(RenderWindow& window, float width, float height) {
+    //Background
     t_mainBG.loadFromFile("Textures/Main/BlackBG.jpg");
     s_mainBG.setTexture(t_mainBG);
     s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
         , window.getSize().y / s_mainBG.getLocalBounds().height);
+    //SpacerMan
     float SpaceX = window.getSize().x * 0.75;
     float SpaceY = window.getSize().y * 0.5;
     SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
@@ -69,13 +71,10 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     Spacer.setPosition(SpaceX, SpaceY);
     factor = 1;
 
-    if (!font[0].loadFromFile("Fonts/Planet 37.ttf") || !font[1].loadFromFile("Fonts/Planet 37.ttf")) {
-        exit(1);
-    }
-
+    font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", 100, height / 2, 35, font[0]);
-    texts(menu[1], "Exit", 100, height / 1.5f, 35, font[0]);
+    texts(menu[0], "Play", 100, height / 2, 35, font);
+    texts(menu[1], "Exit", 100, height / 1.5f, 35, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
 
@@ -87,7 +86,7 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     //RotationClock.restart();
 
 
-    texts(menu[2], "Space Arcade", 300, height / 4, 80, font[1]);
+    texts(menu[2], "Space Arcade", 300, height / 4, 80, font);
     menu[2].setOutlineThickness(2); menu[2].setOutlineColor(Color::Black);
     menu[2].setFillColor(Color::Cyan);
 

@@ -5,7 +5,7 @@ using namespace sf;
 
 struct Menu {
     int SELECTEDIndex;
-    Font font[2];
+    Font font;
     Text menu[3];
     Texture t_mainBG;
     Sprite s_mainBG;

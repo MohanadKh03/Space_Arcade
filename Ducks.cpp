@@ -29,9 +29,6 @@ Duck::Duck(RenderWindow& window) {
 	hahaSound.loadFromFile("haha.wav");
 	haha.setVolume(10.0);
 
-	/*if (Keyboard::isKeyPressed(Keyboard::Enter))
-		gameStart = false;*/
-
 	duckExpo.loadFromFile("Sounds/Duck/Duck explosion.wav");
 	ExpolosionDuck.setVolume(12.0);
 
@@ -88,7 +85,6 @@ Duck::Duck(RenderWindow& window) {
 		switch (texture_index)
 		{
 		case 0:
-
 			if (enemies[i].friendly) {
 				enemies[i].texture5.loadFromFile("Textures/Duck/Friendly1.png");
 				enemies[i].duck.setTexture(&enemies[i].texture5);
@@ -135,7 +131,6 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 	window.draw(backgroundsp);
 	GAMEscore = score;
 	if (health >= 0) {
-		
 		if (e.type == Event::MouseMoved) {
 			crosshair.setPosition(Vector2f(Mouse::getPosition(window).x, Mouse::getPosition(window).y));
 		}

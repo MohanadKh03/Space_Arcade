@@ -7,29 +7,29 @@ const int NumOfEnemies = 60;
 const int NumOfBullets = 20;
 const int NumOfEnemyBullets = 2;
 
-struct powerups
-{
-	int effect;
-	sf::CircleShape body;
-	sf::Clock powerclock;
-	sf::Time powerTime;
-	bool powerSpared;
-	bool powerConsumed;
-	bool fireRate;
-};
+//struct powerups
+//{
+//	int effect;
+//	sf::CircleShape body;
+//	sf::Clock powerclock;
+//	sf::Time powerTime;
+//	bool powerSpared;
+//	bool powerConsumed;
+//	bool fireRate;
+//};
 struct Bullet {
 	sf::Vector2f speed = { 0,-900 };
 	sf::RectangleShape body;
 	bool released = false;
 	void Update(float&);
 };
-struct Boss
-{
-	int health;
-	sf::Sprite Boss;
-	sf::Texture BossTexture;
-	Bullet bossBullet;
-};
+//struct Boss
+//{
+//	int health;
+//	sf::Sprite Boss;
+//	sf::Texture BossTexture;
+//	Bullet bossBullet;
+//};
 struct Sheild
 {
 	sf::RectangleShape body;
@@ -49,9 +49,9 @@ struct InvaderEnemy
 	int bulletspeed;
 	sf::Sprite enemy;
 	int bulletIndex = 0;
-	powerups enemypower;
+	//powerups enemypower;
 
-};
+};//
 struct Player {
 	float posx, posy, speedx = 10.f;
 	sf::Texture playertexture;
@@ -79,7 +79,7 @@ struct SpaceInvader {
 	Player player;
 	Bullet bullets[NumOfBullets];
 	Sheild sheilds[3];
-	Boss boss;
+	//Boss boss;
 	int bulletIndex = 0;
 	float bulletDelay = 0.0f;
 	float bulletTimer = 0.1f;
@@ -87,15 +87,15 @@ struct SpaceInvader {
 	sf::Time deltatimemove;
 	void EnemyMovement(float dt, sf::Clock& clock, sf::Time& deltatimemove);
 	void PlayerMovement();
-	void Enemybulletfunction(float dt);
+	/*void Enemybulletfunction(float dt);*/
 	void ShootBullet(float&);
 	void bulletsFunction(sf::Event& event, float dt);
 	void Collision(sf::RenderWindow& w, int& gameID);
 	void GameOver(sf::RenderWindow& w, int& gameID);
 	void Run(sf::RenderWindow&, int&, sf::Event&, float&, int& gameID);
 	void Destroyandgen(float dt);
-	void Boss();
-	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
+	/*void Boss();
+	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);*/
 	void Sheild();
-	void PowerUps(float dt);
+	/*void PowerUps(float dt);*/
 };

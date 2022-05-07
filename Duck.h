@@ -35,7 +35,6 @@ private:
 struct Duck {
 public:
 	Duck(RenderWindow&);
-	void ChooseTexture(Ship, int);
 	void Update(RenderWindow&, Event&, float&, int&, int&);
 	void Render(RenderWindow&, int&);
 	void SpawnShips(RenderWindow&);

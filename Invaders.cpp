@@ -13,7 +13,6 @@ float windowsizey = sf::VideoMode::getDesktopMode().height;
 int side = sf::VideoMode::getDesktopMode().width - 120;
 int z = 0;
 
-
 SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	//sheild stuff
 	sheilds[0].body.setPosition(50, sf::VideoMode::getDesktopMode().height - sf::VideoMode::getDesktopMode().height / 4);
@@ -58,12 +57,12 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	srand(time(0));
 
 	//boss stuff
-	boss.BossTexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
+	/*boss.BossTexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
 	boss.Boss.setTexture(boss.BossTexture);
 	boss.Boss.setScale(sf::Vector2f(2, 3));
 	boss.Boss.setPosition(sf::Vector2f(-boss.Boss.getScale().x, 0));
 
-	boss.Boss.setColor(sf::Color(0, 255, 255, 0));
+	boss.Boss.setColor(sf::Color(0, 255, 255, 0));*/
 
 
 	//Enemy Stuff
@@ -78,11 +77,11 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	enemies[0].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
 	enemies[0].enemybu.body.setSize(sf::Vector2f(10.f, 20.f));
 	enemies[0].enemybu.body.setPosition(enemies[0].enemy.getPosition().x + 46.5, enemies[0].enemy.getPosition().y + 42);
-	enemies[0].enemypower.body.setRadius(3.f);
+	/*enemies[0].enemypower.body.setRadius(3.f);
 	enemies[0].enemypower.body.setPosition(enemies[0].enemy.getPosition());
 	enemies[0].enemypower.body.setFillColor(sf::Color(0, 255, 255, 0));
 	enemies[0].enemypower.powerConsumed = false;
-	enemies[0].enemypower.fireRate == false;
+	enemies[0].enemypower.fireRate == false;*/
 	for (int i = 1; i < NumOfEnemies; i++)
 	{
 
@@ -95,12 +94,12 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		enemies[i].enemybu.released = false;
 		enemies[i].enemybu.body.setPosition(enemies[i].enemy.getPosition().x + 46.5, enemies[i].enemy.getPosition().y + 42);
 		enemies[i].enemybu.body.setScale(sf::Vector2f(2.f, 4.f));
-		enemies[i].enemypower.body.setRadius(3.f);
+		/*enemies[i].enemypower.body.setRadius(3.f);
 		enemies[i].enemypower.body.setPosition(enemies[i].enemy.getPosition());
 		enemies[i].enemypower.body.setFillColor(sf::Color(0, 255, 255, 0));
 		enemies[i].enemypower.powerConsumed = false;
-		enemies[i].enemypower.fireRate == false;
-		if (i == 0 || i % 10 != 0)
+		enemies[i].enemypower.fireRate == false;*/
+		if (  i % 10 != 0)
 		{
 			enemies[i].posx = enemies[i - 1].posx + 90 * WindowFactor;
 			enemies[i].posy = enemies[i - 1].posy;
@@ -143,9 +142,9 @@ void SpaceInvader::EnemyMovement(float dt, sf::Clock& clock, sf::Time& deltatime
 	{
 		if (enemies[i].enemybu.released == false)
 			enemies[i].enemybu.body.setPosition(enemies[i].posx + 46.5, enemies[i].posy + 38);
-		if (enemies[i].enemypower.powerSpared == false)
-			enemies[i].enemypower.body.setPosition(enemies[i].enemy.getPosition());
-
+		/*if (enemies[i].enemypower.powerSpared == false)
+			enemies[i].enemypower.body.setPosition(enemies[i].enemy.getPosition());*/
+		 
 		enemies[i].posx = enemies[i].enemy.getPosition().x;
 		enemies[i].posy = enemies[i].enemy.getPosition().y;
 
@@ -301,12 +300,12 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 
 void SpaceInvader::Run(sf::RenderWindow& win, int& GAMEscore, sf::Event& e, float& dt, int& gameID) {
 	GAMEscore = score;
-	win.draw(boss.Boss);
+	// win.draw(boss.Boss);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
 		win.draw(enemies[i].enemybu.body);
 		win.draw(enemies[i].enemy);
-		win.draw(enemies[i].enemypower.body);
+		// win.draw(enemies[i].enemypower.body);
 	}
 	for (int i = 0; i < NumOfBullets; i++) {
 		bullets[i].Update(dt);
@@ -328,10 +327,10 @@ void SpaceInvader::Run(sf::RenderWindow& win, int& GAMEscore, sf::Event& e, floa
 		EnemyMovement(dt, clock, deltatimemove);
 		PlayerMovement();
 		Destroyandgen(dt);
-		Boss();
-		Bossmovement(karizmaBoss, KarizmaTime, dt);
+		/*Boss();
+		Bossmovement(karizmaBoss, KarizmaTime, dt);*/
 		Sheild();
-		PowerUps(dt);
+		/*PowerUps(dt);*/
 	}
 	GameOver(win, gameID);
 }
@@ -455,98 +454,98 @@ void SpaceInvader::Sheild()
 	}
 }
 
-void SpaceInvader::Boss()
-{
-	if (score >= 20)
-	{
-		boss.Boss.setColor(sf::Color(0, 255, 255, 255));
-	}
-}
-void SpaceInvader::Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt)
-{
-	KarizmaTime = karizmaBoss.getElapsedTime();
+//void SpaceInvader::Boss()
+//{
+//	if (score >= 20)
+//	{
+//		boss.Boss.setColor(sf::Color(0, 255, 255, 255));
+//	}
+//}
+//void SpaceInvader::Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt)
+//{
+//	KarizmaTime = karizmaBoss.getElapsedTime();
+//
+//	if (boss.Boss.getColor().a)
+//	{
+//		if ((boss.Boss.getPosition().x >= side + boss.Boss.getScale().x && BossMovingRight) || (boss.Boss.getPosition().x <= -boss.Boss.getScale().x && BoosMovingLeft))
+//		{
+//			boss.Boss.move(sf::Vector2f(0, 0));
+//			karizmaBoss.restart();
+//		}
+//
+//		if (BoosMovingLeft == true && KarizmaTime.asSeconds() == 5) {
+//			boss.Boss.move(sf::Vector2f(-2 * dt, 0));
+//			BoosMovingLeft = false;
+//			BossMovingRight = true;
+//		}
+//		if (BossMovingRight && KarizmaTime.asSeconds() == 5)
+//		{
+//			boss.Boss.move(sf::Vector2f(2 * dt, 0));
+//			BoosMovingLeft = true;
+//			BossMovingRight = false;
+//		}
+//
+//	}
+//}
 
-	if (boss.Boss.getColor().a)
-	{
-		if ((boss.Boss.getPosition().x >= side + boss.Boss.getScale().x && BossMovingRight) || (boss.Boss.getPosition().x <= -boss.Boss.getScale().x && BoosMovingLeft))
-		{
-			boss.Boss.move(sf::Vector2f(0, 0));
-			karizmaBoss.restart();
-		}
-
-		if (BoosMovingLeft == true && KarizmaTime.asSeconds() == 5) {
-			boss.Boss.move(sf::Vector2f(-2 * dt, 0));
-			BoosMovingLeft = false;
-			BossMovingRight = true;
-		}
-		if (BossMovingRight && KarizmaTime.asSeconds() == 5)
-		{
-			boss.Boss.move(sf::Vector2f(2 * dt, 0));
-			BoosMovingLeft = true;
-			BossMovingRight = false;
-		}
-
-	}
-}
-
-void SpaceInvader::PowerUps(float dt)
-{
-	for (int i = 0; i < NumOfEnemies; i++)
-	{
-		enemies[i].enemypower.powerTime = enemies[i].enemypower.powerclock.getElapsedTime();
-		if (enemies[i].enemy.getScale().x == 0)
-			enemies[i].enemypower.powerclock.restart();
-
-		enemies[i].enemypower.effect = rand() % 2000 + 1;
-
-		if (enemies[i].enemypower.powerTime.asMilliseconds() < 50 && enemies[i].enemypower.powerSpared == false)
-		{
-			enemies[i].enemypower.powerclock.restart();
-			enemies[i].enemypower.body.move(sf::Vector2f(0, 900 * dt));
-			//live
-			if (enemies[i].enemypower.effect <= 1000)
-			{
-				enemies[i].enemypower.powerSpared = true;
-				enemies[i].enemypower.body.setFillColor(sf::Color(125, 30, 125, 255));
-				if (enemies[i].enemypower.body.getGlobalBounds().intersects(player.playersprite.getGlobalBounds()) && enemies[i].enemypower.powerConsumed == false)
-				{
-					enemies[i].enemypower.powerConsumed = true;
-					player.health++;
-					enemies[i].enemypower.body.setFillColor(sf::Color(0, 0, 0, 0));
-				}
-			}
-			//fire rate
-			if (enemies[i].enemypower.effect <= 2000 && enemies[i].enemypower.effect > 1000)
-			{
-
-				enemies[i].enemypower.powerSpared = true;
-				enemies[i].enemypower.body.setFillColor(sf::Color(0, 255, 0, 255));
-				if (enemies[i].enemypower.body.getGlobalBounds().intersects(player.playersprite.getGlobalBounds()) && enemies[i].enemypower.powerConsumed == false)
-				{
-					enemies[i].enemypower.powerConsumed = true;
-					enemies[i].enemypower.body.setFillColor(sf::Color(0, 0, 0, 0));
-					enemies[i].enemypower.fireRate = true;
-
-				}
-
-			}
-
-		}
-		//fireratecont
-		if (enemies[i].enemypower.powerTime.asSeconds() < 5 && enemies[i].enemypower.fireRate == true)
-		{
-			for (int j = 0; j < NumOfBullets; j++)
-			{
-				bullets[j].speed.y -= 100;
-			}
-		}
-		else if (enemies[i].enemypower.powerTime.asSeconds() >= 5)
-		{
-			for (int j = 0; j < NumOfBullets; j++)
-			{
-				bullets[j].speed.y = -900;
-				enemies[i].enemypower.fireRate = false;
-			}
-		}
-	}
-}
+//void SpaceInvader::PowerUps(float dt)
+//{
+//	for (int i = 0; i < NumOfEnemies; i++)
+//	{
+//		enemies[i].enemypower.powerTime = enemies[i].enemypower.powerclock.getElapsedTime();
+//		if (enemies[i].enemy.getScale().x == 0)
+//			enemies[i].enemypower.powerclock.restart();
+//
+//		enemies[i].enemypower.effect = rand() % 2000 + 1;
+//
+//		if (enemies[i].enemypower.powerTime.asMilliseconds() < 50 && enemies[i].enemypower.powerSpared == false)
+//		{
+//			enemies[i].enemypower.powerclock.restart();
+//			enemies[i].enemypower.body.move(sf::Vector2f(0, 900 * dt));
+//			//live
+//			if (enemies[i].enemypower.effect <= 1000)
+//			{
+//				enemies[i].enemypower.powerSpared = true;
+//				enemies[i].enemypower.body.setFillColor(sf::Color(125, 30, 125, 255));
+//				if (enemies[i].enemypower.body.getGlobalBounds().intersects(player.playersprite.getGlobalBounds()) && enemies[i].enemypower.powerConsumed == false)
+//				{
+//					enemies[i].enemypower.powerConsumed = true;
+//					player.health++;
+//					enemies[i].enemypower.body.setFillColor(sf::Color(0, 0, 0, 0));
+//				}
+//			}
+//			//fire rate
+//			if (enemies[i].enemypower.effect <= 2000 && enemies[i].enemypower.effect > 1000)
+//			{
+//
+//				enemies[i].enemypower.powerSpared = true;
+//				enemies[i].enemypower.body.setFillColor(sf::Color(0, 255, 0, 255));
+//				if (enemies[i].enemypower.body.getGlobalBounds().intersects(player.playersprite.getGlobalBounds()) && enemies[i].enemypower.powerConsumed == false)
+//				{
+//					enemies[i].enemypower.powerConsumed = true;
+//					enemies[i].enemypower.body.setFillColor(sf::Color(0, 0, 0, 0));
+//					enemies[i].enemypower.fireRate = true;
+//
+//				}
+//
+//			}
+//
+//		}
+//		//fireratecont
+//		if (enemies[i].enemypower.powerTime.asSeconds() < 5 && enemies[i].enemypower.fireRate == true)
+//		{
+//			for (int j = 0; j < NumOfBullets; j++)
+//			{
+//				bullets[j].speed.y -= 100;
+//			}
+//		}
+//		else if (enemies[i].enemypower.powerTime.asSeconds() >= 5)
+//		{
+//			for (int j = 0; j < NumOfBullets; j++)
+//			{
+//				bullets[j].speed.y = -900;
+//				enemies[i].enemypower.fireRate = false;
+//			}
+//		}
+//	}
+//}

@@ -16,7 +16,7 @@ game::game(RenderWindow* window, int& score)
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
-    speedfactor = 5.0f;
+    speedfactor = 50.0f;
     defaultspeed = 500.0f;
     angle = 0.0f;
     // Ball Trail
@@ -57,6 +57,7 @@ game::game(RenderWindow* window, int& score)
     bgMusic.setBuffer(bgBuffer);
     bgMusic.setVolume(10.0f);
     bgMusic.play();
+    bgMusic.setLoop(true);
 
     effectBuffer.loadFromFile("Sounds/Brick Breaker/Brick.wav");
     effectSound.setBuffer(effectBuffer);
@@ -121,7 +122,7 @@ game::game(RenderWindow* window, int& score)
 // Check for inputs
 void game::event(RenderWindow& window, Event& e)
 {
-    // Check for pause input
+    // Check for pause input When Pressed Once
     if (e.key.code == Keyboard::P) {
         if (!pressed) {
             paused = !paused;
@@ -258,6 +259,7 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
         {
             effectSound.play();
             float ratio = abs(speed.x) / abs(speed.y);
+            //Increase Speed In Negative Direction
             if (speed.x < 0)
                 speed.x -= speedfactor;
             else
@@ -268,9 +270,11 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
                 speed.y += speedfactor * ratio;
             ball.setPosition(Vector2f(ball.getPosition().x, paddle.getPosition().y - (ball.getRadius() * 2.0f)));
             speed.y = -abs(speed.y);
+            //if The Paddle is Moving Right The Ball Will MOve Right 
             if (direction == 1) {
                 speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed + speedfactor * ratio;
             }
+            //if The Paddle Is Moving left The Ball Will Move Left  
             else if (direction == -1) {
                 speed.x = cos(135 * (M_PI / 180.0)) * defaultspeed - speedfactor * ratio;
             }
@@ -284,6 +288,7 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
                 // Check for collision and direction of it
                 if (ball.getGlobalBounds().intersects(blocks[y][x].getGlobalBounds())) {
                     blocks[y][x].setScale(Vector2f(0, 0));
+                    //Collision Of The Ball On The Left Of The Block
                     if (ball.getPosition().x + (ball.getRadius() * 2.0f) < blocks[y][x].getPosition().x) {
                         playEffect(Vector2f(ball.getPosition().x, ball.getPosition().y), -90);
                         speed.x = -speed.x;

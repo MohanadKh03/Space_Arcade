@@ -3,8 +3,6 @@
 #include<SFML/Audio.hpp>
 #include<iostream>
 
-// Create a struct to hold every Shapceship action
-
 
 void setTextureNSprite(Texture& te, Sprite& se, const float& scale, float xPos, float yPos) {
 	se.setTexture(te);
@@ -152,6 +150,7 @@ struct SpaceShip {
 	Font Dialouge;
 	Font Dialouge2;
 	Font Dialouge3;
+
 	Text test;
 	Text AskUser;
 	Text PlayGame1;
@@ -363,7 +362,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 
 	//NPCs' stuff
 	NPC1.loadFromFile("Textures/Characters/Alien_idle.png");
-	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 210.0);
+	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 220.0);
 	Alien1.setScale(-3.5, 3.5);
 	
 	NPC2.loadFromFile("Textures/Characters/HellBoy.png");

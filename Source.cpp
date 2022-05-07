@@ -113,7 +113,7 @@ int main()
     int gameID = 0; // At the beginning
                     // 0 - Main Menu and Spaceship
                     // 1 - Brick Breaker game
-                    // 2 - Duck Shooter game
+                    // 2 - Space Shooter game
                     // 3 - Space Invaders game
                     // 4 - Leaderboard
     int collisionID = 0;
@@ -138,11 +138,9 @@ int main()
     MainMenu.play();
     Music DuckGame;
     DuckGame.openFromFile("Sounds/Duck/127706__cydon__spacebattle-with-laserwaepons001.wav");
-    Music BrickBreakerMusic;
-    BrickBreakerMusic.openFromFile("Sounds/Brick Breaker/Breaker.wav");
-    Music MainMap;
-    MainMap.openFromFile("Sounds/Main/MapMusic.wav");
-    MainMap.setLoop(true);
+    Music MapMusic;
+    MapMusic.openFromFile("Sounds/Main/MapMusic.wav");
+    MapMusic.setLoop(true);
     
     //
     while (window.isOpen())
@@ -161,7 +159,7 @@ int main()
             if (UsernameTyping) {
                 TypeUsername(event, isSpaceshipMap, UsernameTyping, user);
                 if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/ && gameID == 0) {
-                    MainMap.play();
+                    MapMusic.play();
                 }
                 else
                     MainMenu.stop();
@@ -172,7 +170,7 @@ int main()
                 canPlay = false;
                 if (gameID == 2)
                 {   
-                    MainMap.pause();
+                    MapMusic.pause();
                     DuckGame.play();
                     DuckGame.setLoop(true);
                     DuckGame.setVolume(4.0);
@@ -187,7 +185,7 @@ int main()
 
             if (gameID == 1)
             {
-                MainMap.pause();
+                MapMusic.pause();
                 brickBreakerGame->event(window, event);
             }
             
@@ -205,22 +203,21 @@ int main()
                 delete sp;
                 sp = NULL;
                 if (isSpaceshipMap) 
-                    MainMap.play();
+                    MapMusic.play();
                 
             }
             if (brickBreakerGame) {
                 delete brickBreakerGame;
                 brickBreakerGame = NULL;
-                BrickBreakerMusic.stop();
                 if(isSpaceshipMap)
-                   MainMap.play();
+                   MapMusic.play();
             }
             if (duck) {
                 delete duck;
                 duck = NULL;
                 DuckGame.stop();
                 if(isSpaceshipMap)
-                    MainMap.play();
+                    MapMusic.play();
             }
 
             if (isSpaceshipMap) {
@@ -275,7 +272,7 @@ int main()
         }
         //Space Invader
         else if (gameID == 3) {
-            MainMap.pause();
+            MapMusic.pause();
             if (!sp)
             {
                 sp = new SpaceInvader(window);
