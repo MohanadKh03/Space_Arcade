@@ -195,13 +195,13 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(GameMachinePurp, GM_Sprite4, 0.09f, 220, 70);
 
 	GameMachineSpace.loadFromFile("Textures/Main/DuckMachine.png");
-	setTextureNSprite(GameMachineSpace, GM_Sprite5, 0.1, 370, 300);
+	setTextureNSprite(GameMachineSpace, GM_Sprite5, 0.1f, 370, 300);
 
 	GameMachineRow1.loadFromFile("Textures/Main/Sample 1.png");
-	setTextureNSprite(GameMachineRow1, GM_Row1, 0.1, 50, 300);
+	setTextureNSprite(GameMachineRow1, GM_Row1, 0.1f, 50, 300);
 
 	GameMachineRow2.loadFromFile("Textures/Main/Sample 2.png");
-	setTextureNSprite(GameMachineRow2, GM_Row2, 0.1, 50, 500);
+	setTextureNSprite(GameMachineRow2, GM_Row2, 0.1f, 50, 500);
 
 	bottomwall.loadFromFile("Textures/Main/bottomwall.jpg");
 	setTextureNSprite(bottomwall, BottomWall_Sprite, 0.799f, 1046, 599.5);
