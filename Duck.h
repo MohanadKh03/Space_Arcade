@@ -46,6 +46,7 @@ public:
 	
 
 private:
+	// index variables
 	int texture_index = 0;
 	int friend_index = 0;
 	Ship enemies[20];

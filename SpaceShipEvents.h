@@ -166,8 +166,8 @@ struct SpaceShip {
 
 	int x = 0, y = 0; // For the sprite sheet
 
-	int screenXBorders = 20;
-	int screenYBorders = 100;
+	int screenXBorders;
+	int screenYBorders;
 	float speed = 100.0f;
 	bool gameCollision = false;
 
@@ -180,89 +180,6 @@ struct SpaceShip {
 	void Render(RenderWindow&, View&, int);
 };
 
-void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collisionID) {
-	speed = 500 * dt;
-	if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
-	{
-		YourPlayer.move(speed, 0);
-		camera.move(speed, 0);
-		y = 2;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > screenXBorders)
-	{
-		YourPlayer.move(-speed, 0);
-		camera.move(-speed, 0);
-		y = 1;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > screenYBorders)
-	{
-		YourPlayer.move(0, -speed);
-		camera.move(0, -speed);
-		y = 3;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < window.getSize().y - (screenYBorders + 300))
-	{
-		YourPlayer.move(0, speed);
-		camera.move(0, speed);
-		y = 0;
-		ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
-	}
-	else {
-		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
-	}
-	
-	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 32, 32, 4);
-	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 1278, 1278, 3);
-	ChangeSprite(Elf, dt, g, l, alienSpriteTimer, alienSpriteDelay, 48, 81, 4);
-	ChangeSprite(Todo, dt, h, l, alienSpriteTimer, alienSpriteDelay, 64, 64, 4);
-	
-	collisionID = 0;
-	collison = false;
-
-	Collision(GM_Sprite, YourPlayer, camera, speed, collisionID, 1, true);
-
-	Collision(GM_Sprite5, YourPlayer, camera, speed, collisionID, 2, true);
-
-	Collision(GM_Sprite4, YourPlayer, camera, speed, collisionID, 3, true);
-	
-	Collision(GM_Row2, YourPlayer, camera, speed);
-
-	Collision(GM_Row1, YourPlayer, camera, speed);
-
-	Collision(GM_Sprite2, YourPlayer, camera, speed, collisionID, 10, true);
-
-	//Collision(GM_Row3, YourPlayer, camera, speed);
-
-	Collision(BS1, YourPlayer, camera, speed, collisionID, 4, true);
-
-	Collision(wall1, YourPlayer, camera, speed);
-
-	Collision(wall3, YourPlayer, camera, speed);
-
-	Collision(wall5, YourPlayer, camera, speed);
-
-	Collision(VM, YourPlayer, camera, speed);
-	
-	Collision(Alien1, YourPlayer, camera, speed, collisionID, 5, true);
-
-	Collision(HellBoy, YourPlayer, camera, speed);
-
-	Collision(Nurse, YourPlayer, camera, speed);
-	
-	Collision(Elf, YourPlayer, camera, speed, collisionID, 9, true);
-	
-	Collision(Todo, YourPlayer, camera, speed, collisionID, 6, true);
-	
-	Collision(Solilas, YourPlayer, camera, speed, collisionID, 7, true);
-
-	Collision(Lisa, YourPlayer, camera, speed, collisionID, 8, true);
-	
-	Render(window, camera, collisionID);
-}
-
 // Define the constructor of the space ship
 SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera) {
 	///// LAYERS
@@ -270,7 +187,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(BackScreen, BackS, 1, -500, -400);
 
 	GameMachine.loadFromFile("Textures/Main/game machine.png");
-	
+
 	setTextureNSprite(GameMachine, GM_Sprite, 0.15f, 30, 80);
 	setTextureNSprite(GameMachine, GM_Sprite2, 0.18f, 1040, 80);
 	GM_Sprite2.setScale(-0.18f, 0.18f);
@@ -344,7 +261,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	texts(Speech6, "No Game,\nI am sleeping", 1025, 65, 9, Dialouge);
 	Speech6.setFillColor(Color::Black);
 	// Background's Stuff
-	
+
 	Background.loadFromFile("Textures/Main/BackgroundCut.png");
 	setTextureNSprite(Background, Background_Sprite, 0.8f, 0, 0);
 	//
@@ -355,26 +272,26 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(VendingMachine, VM, 2, 550, 40);
 
 	//Player's Stuff
-	
+
 	Player.loadFromFile("Textures/Characters/yellow hair boy.png");
 	setTextureNSprite(Player, YourPlayer, 1, window.getSize().x / 2.f, window.getSize().y / 2.f - 30.f);
 	YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
 
 	//NPCs' stuff
 	NPC1.loadFromFile("Textures/Characters/Alien_idle.png");
-	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 220.0);
+	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 260.0);
 	Alien1.setScale(-3.5, 3.5);
-	
+
 	NPC2.loadFromFile("Textures/Characters/HellBoy.png");
 	setTextureNSprite(NPC2, HellBoy, 0.10, 700, 65);
 	//HellBoy.setScale(-0.12, 0.12);
 
 	NPC3.loadFromFile("Textures/Characters/Nurse-cut.png");
 	setTextureNSprite(NPC3, Nurse, 1, 840, 115);
-	
+
 	NPC4.loadFromFile("Textures/Characters/Elf.png");
 	setTextureNSprite(NPC4, Elf, 1.5, 75, 315);
-	
+
 	NPC5.loadFromFile("Textures/Characters/Protocol A.png");
 	setTextureNSprite(NPC5, C3PO, 3.5, 1360, 440);
 
@@ -389,7 +306,94 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 
 	NPC9.loadFromFile("Textures/Characters/Solilas.png");
 	setTextureNSprite(NPC9, Solilas, 1.5, 450, 50);
+
+}
+
+void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collisionID) {
+	speed = 500 * dt;
+	if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down))
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
+		{
+			YourPlayer.move(speed, 0);
+			camera.move(speed, 0);
+			y = 2;
+			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > screenXBorders)
+		{
+			YourPlayer.move(-speed, 0);
+			camera.move(-speed, 0);
+			y = 1;
+			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > screenYBorders)
+		{
+			YourPlayer.move(0, -speed);
+			camera.move(0, -speed);
+			y = 3;
+			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < window.getSize().y - (screenYBorders + 300))
+		{
+			YourPlayer.move(0, speed);
+			camera.move(0, speed);
+			y = 0;
+			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
+		}
+		
+	}
+	else {
+		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
+	}
 	
+	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 32, 32, 4);
+	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 1278, 1278, 3);
+	ChangeSprite(Elf, dt, g, l, alienSpriteTimer, alienSpriteDelay, 48, 81, 4);
+	ChangeSprite(Todo, dt, h, l, alienSpriteTimer, alienSpriteDelay, 64, 64, 4);
+	
+	collisionID = 0;
+	collison = false;
+
+	Collision(GM_Sprite, YourPlayer, camera, speed, collisionID, 1, true);
+
+	Collision(GM_Sprite5, YourPlayer, camera, speed, collisionID, 2, true);
+
+	Collision(GM_Sprite4, YourPlayer, camera, speed, collisionID, 3, true);
+	
+	Collision(GM_Row2, YourPlayer, camera, speed);
+
+	Collision(GM_Row1, YourPlayer, camera, speed);
+
+	Collision(GM_Sprite2, YourPlayer, camera, speed, collisionID, 10, true);
+
+	//Collision(GM_Row3, YourPlayer, camera, speed);
+
+	Collision(BS1, YourPlayer, camera, speed, collisionID, 4, true);
+
+	Collision(wall1, YourPlayer, camera, speed);
+
+	Collision(wall3, YourPlayer, camera, speed);
+
+	Collision(wall5, YourPlayer, camera, speed);
+
+	Collision(VM, YourPlayer, camera, speed);
+	
+	Collision(Alien1, YourPlayer, camera, speed, collisionID, 5, true);
+
+	Collision(HellBoy, YourPlayer, camera, speed);
+
+	Collision(Nurse, YourPlayer, camera, speed);
+	
+	Collision(Elf, YourPlayer, camera, speed, collisionID, 9, true);
+	
+	Collision(Todo, YourPlayer, camera, speed, collisionID, 6, true);
+	
+	Collision(Solilas, YourPlayer, camera, speed, collisionID, 7, true);
+
+	Collision(Lisa, YourPlayer, camera, speed, collisionID, 8, true);
+	
+	Render(window, camera, collisionID);
 }
 
 // Define the Render function of the space ship

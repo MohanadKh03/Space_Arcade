@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <Ctime>
+#include <SFML/Audio.hpp>
 const int NumOfEnemies = 60;
 const int NumOfBullets = 20;
 const int NumOfEnemyBullets = 2;
@@ -32,6 +33,7 @@ struct Bullet {
 //};
 struct Sheild
 {
+	sf::Texture texture;
 	sf::RectangleShape body;
 	int health = 100;
 	bool active;
@@ -46,6 +48,8 @@ struct InvaderEnemy
 	int	blue = 255;
 	sf::Texture enemytexture;
 	Bullet enemybu;
+	sf::SoundBuffer enemyshot;
+	sf::Sound enemysound;
 	int bulletspeed;
 	sf::Sprite enemy;
 	int bulletIndex = 0;
@@ -55,6 +59,8 @@ struct InvaderEnemy
 struct Player {
 	float posx, posy, speedx = 10.f;
 	sf::Texture playertexture;
+	sf::SoundBuffer playershot;
+	sf::Sound playersound;
 	sf::RectangleShape playersprite;
 	bool Damaged;
 	int health;
@@ -76,9 +82,12 @@ struct SpaceInvader {
 	sf::Text SheildText[3];
 	sf::Font SheildFont[3];
 	InvaderEnemy enemies[NumOfEnemies];
+	sf::Music backgroundMusic;
 	Player player;
 	Bullet bullets[NumOfBullets];
 	Sheild sheilds[3];
+	sf::Texture background;
+	sf::Sprite backgroundsprite;
 	//Boss boss;
 	int bulletIndex = 0;
 	float bulletDelay = 0.0f;
@@ -94,8 +103,9 @@ struct SpaceInvader {
 	void GameOver(sf::RenderWindow& w, int& gameID);
 	void Run(sf::RenderWindow&, int&, sf::Event&, float&, int& gameID);
 	void Destroyandgen(float dt);
-	/*void Boss();
-	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);*/
+	/*void Boss();?*/
+	void audio();
+	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
 	void Sheild();
 	/*void PowerUps(float dt);*/
 };

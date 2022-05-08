@@ -14,6 +14,10 @@ int side = sf::VideoMode::getDesktopMode().width - 120;
 int z = 0;
 
 SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
+
+	//background music
+	backgroundMusic.openFromFile("Sounds/Space-Invaders/Backtheme.wav");
+	backgroundMusic.setLoop(true);
 	//sheild stuff
 	sheilds[0].body.setPosition(50, sf::VideoMode::getDesktopMode().height - sf::VideoMode::getDesktopMode().height / 4);
 
@@ -21,8 +25,8 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	{
 		if (i > 0)
 			sheilds[i].body.setPosition(sheilds[i - 1].body.getPosition().x + 700, sheilds[i - 1].body.getPosition().y);
-
-		sheilds[i].body.setFillColor(sf::Color(sf::Color::Green));
+		sheilds[i].texture.loadFromFile("Textures/Space Invaders/Shield.png");
+		sheilds[i].body.setTexture(&sheilds[i].texture);
 		sheilds[i].health = 100;
 		sheilds[i].body.setSize(sf::Vector2f(400.f, 100.f));
 		sheilds[i].active = true;
@@ -50,7 +54,7 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		SheildFont[i].loadFromFile("Fonts/ARCADE_R.ttf");
 		SheildText[i].setFont(SheildFont[i]);
 		SheildText[i].setFillColor(sf::Color(sf::Color::Red));
-		SheildText[i].setString("Health : " + to_string(sheilds[i].health));
+		SheildText[i].setString(to_string(sheilds[i].health)+ "%");
 	}
 
 
@@ -64,7 +68,9 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 
 	boss.Boss.setColor(sf::Color(0, 255, 255, 0));*/
 
-
+	//background
+	background.loadFromFile("Textures/Space Invaders/Space Invaders Background.png");
+	backgroundsprite.setTexture(background);
 	//Enemy Stuff
 	enemies[0].health = 100;
 	enemies[0].posx = 20;
@@ -72,6 +78,8 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	enemies[0].enemytexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
 	enemies[0].enemy.setTexture(enemies[0].enemytexture);
 	enemies[0].enemy.setScale(sf::Vector2f(0.8 * WindowFactor, 0.8 * WindowFactor));
+	enemies[0].enemyshot.loadFromFile("Sounds/Space-Invaders/EnemyShot.wav");
+	enemies[0].enemysound.setBuffer(enemies[0].enemyshot);
 	enemies[0].enemy.setPosition(sf::Vector2f(enemies[0].posx, enemies[0].posy));
 	enemies[0].enemy.setColor(sf::Color(enemies[0].enemy.getColor().r, enemies[0].enemy.getColor().b, enemies[0].enemy.getColor().g, 240));
 	enemies[0].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
@@ -89,6 +97,8 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 		enemies[i].enemytexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
 		enemies[i].enemy.setTexture(enemies[i].enemytexture);;
 		enemies[i].enemy.setScale(sf::Vector2f(0.8 * WindowFactor, 0.8 * WindowFactor));
+		enemies[i].enemyshot.loadFromFile("Sounds/Space-Invaders/EnemyShot.wav");
+		enemies[i].enemysound.setBuffer(enemies[i].enemyshot);
 		enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
 		enemies[i].enemybu.body.setSize(sf::Vector2f(4.f, 8.f));
 		enemies[i].enemybu.released = false;
@@ -116,6 +126,8 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	player.posx = sf::VideoMode::getDesktopMode().width / 2;
 	player.posy = sf::VideoMode::getDesktopMode().height - 100 * WindowFactor;
 	player.playertexture.loadFromFile("Textures/Space Invaders/blueship.png");
+	player.playershot.loadFromFile("Sounds/Space-Invaders/PlayerShot.wav");
+	player.playersound.setBuffer(player.playershot);
 	player.playersprite.setTexture(&player.playertexture);
 	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 21.68f, window.getSize().y / 14));
 	player.playersprite.setPosition(sf::Vector2f(player.posx, player.posy));
@@ -130,6 +142,9 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	}
 	//// Reset the score
 	//score = 0;
+	backgroundMusic.play();
+	backgroundMusic.setLoop(true);
+	backgroundMusic.setVolume(100.f);
 
 }
 
@@ -218,6 +233,7 @@ void SpaceInvader::bulletsFunction(sf::Event& event, float dt)
 void SpaceInvader::ShootBullet(float& dt) {
 	//moving the bullet FROM the player UPWARDS after it is shot
 	bullets[bulletIndex].released = true;
+	player.playersound.play();
 	bullets[bulletIndex].body.setSize(sf::Vector2f(20.f, 40.f));
 	bullets[bulletIndex].body.setPosition(player.playersprite.getPosition() + sf::Vector2f(player.playersprite.getSize().x / 2 - 2, 0));
 	bullets[bulletIndex].speed = sf::Vector2f(0, -900);
@@ -268,7 +284,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 			if (bullets[i].body.getGlobalBounds().intersects(sheilds[j].body.getGlobalBounds()) && sheilds[j].active)
 			{
 				sheilds[j].health--;
-				SheildText[j].setString("Health : " + to_string(sheilds[j].health));
+				SheildText[j].setString(to_string(sheilds[j].health)+"%");
 				bullets[i].released = false;
 			}
 
@@ -285,7 +301,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 			if (enemies[i].enemybu.body.getGlobalBounds().intersects(sheilds[j].body.getGlobalBounds()) && sheilds[j].active)
 			{
 				sheilds[j].health--;
-				SheildText[j].setString("Health : " + to_string(sheilds[j].health));
+				SheildText[j].setString(to_string(sheilds[j].health) + "%");
 				enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
 				enemies[i].enemybu.released = false;
 			}
@@ -301,6 +317,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 void SpaceInvader::Run(sf::RenderWindow& win, int& GAMEscore, sf::Event& e, float& dt, int& gameID) {
 	GAMEscore = score;
 	// win.draw(boss.Boss);
+	win.draw(backgroundsprite);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
 		win.draw(enemies[i].enemybu.body);
@@ -418,6 +435,7 @@ void SpaceInvader::Destroyandgen(float dt)
 
 				enemies[i].enemybu.released = true;
 				enemies[i].bulletspeed = bulletspeedgen * 100;
+				enemies[i].enemysound.play();
 
 			}
 		}
@@ -429,7 +447,6 @@ void SpaceInvader::Destroyandgen(float dt)
 		//regen
 		if (enemies[i].enemybu.body.getPosition().y > sf::VideoMode::getDesktopMode().height - 20)
 		{
-
 			enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
 			enemies[i].enemybu.released = false;
 
@@ -450,6 +467,7 @@ void SpaceInvader::Sheild()
 			sheilds[i].body.setFillColor(sf::Color(0, 0, 0, 0));
 			sheilds[i].active = false;
 			SheildText[i].setScale(sf::Vector2f(0, 0));
+			
 		}
 	}
 }

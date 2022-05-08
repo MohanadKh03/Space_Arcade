@@ -2,10 +2,14 @@
 #include <math.h>
 #include <time.h>
 
+
+
 // Constructor
 // Set the initial values of the game's variables
 game::game(RenderWindow* window, int& score)
 {
+    //rand seed
+    srand(time(0));
     // No. of blocks on the screen
     blocksWidth = (int)window->getSize().x / 80;
     blocksHeight = (int)window->getSize().y / 150;
@@ -55,7 +59,7 @@ game::game(RenderWindow* window, int& score)
 
     bgBuffer.loadFromFile("Sounds/Brick Breaker/Breaker.wav");
     bgMusic.setBuffer(bgBuffer);
-    bgMusic.setVolume(10.0f);
+    bgMusic.setVolume(50.0f);
     bgMusic.play();
     bgMusic.setLoop(true);
 
@@ -204,7 +208,7 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
 
         // Ball trail update
         ballTrail[0].setPosition(ball.getPosition());
-        for (int i = 19; i > 0; i--) {
+        for (int i = (sizeof(ballTrail) / sizeof(ballTrail[0]) - 1); i > 0; i--) {
             ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
         }
 
@@ -270,7 +274,7 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
                 speed.y += speedfactor * ratio;
             ball.setPosition(Vector2f(ball.getPosition().x, paddle.getPosition().y - (ball.getRadius() * 2.0f)));
             speed.y = -abs(speed.y);
-            //if The Paddle is Moving Right The Ball Will MOve Right 
+            //if The Paddle is Moving Right The Ball Will Move Right 
             if (direction == 1) {
                 speed.x = cos(45 * (M_PI / 180.0)) * defaultspeed + speedfactor * ratio;
             }

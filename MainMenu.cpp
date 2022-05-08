@@ -67,14 +67,14 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     float SpaceY = window.getSize().y * 0.5;
     SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
     Spacer.setTexture(SpaceMan);
-    Spacer.setScale(2.0, 2.0);
+    Spacer.setScale((float)width/1000.0f, (float)width/1000.0f);
     Spacer.setPosition(SpaceX, SpaceY);
     factor = 1;
 
     font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", 100, height / 2, 35, font);
-    texts(menu[1], "Exit", 100, height / 1.5f, 35, font);
+    texts(menu[0], "Play", width * 0.1f, height / 2 , 35, font);
+    texts(menu[1], "Exit", width * 0.1f, height / 1.5f, 35, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
 
@@ -86,7 +86,7 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     //RotationClock.restart();
 
 
-    texts(menu[2], "Space Arcade", 300, height / 4, 80, font);
+    texts(menu[2], "Space Arcade", width/8.0f, height / 4, (int)(width/20), font);
     menu[2].setOutlineThickness(2); menu[2].setOutlineColor(Color::Black);
     menu[2].setFillColor(Color::Cyan);
 

@@ -26,11 +26,11 @@ Duck::Duck(RenderWindow& window) {
 	score = 0;
 	duckMenu.loadFromFile("Fonts/AshetyPersonaluse-Medium.otf");
 	
-	hahaSound.loadFromFile("haha.wav");
-	haha.setVolume(10.0);
+	hahaSound.loadFromFile("Sounds/Duck/haha.wav");
+	haha.setVolume(50.0);
 
 	duckExpo.loadFromFile("Sounds/Duck/Duck explosion.wav");
-	ExpolosionDuck.setVolume(12.0);
+	ExpolosionDuck.setVolume(60.0);
 
 	// special effects calls  /////////////////////////////////////////
 	hitEffectTex.loadFromFile("Textures/Duck/Explosion Red.png");
@@ -198,8 +198,8 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 		}
 
 
-		text.setString("Health" + to_string(health));
-		score_text.setString("Score" + to_string(score));
+		text.setString("Health: " + to_string(health));
+		score_text.setString("Score: " + to_string(score));
 	}
 	if (effectTimer <= 0 && spriteIndex < 8) {
 		spriteIndex++;
@@ -219,6 +219,10 @@ void Duck::SpawnShips(RenderWindow& window) {
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (!enemies[i].alive && enemiesCount < maxEnemies) {
 				directionIndex = rand() % 4;
+				if (enemies[i].friendly)
+					shipSpeed = 400.0f;
+				else
+					shipSpeed = 200.0f;
 				switch (directionIndex)
 				{
 				case 0:
@@ -281,6 +285,12 @@ Ship::Ship() {
 	duck.setSize(Vector2f(100, 100));
 	duck.setFillColor(Color::White);
 	duck.setPosition(position);
+	if (friendly) {
+
+	}
+	else {
+
+	}
 }
 
 void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount)

@@ -99,8 +99,8 @@ void Load(RenderWindow& window, myPlayer mp[]) {
 
 int main()
 {
-    //RenderWindow window(VideoMode(1600,900), "Space Arcade");
-    RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
+    RenderWindow window(VideoMode(1360,768), "Space Arcade");
+    //RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
 
@@ -173,7 +173,7 @@ int main()
                     MapMusic.pause();
                     DuckGame.play();
                     DuckGame.setLoop(true);
-                    DuckGame.setVolume(4.0);
+                    DuckGame.setVolume(30.0);
                     
                 }
             }
@@ -237,9 +237,9 @@ int main()
                 Font SHOW_USER_FONT, USER_FONT;
                 SHOW_USER_FONT.loadFromFile("Fonts/ARCADE_R.ttf");
                 USER_FONT.loadFromFile("Fonts/ARCADE_I.ttf");
-                texts(ShowTheUser, "Enter your username", window.getSize().x / 4.f, window.getSize().y / 2.f, 50, SHOW_USER_FONT);
+                texts(ShowTheUser, "Enter your username", window.getSize().x / 4.f, window.getSize().y / 2.f, window.getSize().x / 35.0f, SHOW_USER_FONT);
                 window.draw(ShowTheUser);
-                texts(Username, user.playerName, ShowTheUser.getPosition().x+250, ShowTheUser.getPosition().y + 100, 35, USER_FONT);
+                texts(Username, user.playerName, ShowTheUser.getPosition().x+(ShowTheUser.getGlobalBounds().width/3.5f), ShowTheUser.getPosition().y + 100, window.getSize().x / 45.0f, USER_FONT);
                 window.draw(Username);
             }
 

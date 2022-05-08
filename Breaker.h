@@ -52,8 +52,6 @@ private:
 	// Blocks' Variables
 	int blocksWidth = 0;
 	int blocksHeight = 0;
-	int blockWidth = 1;
-	const int number = blocksWidth * blocksHeight;
 	RectangleShape blocks[16][40];
 
 	// UI Variables
