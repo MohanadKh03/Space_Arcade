@@ -67,11 +67,11 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     Font font;
     font.loadFromFile("Fonts/AmbersHand-Regular.ttf");
 
-    texts(Name, "Name", 100, 100, 50, font);
-    texts(Games[0], "BRICK BREAKER", 350, 100, 50, font);
-    texts(Games[1], "SPACE SHOOTER", 750, 100, 50, font);
-    texts(Games[2], "SPACE INVADER", 1150, 100, 50, font);
-    texts(Games[3], "SUM", 1550, 100, 50, font);
+    texts(Name, "Name", window.getSize().x*0.1f, 100, window.getSize().x / 40, font);
+    texts(Games[0], "BRICK BREAKER", window.getSize().x * 0.2f, 100, window.getSize().x / 40, font);
+    texts(Games[1], "SPACE SHOOTER", window.getSize().x * 0.4f, 100, window.getSize().x / 40, font);
+    texts(Games[2], "SPACE INVADER", window.getSize().x * 0.6f, 100, window.getSize().x / 40, font);
+    texts(Games[3], "SUM", window.getSize().x * 0.8f, 100, window.getSize().x / 50, font);
 
     window.draw(Name);
     for (int i = 0; i < 4; i++) {
@@ -99,8 +99,8 @@ void Load(RenderWindow& window, myPlayer mp[]) {
 
 int main()
 {
-    RenderWindow window(VideoMode(1360,768), "Space Arcade");
-    //RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
+    //RenderWindow window(VideoMode(1360,768), "Space Arcade");
+    RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
 
@@ -257,7 +257,7 @@ int main()
             brickBreakerGame->deltaTime = dt;
             brickBreakerGame->run(window, event, user.score_BrickBreaker,gameID);
         }
-        //2nd Game
+        //Duck Shooter
         else if (gameID == 2) {
             
             if (!duck)
@@ -289,6 +289,7 @@ int main()
         }
 
         window.display();
+        // Store the time elapsed is a single frame into a variable
         dt = gameClock.getElapsedTime().asSeconds();
 
 

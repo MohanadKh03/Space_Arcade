@@ -42,7 +42,6 @@ int g = 0, h = 0;
 int* temp_ptr;
 void Collision(Sprite& body, Sprite& player, View& camera, float speed, int& collisionID = *temp_ptr, int id = 0, bool GM = false)
 {
-	
 	if (GM) {
 		//FloatRect rect = FloatRect(player.getGlobalBounds().left, player.getGlobalBounds().top, player.getGlobalBounds().width + 40, player.getGlobalBounds().height + 40);
 		FloatRect rect = FloatRect(body.getGlobalBounds().left - 50, body.getGlobalBounds().top - 50, body.getGlobalBounds().width + 100, body.getGlobalBounds().height + 100);
@@ -166,8 +165,6 @@ struct SpaceShip {
 
 	int x = 0, y = 0; // For the sprite sheet
 
-	int screenXBorders;
-	int screenYBorders;
 	float speed = 100.0f;
 	bool gameCollision = false;
 
@@ -296,13 +293,13 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(NPC5, C3PO, 3.5, 1360, 440);
 
 	NPC6.loadFromFile("Textures/Characters/Astro A.png");
-	setTextureNSprite(NPC6, R4D4, 2.5, 1320, 350);
+	setTextureNSprite(NPC6, R4D4, 2.5, 1355, 350);
 
 	NPC7.loadFromFile("Textures/Characters/Todo.png");
 	setTextureNSprite(NPC7, Todo, 1, 343, 605);
 
 	NPC8.loadFromFile("Textures/Characters/Lisa.png");
-	setTextureNSprite(NPC8, Lisa, 1.5, 1260, 300);
+	setTextureNSprite(NPC8, Lisa, 1.5, 1290, 300);
 
 	NPC9.loadFromFile("Textures/Characters/Solilas.png");
 	setTextureNSprite(NPC9, Solilas, 1.5, 450, 50);
@@ -313,28 +310,28 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	speed = 500 * dt;
 	if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Down))
 	{
-		if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < window.getSize().x - (screenXBorders + 650))
+		if (Keyboard::isKeyPressed(Keyboard::Right) && YourPlayer.getPosition().x < Background_Sprite.getPosition().x + Background_Sprite.getGlobalBounds().width - (Background_Sprite.getGlobalBounds().width * 0.17f))
 		{
 			YourPlayer.move(speed, 0);
 			camera.move(speed, 0);
 			y = 2;
 			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > screenXBorders)
+		if (Keyboard::isKeyPressed(Keyboard::Left) && YourPlayer.getPosition().x > Background_Sprite.getPosition().x + (Background_Sprite.getGlobalBounds().width * 0.01f))
 		{
 			YourPlayer.move(-speed, 0);
 			camera.move(-speed, 0);
 			y = 1;
 			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > screenYBorders)
+		if (Keyboard::isKeyPressed(Keyboard::Up) && YourPlayer.getPosition().y > Background_Sprite.getPosition().y + (Background_Sprite.getGlobalBounds().height * 0.13f))
 		{
 			YourPlayer.move(0, -speed);
 			camera.move(0, -speed);
 			y = 3;
 			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < window.getSize().y - (screenYBorders + 300))
+		if (Keyboard::isKeyPressed(Keyboard::Down) && YourPlayer.getPosition().y < Background_Sprite.getPosition().y + Background_Sprite.getGlobalBounds().height - (Background_Sprite.getGlobalBounds().height * 0.2f))
 		{
 			YourPlayer.move(0, speed);
 			camera.move(0, speed);

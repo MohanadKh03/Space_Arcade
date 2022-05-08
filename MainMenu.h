@@ -14,10 +14,6 @@ struct Menu {
     Sprite Spacer;
     Clock RotationClock;
 
-    
-    
-
-
 
     //constructor of the Menu 
     Menu(RenderWindow& window, float width, float height);

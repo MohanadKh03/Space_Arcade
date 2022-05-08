@@ -73,18 +73,14 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 
     font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", width * 0.1f, height / 2 , 35, font);
-    texts(menu[1], "Exit", width * 0.1f, height / 1.5f, 35, font);
+    texts(menu[0], "Play", width * 0.1f, height / 2 , width/50, font);
+    texts(menu[1], "Exit", width * 0.1f, height / 1.5f, width/50, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
 
-    
-    
-    
     //Spacer.rotate(60);
     
     //RotationClock.restart();
-
 
     texts(menu[2], "Space Arcade", width/8.0f, height / 4, (int)(width/20), font);
     menu[2].setOutlineThickness(2); menu[2].setOutlineColor(Color::Black);
