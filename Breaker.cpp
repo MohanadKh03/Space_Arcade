@@ -17,21 +17,25 @@ game::game(RenderWindow* window, int& score)
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color::White);
     paddle.setPosition(Vector2f(window->getSize().x / 2 - (paddle.getSize().x / 2), window->getSize().y - 40));
+    Paddle_texture.loadFromFile("Textures/Brick Breaker/56-Breakout-Tiles.png");
+    paddle.setTexture(&Paddle_texture);
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
     speedfactor = 50.0f;
     defaultspeed = 500.0f;
+    Ball_texture.loadFromFile("Textures/Brick Breaker/58-Breakout-Tiles.png");
+    ball.setTexture(&Ball_texture);
     angle = 0.0f;
-    // Ball Trail
-    ballTrail[0].setFillColor(Color::White);
-    ballTrail[0].setRadius(ball.getRadius());
-    ballTrail[0].setPosition(ball.getPosition());
-    for (int i = 1; i < 20; i++) {
-        ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
-        ballTrail[i].setFillColor(ballTrail[i - 1].getFillColor() - Color(0, 0, 0, 12));
-        ballTrail[i].setRadius(ballTrail[i - 1].getRadius() - 0.5f);
-    }
+    //// Ball Trail
+    //ballTrail[0].setFillColor(Color::White);
+    //ballTrail[0].setRadius(ball.getRadius());
+    //ballTrail[0].setPosition(ball.getPosition());
+    //for (int i = 1; i < 20; i++) {
+    //    ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
+    //    ballTrail[i].setFillColor(ballTrail[i - 1].getFillColor() - Color(0, 0, 0, 12));
+    //    ballTrail[i].setRadius(ballTrail[i - 1].getRadius() - 0.5f);
+    //}
 
     // Draw the UI
     font.loadFromFile("Fonts/JosefinSans-Bold.ttf");
@@ -68,6 +72,19 @@ game::game(RenderWindow* window, int& score)
 
     loseBuffer.loadFromFile("Sounds/Brick Breaker/Breaker-Lose.wav");
     loseSound.setBuffer(loseBuffer);
+    //blocks Textures
+    brick1.loadFromFile("Textures/Brick Breaker/Yellow.jpeg");
+    brick2.loadFromFile("Textures/Brick Breaker/Red.jpeg");
+    brick3.loadFromFile("Textures/Brick Breaker/Green.jpeg");
+    brick4.loadFromFile("Textures/Brick Breaker/Purple.jpeg");
+    brick5.loadFromFile("Textures/Brick Breaker/Blue.jpeg");
+    brick6.loadFromFile("Textures/Brick Breaker/Lightblue.jpeg");
+    brick7.loadFromFile("Textures/Brick Breaker/Lightgreen.jpeg");
+    brick8.loadFromFile("Textures/Brick Breaker/Gray.jpeg");
+    brick9.loadFromFile("Textures/Brick Breaker/Brown.jpeg");
+
+    Background.loadFromFile("Textures/Brick Breaker/BlackBG.jpg");
+    Backsprite.setTexture(Background);
 
     reset();
     score = 0;
@@ -89,31 +106,43 @@ game::game(RenderWindow* window, int& score)
             // Set each block
             blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 18 - 2));
             blocks[y][x].setOutlineThickness(1.0f);
-            int randomColor = rand() % 5;
+            int randomColor = rand() % 8;
             while (randomColor == lastRandColor)
             {
-                randomColor = rand() % 5;
+                randomColor = rand() % 8;
             }
             switch (randomColor)
             {
             case 0:
-                blocks[y][x].setFillColor(Color::Blue);
+                blocks[y][x].setTexture(&brick1);
                 break;
             case 1:
-                blocks[y][x].setFillColor(Color::Red);
+                blocks[y][x].setTexture(&brick2);
                 break;
             case 2:
-                blocks[y][x].setFillColor(Color::Green);
+                blocks[y][x].setTexture(&brick3);
                 break;
             case 3:
-                blocks[y][x].setFillColor(Color::Magenta);
+                blocks[y][x].setTexture(&brick4);
                 break;
             case 4:
-                blocks[y][x].setFillColor(Color::Yellow);
+                blocks[y][x].setTexture(&brick5);
+                break;
+            case 5:
+                blocks[y][x].setTexture(&brick6);
+                break;
+            case 6:
+                blocks[y][x].setTexture(&brick7);
+                break;
+            case 7:
+                blocks[y][x].setTexture(&brick8);
+                break;
+            case 8:
+                blocks[y][x].setTexture(&brick9);
                 break;
             }
             lastRandColor = randomColor;
-            blocks[y][x].setOutlineColor(Color::White);
+            blocks[y][x].setOutlineColor(Color::Black);
             blocks[y][x].setPosition(Vector2f(x * ((blocks[y][x].getSize().x + 2) / randomSize), (y + 1) * (blocks[y][x].getSize().y + 2)));
             if (randomSize == 2) {
                 x++;
@@ -206,11 +235,11 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
         // Ball position update
         ball.setPosition(Vector2f(ball.getPosition().x + (speed.x * deltaTime), ball.getPosition().y + (speed.y * deltaTime)));
 
-        // Ball trail update
-        ballTrail[0].setPosition(ball.getPosition());
-        for (int i = (sizeof(ballTrail) / sizeof(ballTrail[0]) - 1); i > 0; i--) {
-            ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
-        }
+        //// Ball trail update
+        //ballTrail[0].setPosition(ball.getPosition());
+        //for (int i = (sizeof(ballTrail) / sizeof(ballTrail[0]) - 1); i > 0; i--) {
+        //    ballTrail[i].setPosition(ballTrail[i - 1].getPosition());
+        //}
 
 
         //.......Ball Boundry Collision.......
@@ -333,6 +362,7 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER)
 // Render the game 
 void game::render(RenderWindow& window)
 {
+    window.draw(Backsprite);
     // Spawn Blocks
     for (int y = 0; y < blocksHeight; y++)
     {
@@ -344,12 +374,12 @@ void game::render(RenderWindow& window)
     }
     window.draw(paddle);
     window.draw(ball);
-    if (speed.y != 0)
+ /*   if (speed.y != 0)
         for (int i = 0; i < 20; i++)
             window.draw(ballTrail[i]);
     else
         for (int i = 0; i < 20; i++)
-            ballTrail[i].setPosition(ball.getPosition());
+            ballTrail[i].setPosition(ball.getPosition());*/
     window.draw(textLife);
     window.draw(text);
     window.draw(hitEffect);

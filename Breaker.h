@@ -80,4 +80,20 @@ private:
 
 	// For WIN condition
 	int blockCount = 0;
+	//Bricks 
+	Texture brick1;
+	Texture brick2;
+	Texture brick3;
+	Texture brick4;
+	Texture brick5;
+	Texture brick6;
+	Texture brick7;
+	Texture brick8;
+	Texture brick9;
+
+	Texture Paddle_texture;
+	Texture Ball_texture;
+	Texture Background;
+	Sprite Backsprite;
+
 };
