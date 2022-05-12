@@ -28,4 +28,4 @@ struct Menu {
     int getPressed();
 };
 void texts(Text& x, string txt, float coordX, float coordY, int charSize, Font& font);
-void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, bool& credits,bool& about ,Event& event);
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, bool& credits, Event& event);

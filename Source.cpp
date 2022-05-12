@@ -17,7 +17,7 @@ struct myPlayer {
     int sum;
 };
 
-void TypeUsername(Event& event,bool& isSpaceshipMap,bool& UsernameTyping,myPlayer& user) {
+void TypeUsername(Event& event, bool& isSpaceshipMap, bool& UsernameTyping, myPlayer& user) {
     if (event.type == Event::TextEntered) {
         if (event.text.unicode != '\b') //just checking if the text is in unicode
             user.playerName += event.text.unicode;
@@ -50,7 +50,7 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     ifstream file("Data/scoreboard.txt");
     int i = 0;
     while (file.good() && i != 30) {
-        file >> mp[i].playerName >> mp[i].score_BrickBreaker >> mp[i].scoreDuck>> mp[i].score_SpaceInvader >> mp[i].sum;
+        file >> mp[i].playerName >> mp[i].score_BrickBreaker >> mp[i].scoreDuck >> mp[i].score_SpaceInvader >> mp[i].sum;
         i++;
         file.clear();
     }
@@ -67,7 +67,7 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     Font font;
     font.loadFromFile("Fonts/AmbersHand-Regular.ttf");
 
-    texts(Name, "Name", window.getSize().x*0.1f, 100, window.getSize().x / 40, font);
+    texts(Name, "Name", window.getSize().x * 0.1f, 100, window.getSize().x / 40, font);
     texts(Games[0], "BRICK BREAKER", window.getSize().x * 0.2f, 100, window.getSize().x / 40, font);
     texts(Games[1], "SPACE SHOOTER", window.getSize().x * 0.4f, 100, window.getSize().x / 40, font);
     texts(Games[2], "SPACE INVADER", window.getSize().x * 0.6f, 100, window.getSize().x / 40, font);
@@ -97,22 +97,22 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     }
 }
 
-void getCreditsNames(RenderWindow& window,Text txt[],Text& Backspace,Font& f,bool& credits,bool& isMenu) {
+void getCreditsNames(RenderWindow& window, Text txt[], Text& Backspace, Font& f, bool& credits, bool& isMenu) {
     Texture t_mainBG;
     Sprite s_mainBG;
     t_mainBG.loadFromFile("Textures/Main/BlackBG.jpg");
     s_mainBG.setTexture(t_mainBG);
     s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
-                    , window.getSize().y / s_mainBG.getLocalBounds().height);
-    
-    texts(Backspace, "Press (Space) to go back!", window.getSize().x/2.f,50, 70, f);
+        , window.getSize().y / s_mainBG.getLocalBounds().height);
 
-    texts(txt[0], "Mo'men Kadry", window.getSize().x/3.f, window.getSize().y-800 , 50, f);
+    texts(Backspace, "Press (Space) to go back!", window.getSize().x / 2.f, 50, 70, f);
+
+    texts(txt[0], "Mo'men Kadry", window.getSize().x / 3.f, window.getSize().y - 800, 50, f);
     texts(txt[1], "Seif Sherif", window.getSize().x / 6.0f, window.getSize().y - 700, 50, f);
     texts(txt[2], "Youssef Ahmed", window.getSize().x / 3.0f, window.getSize().y - 600, 50, f);
-    texts(txt[3], "Marwan Hossam", window.getSize().x / 6.0f, window.getSize().y - 500 , 50, f);
+    texts(txt[3], "Marwan Hossam", window.getSize().x / 6.0f, window.getSize().y - 500, 50, f);
     texts(txt[4], "Noureldin Hesham", window.getSize().x / 3.f, window.getSize().y - 400, 50, f);
-    texts(txt[5], "Mohamed Gamal", window.getSize().x / 6.0f, window.getSize().y - 300 , 50, f);
+    texts(txt[5], "Mohamed Gamal", window.getSize().x / 6.0f, window.getSize().y - 300, 50, f);
     texts(txt[6], "Mohanad Khaled", window.getSize().x / 3.f, window.getSize().y - 200, 50, f);
 
     window.draw(s_mainBG);
@@ -149,14 +149,14 @@ int main()
     int collisionID = 0;
 
     //booleans for the Menu itself and Play  
-    Menu main(window, (float)windowX, (float)windowY); 
-    bool isMenuOpened = true, credits = false ,about = false,UsernameTyping = false, isSpaceshipMap = false, GamePlayed = false;
+    Menu main(window, (float)windowX, (float)windowY);
+    bool isMenuOpened = true, credits = false, UsernameTyping = false, isSpaceshipMap = false, GamePlayed = false;
 
     View camera(Vector2f(0.0f, 0.0f), Vector2f((float)window.getSize().x / 2, (float)window.getSize().y / 2));
 
-    
+
     SpaceShip spaceShipStruct(window, gameID, dt, camera);
-    
+
     //The 3 Games
     myPlayer user;
     game* brickBreakerGame = NULL;
@@ -171,23 +171,23 @@ int main()
     Music MapMusic;
     MapMusic.openFromFile("Sounds/Main/MapMusic.wav");
     MapMusic.setLoop(true);
-    
+
     //
     while (window.isOpen())
     {
         gameClock.restart();
         Event event;
-       
+
         //Events
         while (window.pollEvent(event))
         {
-                
+
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
             //Menu and Username Events
             if (gameID == 0) {
-                RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, about, event);
-                
+                RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
+
                 //EVENTS OF THE USERNAME TYPING
                 if (UsernameTyping) {
                     TypeUsername(event, isSpaceshipMap, UsernameTyping, user);
@@ -203,18 +203,18 @@ int main()
                 gameID = collisionID;
                 canPlay = false;
                 if (gameID == 2)
-                {   
+                {
                     MapMusic.pause();
                     DuckGame.play();
                     DuckGame.setLoop(true);
                     DuckGame.setVolume(30.0);
-                    
+
                 }
             }
 
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 gameID = 0;
-               
+
             }
             if (isSpaceshipMap) {
                 if (Keyboard::isKeyPressed(Keyboard::H)) {
@@ -230,7 +230,7 @@ int main()
                 MapMusic.pause();
                 brickBreakerGame->event(window, event);
             }
-            
+
         }
 
 
@@ -244,21 +244,21 @@ int main()
             if (sp) {
                 delete sp;
                 sp = NULL;
-                if (isSpaceshipMap) 
+                if (isSpaceshipMap)
                     MapMusic.play();
-                
+
             }
             if (brickBreakerGame) {
                 delete brickBreakerGame;
                 brickBreakerGame = NULL;
-                if(isSpaceshipMap)
-                   MapMusic.play();
+                if (isSpaceshipMap)
+                    MapMusic.play();
             }
             if (duck) {
                 delete duck;
                 duck = NULL;
                 DuckGame.stop();
-                if(isSpaceshipMap)
+                if (isSpaceshipMap)
                     MapMusic.play();
             }
 
@@ -287,19 +287,16 @@ int main()
                 texts(Username, user.playerName, ShowTheUser.getPosition().x + (ShowTheUser.getGlobalBounds().width / 3.5f), ShowTheUser.getPosition().y + 100, window.getSize().x / 45.0f, USER_FONT);
                 window.draw(Username);
             }
-            if (about) {
-                
-            }
             if (credits) {
-                Text names[7],backspace;
+                Text names[7], backspace;
                 Font font; font.loadFromFile("Fonts/World-of-spell.ttf");
-                getCreditsNames(window,names,backspace,font,credits,isMenuOpened);
-                
+                getCreditsNames(window, names, backspace, font, credits, isMenuOpened);
+
             }
-            
+
 
         }
-        
+
         //Brick Breaker
         else if (gameID == 1) {
             // Open the first game
@@ -310,20 +307,20 @@ int main()
             }
             window.setView(window.getDefaultView());
             brickBreakerGame->deltaTime = dt;
-            brickBreakerGame->run(window, event, user.score_BrickBreaker,gameID);
+            brickBreakerGame->run(window, event, user.score_BrickBreaker, gameID);
         }
         //Duck Shooter
         else if (gameID == 2) {
-            
+
             if (!duck)
             {
                 duck = new Duck(window);
                 GamePlayed = true;
             }
-                // Open the second game
+            // Open the second game
             window.setView(window.getDefaultView());
-            duck->Update(window, event, dt,gameID, user.scoreDuck);
-        
+            duck->Update(window, event, dt, gameID, user.scoreDuck);
+
         }
         //Space Invader
         else if (gameID == 3) {
@@ -334,7 +331,7 @@ int main()
                 GamePlayed = true;
             }
             window.setView(window.getDefaultView());
-            sp->Run(window, user.score_SpaceInvader, event, dt,gameID);
+            sp->Run(window, user.score_SpaceInvader, event, dt, gameID);
         }
         //Leaderboard
         else if (gameID == 4) {

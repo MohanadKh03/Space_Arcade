@@ -15,7 +15,7 @@ void texts(Text& x, string txt, float coordX, float coordY, int charSize, Font& 
 }
 
 
-void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME,bool& credits,bool& about, Event& event) {
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, bool& credits, Event& event) {
     //The start of the program , basically all the menu stuff ..
     //main.draw(window, isMENU);
     if (isMENU) {
@@ -23,13 +23,13 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAM
             //if the key is pressed then move up/down
         case Event::KeyReleased:
             switch (event.key.code) {
-                case Keyboard::Up:
-                    main.MoveUp();
-                    break;
-                case Keyboard::Down:
-                    main.MoveDown();
-                    break;
-                }
+            case Keyboard::Up:
+                main.MoveUp();
+                break;
+            case Keyboard::Down:
+                main.MoveDown();
+                break;
+            }
         }
         //conditions when entered .. ez 
         if (Keyboard::isKeyPressed(Keyboard::Enter)) {
@@ -40,13 +40,9 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAM
                 break;
             case 1:
                 isMENU = false;
-                about = true;
-                break;
-            case 2:
-                isMENU = false;
                 credits = true;
                 break;
-            case 3:
+            case 2:
                 window.close();
                 break;
             }
@@ -65,25 +61,25 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     float SpaceY = window.getSize().y * 0.5;
     SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
     Spacer.setTexture(SpaceMan);
-    Spacer.setScale((float)width/1000.0f, (float)width/1000.0f);
+    Spacer.setScale((float)width / 1000.0f, (float)width / 1000.0f);
     Spacer.setPosition(SpaceX, SpaceY);
     factor = 1;
 
     font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", width * 0.1f, height / 2.0f , width/50, font);
-    texts(menu[1], "About", width * 0.1f, height / 1.75f, width / 50, font);
-    texts(menu[2], "Credits", width * 0.1f, height / 1.5f, width/50, font);
-    texts(menu[3], "Exit", width * 0.1f, height-200, width / 50, font);
+    texts(menu[0], "Play", width * 0.1f, height / 2.0f, width / 50, font);
+    texts(menu[1], "Credits", width * 0.1f, height / 1.75f, width / 50, font);
+    texts(menu[2], "Exit", width * 0.1f, height / 1.5f, width / 50, font);
+    //texts(menu[3], "Exit", width * 0.1f, height-200, width / 50, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
     menu[2].setOutlineThickness(2.5);
-    menu[3].setOutlineThickness(2.5);
+    //menu[3].setOutlineThickness(2.5);
 
-    texts(menu[4], "Space Arcade", width/8.0f, height / 4, (int)(width/20), font);
-    menu[4].setOutlineThickness(2); 
-    menu[4].setOutlineColor(Color::Black);
-    menu[4].setFillColor(Color::Cyan);
+    texts(menu[3], "Space Arcade", width / 8.0f, height / 4, (int)(width / 20), font);
+    menu[3].setOutlineThickness(2);
+    menu[3].setOutlineColor(Color::Black);
+    menu[3].setFillColor(Color::Cyan);
 
     //First one is colored as if it's hovered 
     menu[0].setFillColor(Color::Cyan);
@@ -93,7 +89,7 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 void Menu::draw(RenderWindow& window, bool& isMENU) {
     if (isMENU) {
         window.draw(s_mainBG);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             window.draw(menu[i]);
         }
         if (RotationClock.getElapsedTime().asSeconds() > 0.1) {
@@ -114,7 +110,7 @@ void Menu::MoveUp() {
     }
 }
 void Menu::MoveDown() {
-    if (SELECTEDIndex + 1  < 4) {
+    if (SELECTEDIndex + 1 < 3) {
         menu[SELECTEDIndex].setFillColor(Color::White);
         menu[SELECTEDIndex + 1].setFillColor(Color::Cyan);
         SELECTEDIndex++;
