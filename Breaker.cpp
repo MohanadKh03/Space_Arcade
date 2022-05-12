@@ -82,6 +82,7 @@ game::game(RenderWindow* window, int& score)
     brick7.loadFromFile("Textures/Brick Breaker/Lightgreen.jpeg");
     brick8.loadFromFile("Textures/Brick Breaker/Gray.jpeg");
     brick9.loadFromFile("Textures/Brick Breaker/Brown.jpeg");
+    brick10.loadFromFile("Textures/Brick Breaker/Orange.jpeg");
 
     Background.loadFromFile("Textures/Brick Breaker/BlackBG.jpg");
     Backsprite.setTexture(Background);
@@ -106,10 +107,10 @@ game::game(RenderWindow* window, int& score)
             // Set each block
             blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 18 - 2));
             blocks[y][x].setOutlineThickness(1.0f);
-            int randomColor = rand() % 8;
+            int randomColor = rand() % 10;
             while (randomColor == lastRandColor)
             {
-                randomColor = rand() % 8;
+                randomColor = rand() % 10;
             }
             switch (randomColor)
             {
@@ -139,6 +140,9 @@ game::game(RenderWindow* window, int& score)
                 break;
             case 8:
                 blocks[y][x].setTexture(&brick9);
+                break;
+            case 9 :
+                blocks[y][x].setTexture(&brick10);
                 break;
             }
             lastRandColor = randomColor;

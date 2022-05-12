@@ -90,6 +90,7 @@ private:
 	Texture brick7;
 	Texture brick8;
 	Texture brick9;
+	Texture brick10;
 
 	Texture Paddle_texture;
 	Texture Ball_texture;
