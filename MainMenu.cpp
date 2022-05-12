@@ -14,32 +14,22 @@ void texts(Text& x, string txt, float coordX, float coordY, int charSize, Font& 
     x.setFont(font);
 }
 
-//void RotatonControl(Sprite& body, float& factor)
-//{
-//    if (RotationClock.getElapsedTime().asSeconds() >= 0.05)
-//    {
-//        factor += 20;
-//        body.rotate(3 + factor);
-//        RotationClock.restart();
-//    }
-//
-//}
 
-void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, Event& event) {
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME,bool& credits,bool& about, Event& event) {
     //The start of the program , basically all the menu stuff ..
-    main.draw(window, isMENU);
+    //main.draw(window, isMENU);
     if (isMENU) {
         switch (event.type) {
             //if the key is pressed then move up/down
-        case Event::KeyPressed:
+        case Event::KeyReleased:
             switch (event.key.code) {
-            case Keyboard::Up:
-                main.MoveUp();
-                break;
-            case Keyboard::Down:
-                main.MoveDown();
-                break;
-            }
+                case Keyboard::Up:
+                    main.MoveUp();
+                    break;
+                case Keyboard::Down:
+                    main.MoveDown();
+                    break;
+                }
         }
         //conditions when entered .. ez 
         if (Keyboard::isKeyPressed(Keyboard::Enter)) {
@@ -49,6 +39,14 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAM
                 USERNAME = true;
                 break;
             case 1:
+                isMENU = false;
+                about = true;
+                break;
+            case 2:
+                isMENU = false;
+                credits = true;
+                break;
+            case 3:
                 window.close();
                 break;
             }
@@ -73,18 +71,19 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 
     font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", width * 0.1f, height / 2 , width/50, font);
-    texts(menu[1], "Exit", width * 0.1f, height / 1.5f, width/50, font);
+    texts(menu[0], "Play", width * 0.1f, height / 2.0f , width/50, font);
+    texts(menu[1], "About", width * 0.1f, height / 1.75f, width / 50, font);
+    texts(menu[2], "Credits", width * 0.1f, height / 1.5f, width/50, font);
+    texts(menu[3], "Exit", width * 0.1f, height-200, width / 50, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
+    menu[2].setOutlineThickness(2.5);
+    menu[3].setOutlineThickness(2.5);
 
-    //Spacer.rotate(60);
-    
-    //RotationClock.restart();
-
-    texts(menu[2], "Space Arcade", width/8.0f, height / 4, (int)(width/20), font);
-    menu[2].setOutlineThickness(2); menu[2].setOutlineColor(Color::Black);
-    menu[2].setFillColor(Color::Cyan);
+    texts(menu[4], "Space Arcade", width/8.0f, height / 4, (int)(width/20), font);
+    menu[4].setOutlineThickness(2); 
+    menu[4].setOutlineColor(Color::Black);
+    menu[4].setFillColor(Color::Cyan);
 
     //First one is colored as if it's hovered 
     menu[0].setFillColor(Color::Cyan);
@@ -94,7 +93,7 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 void Menu::draw(RenderWindow& window, bool& isMENU) {
     if (isMENU) {
         window.draw(s_mainBG);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             window.draw(menu[i]);
         }
         if (RotationClock.getElapsedTime().asSeconds() > 0.1) {
@@ -108,14 +107,14 @@ void Menu::draw(RenderWindow& window, bool& isMENU) {
 }
 //Moving Up and Down using arrows
 void Menu::MoveUp() {
-    if (SELECTEDIndex == 1) {
+    if (SELECTEDIndex - 1 >= 0) {
         menu[SELECTEDIndex].setFillColor(Color::White);
         menu[SELECTEDIndex - 1].setFillColor(Color::Cyan);
         SELECTEDIndex--;
     }
 }
 void Menu::MoveDown() {
-    if (SELECTEDIndex == 0) {
+    if (SELECTEDIndex + 1  < 4) {
         menu[SELECTEDIndex].setFillColor(Color::White);
         menu[SELECTEDIndex + 1].setFillColor(Color::Cyan);
         SELECTEDIndex++;

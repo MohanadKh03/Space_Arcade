@@ -6,7 +6,7 @@ using namespace sf;
 struct Menu {
     int SELECTEDIndex;
     Font font;
-    Text menu[3];
+    Text menu[5];
     Texture t_mainBG;
     Sprite s_mainBG;
     int factor;
@@ -28,4 +28,4 @@ struct Menu {
     int getPressed();
 };
 void texts(Text& x, string txt, float coordX, float coordY, int charSize, Font& font);
-void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, Event& event);
+void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, bool& credits,bool& about ,Event& event);

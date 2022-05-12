@@ -28,7 +28,7 @@ void TypeUsername(Event& event,bool& isSpaceshipMap,bool& UsernameTyping,myPlaye
                 user.playerName.pop_back(); //remove letters ONLY if the string isnt empty
         }
 
-        if (event.key.code == Keyboard::Enter) {
+        if (event.key.code == Keyboard::Space) {
             isSpaceshipMap = true;
             UsernameTyping = false;
         }
@@ -97,6 +97,36 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     }
 }
 
+void getCreditsNames(RenderWindow& window,Text txt[],Text& Backspace,Font& f,bool& credits,bool& isMenu) {
+    Texture t_mainBG;
+    Sprite s_mainBG;
+    t_mainBG.loadFromFile("Textures/Main/BlackBG.jpg");
+    s_mainBG.setTexture(t_mainBG);
+    s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
+                    , window.getSize().y / s_mainBG.getLocalBounds().height);
+    
+    texts(Backspace, "Press (Space) to go back!", window.getSize().x/2.f,50, 70, f);
+
+    texts(txt[0], "Mo'men Kadry", window.getSize().x/3.f, window.getSize().y-800 , 50, f);
+    texts(txt[1], "Seif Sherif", window.getSize().x / 6.0f, window.getSize().y - 700, 50, f);
+    texts(txt[2], "Youssef Ahmed", window.getSize().x / 3.0f, window.getSize().y - 600, 50, f);
+    texts(txt[3], "Marwan Hossam", window.getSize().x / 6.0f, window.getSize().y - 500 , 50, f);
+    texts(txt[4], "Noureldin Hesham", window.getSize().x / 3.f, window.getSize().y - 400, 50, f);
+    texts(txt[5], "Mohamed Gamal", window.getSize().x / 6.0f, window.getSize().y - 300 , 50, f);
+    texts(txt[6], "Mohanad Khaled", window.getSize().x / 3.f, window.getSize().y - 200, 50, f);
+
+    window.draw(s_mainBG);
+    window.draw(Backspace);
+    for (int i = 0; i < 7; i++) {
+        txt[i].setFillColor(Color::Cyan);
+        window.draw(txt[i]);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Space)) {
+        credits = false;
+        isMenu = true;
+    }
+}
+
 int main()
 {
     //RenderWindow window(VideoMode(1360,768), "Space Arcade");
@@ -120,7 +150,7 @@ int main()
 
     //booleans for the Menu itself and Play  
     Menu main(window, (float)windowX, (float)windowY); 
-    bool isMenuOpened = true, UsernameTyping = false, isSpaceshipMap = false, GamePlayed = false;
+    bool isMenuOpened = true, credits = false ,about = false,UsernameTyping = false, isSpaceshipMap = false, GamePlayed = false;
 
     View camera(Vector2f(0.0f, 0.0f), Vector2f((float)window.getSize().x / 2, (float)window.getSize().y / 2));
 
@@ -154,15 +184,19 @@ int main()
                 
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
-
-            //EVENTS OF THE USERNAME TYPING
-            if (UsernameTyping) {
-                TypeUsername(event, isSpaceshipMap, UsernameTyping, user);
-                if (isSpaceshipMap/* && !isMenuOpened && !UsernameTyping*/ && gameID == 0) {
-                    MapMusic.play();
+            //Menu and Username Events
+            if (gameID == 0) {
+                RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, about, event);
+                
+                //EVENTS OF THE USERNAME TYPING
+                if (UsernameTyping) {
+                    TypeUsername(event, isSpaceshipMap, UsernameTyping, user);
+                    if (isSpaceshipMap && gameID == 0) {
+                        MapMusic.play();
+                    }
+                    else
+                        MainMenu.stop();
                 }
-                else
-                    MainMenu.stop();
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison) {
@@ -182,7 +216,15 @@ int main()
                 gameID = 0;
                
             }
-
+            if (isSpaceshipMap) {
+                if (Keyboard::isKeyPressed(Keyboard::H)) {
+                    window.setView(window.getDefaultView());
+                    MapMusic.stop();
+                    isSpaceshipMap = false;
+                    isMenuOpened = true;
+                    MainMenu.play();
+                }
+            }
             if (gameID == 1)
             {
                 MapMusic.pause();
@@ -196,9 +238,9 @@ int main()
 
         //NO game yet .. Only the beginning (Main and username) then the spaceship stuff
         if (gameID == 0) {
-            
-            // Open the main menu and the space ship
-            RunMenuEvents(window, main, isMenuOpened,UsernameTyping, event);
+            main.draw(window, isMenuOpened); //Draw main menu
+
+            //Let all games point at NULL to avoid dangling pointers
             if (sp) {
                 delete sp;
                 sp = NULL;
@@ -220,9 +262,12 @@ int main()
                     MapMusic.play();
             }
 
+            //Update the spaceship designs and basically all the spaceship sprites,boxes, etc..
             if (isSpaceshipMap) {
                 spaceShipStruct.Update(window, camera, dt, collisionID);
             }
+
+            //Saving
             if (GamePlayed) {
                 Save(user);
                 GamePlayed = false;
@@ -239,9 +284,19 @@ int main()
                 USER_FONT.loadFromFile("Fonts/ARCADE_I.ttf");
                 texts(ShowTheUser, "Enter your username", window.getSize().x / 4.f, window.getSize().y / 2.f, window.getSize().x / 35.0f, SHOW_USER_FONT);
                 window.draw(ShowTheUser);
-                texts(Username, user.playerName, ShowTheUser.getPosition().x+(ShowTheUser.getGlobalBounds().width/3.5f), ShowTheUser.getPosition().y + 100, window.getSize().x / 45.0f, USER_FONT);
+                texts(Username, user.playerName, ShowTheUser.getPosition().x + (ShowTheUser.getGlobalBounds().width / 3.5f), ShowTheUser.getPosition().y + 100, window.getSize().x / 45.0f, USER_FONT);
                 window.draw(Username);
             }
+            if (about) {
+                
+            }
+            if (credits) {
+                Text names[7],backspace;
+                Font font; font.loadFromFile("Fonts/World-of-spell.ttf");
+                getCreditsNames(window,names,backspace,font,credits,isMenuOpened);
+                
+            }
+            
 
         }
         
