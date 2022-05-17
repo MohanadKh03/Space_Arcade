@@ -8,22 +8,33 @@ const int NumOfEnemies = 60;
 const int NumOfBullets = 20;
 const int NumOfEnemyBullets = 2;
 
+using namespace sf;
+
 //struct powerups
 //{
 //	int effect;
-//	sf::CircleShape body;
+//	sf::CircleShape sprite;
 //	sf::Clock powerclock;
 //	sf::Time powerTime;
 //	bool powerSpared;
 //	bool powerConsumed;
 //	bool fireRate;
 //};
+
+
 struct Bullet {
-	sf::Vector2f speed = { 0,-900 };
-	sf::RectangleShape body;
+	// ------------------------------ DRAW variables
+	RectangleShape sprite;
+
+	// ------------------------------ FUNCTIONALITY variables
+	Vector2f speed = { 0,-900 };
 	bool released = false;
+
+	// ------------------------------ FUNCTIONS
 	void Update(float&);
 };
+
+
 //struct Boss
 //{
 //	int health;
@@ -31,81 +42,127 @@ struct Bullet {
 //	sf::Texture BossTexture;
 //	Bullet bossBullet;
 //};
+
+// Defending shields variables
 struct Sheild
 {
-	sf::Texture texture;
-	sf::RectangleShape body;
+	// ------------------------------ DRAW variables
+	Texture texture;
+	RectangleShape sprite;
+	bool active = true;
+
+	// ------------------------------ FUNCTIONALITY variables
 	int health = 100;
-	bool active;
 };
-struct InvaderEnemy
+
+// Enemies struct
+struct Enemy
 {
-	float posx, posy, speedx = 120.f, speedy = 10.25f, health;
-	int shootingchance;
-	int transperancy = 0;
+	// ------------------------------ MOVEMENT variables
+	Vector2f pos = { 0.f,0.f };
+	Vector2f speed = { 120.0f, 10.25f };
+	int health = 0;
+
+	// ------------------------------ DRAW variables
+	Texture texture;
+	Sprite sprite;
 	int red = 255;
 	int green = 255;
 	int	blue = 255;
-	sf::Texture enemytexture;
-	Bullet enemybu;
-	sf::SoundBuffer enemyshot;
-	sf::Sound enemysound;
-	int bulletspeed;
-	sf::Sprite enemy;
+	// int alpha = 0;
+
+	// ------------------------------ SHOOTING variables
+	int shootingchance = 0;
+	int bulletspeed = 0;
 	int bulletIndex = 0;
+
+	// ------------------------------ EXTRA variables
+	Bullet bullet;
+	SoundBuffer bulletBuffer;
+	Sound bulletSound;
 	//powerups enemypower;
 
-};//
+};
+
+// Player struct
 struct Player {
-	float posx, posy, speedx = 10.f;
-	sf::Texture playertexture;
-	sf::SoundBuffer playershot;
-	sf::Sound playersound;
-	sf::RectangleShape playersprite;
+	// ------------------------------ MOVEMENT variables
+	Vector2f pos = { 0.f,0.f };
+	float speedx = 10.f;
+
+	// ------------------------------ DRAW variables
+	Texture texture;
+	SoundBuffer bulletBuffer;
+	Sound bulletSound;
+	RectangleShape sprite;
 	bool Damaged;
 	int health;
 };
 
+// Game Manager Struct
 struct SpaceInvader {
-	SpaceInvader(sf::RenderWindow& window);
-	float WindowFactor = sf::VideoMode::getDesktopMode().width / sf::VideoMode::getDesktopMode().height;
+	// ------------------------------ FONTS 
+	Font GameOverFont;
+	Font scorefont;
+	Font livesfont;
+	Font SheildFont[3];
+
+	// ------------------------------ TEXTS
+	Text GameOverText;
+	Text scoretext;
+	Text livestext;
+	Text SheildText[3];
+
+	// ------------------------------ Free INTS
 	int score = 0;
-	bool isgameover = false;
-	sf::Clock karizmaBoss;
-	sf::Clock playerLaser;
 	int animationTime = 0;
-	sf::Time KarizmaTime;
-	sf::Text GameOverText;
-	sf::Font GameOverFont;
-	sf::Text scoretext;
-	sf::Font scorefont;
-	sf::Text livestext;
-	sf::Font livesfont;
-	sf::Text SheildText[3];
-	sf::Font SheildFont[3];
-	InvaderEnemy enemies[NumOfEnemies];
-	sf::Music backgroundMusic;
+
+	// ------------------------------ TEXTURES
+	Texture background;
+	Texture laser;
+
+	// ------------------------------ SPRITES
+	Sprite bulletBuffer;
+	Sprite backgroundsprite;
+
+	// ------------------------------ GAME MANAGER Variables
+	float WindowFactor = (float)(VideoMode::getDesktopMode().width / VideoMode::getDesktopMode().height);
+	bool isgameover = false;
+
+	// ------------------------------ TIME Variables
+	//sf::Clock karizmaBoss;
+	Clock playerLaser;
+	Time KarizmaTime;
+
+	// ------------------------------ SOUND Variables
+	Music backgroundMusic;
+
+	// ------------------------------ Game Objects
+	Enemy enemies[NumOfEnemies];
 	Player player;
 	Bullet bullets[NumOfBullets];
 	Sheild sheilds[3];
-	sf::Texture background;
-	sf::Texture laser;
-	sf::Sprite playerShot;
-	sf::Sprite backgroundsprite;
 	//Boss boss;
+
+	// ------------------------------ PLAYER BULLETS Variables
 	int bulletIndex = 0;
 	float bulletDelay = 0.0f;
 	float bulletTimer = 0.1f;
-	sf::Clock clock;
-	sf::Time deltatimemove;
-	void EnemyMovement(float dt, sf::Clock& clock, sf::Time& deltatimemove);
+
+	// ------------------------------ ENEMY useless Seif Variables
+	Clock clock;
+	Time deltatimemove;
+
+	// ------------------------------ FUNCTIONS
+	SpaceInvader(sf::RenderWindow& window);
+	void EnemyMovement(float dt, Clock& clock, Time& deltatimemove);
 	void PlayerMovement();
 	/*void Enemybulletfunction(float dt);*/
 	void ShootBullet(float&);
-	void bulletsFunction(sf::Event& event, float dt);
-	void Collision(sf::RenderWindow& w, int& gameID);
-	void GameOver(sf::RenderWindow& w, int& gameID);
-	void Run(sf::RenderWindow&, int&, sf::Event&, float&, int& gameID);
+	void bulletsFunction(Event& event, float dt);
+	void Collision(RenderWindow& w, int& gameID);
+	void GameOver(RenderWindow& w, int& gameID);
+	void Run(RenderWindow&, int&, Event&, float&, int& gameID);
 	void Destroyandgen(float dt);
 	/*void Boss();?*/
 	/*void audio();

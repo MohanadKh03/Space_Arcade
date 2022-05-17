@@ -36,7 +36,7 @@ Duck::Duck(RenderWindow& window) {
 	hitEffectTex.loadFromFile("Textures/Duck/Explosion Red.png");
 	hitEffect.setTexture(hitEffectTex);
 	hitEffect.setOrigin(64, 64);
-	hitEffect.setScale(Vector2f(window.getSize().x / 700, window.getSize().x / 700));
+	hitEffect.setScale(Vector2f((float)window.getSize().x / 700, (float)window.getSize().x / 700));
 
 	background.loadFromFile("Textures/Duck/Space Background2.png");
 	backgroundsp.setTexture(background);
@@ -125,6 +125,11 @@ Duck::Duck(RenderWindow& window) {
 			break;
 		}
 	}
+
+	DuckGame.openFromFile("Sounds/Duck/127706__cydon__spacebattle-with-laserwaepons001.wav");
+	DuckGame.setLoop(true);
+	DuckGame.setVolume(30.0);
+	DuckGame.play();
 }
 
 void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& GAMEscore) {
@@ -132,7 +137,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 	GAMEscore = score;
 	if (health >= 0) {
 		if (e.type == Event::MouseMoved) {
-			crosshair.setPosition(Vector2f(Mouse::getPosition(window).x, Mouse::getPosition(window).y));
+			crosshair.setPosition(Vector2f((float)Mouse::getPosition(window).x, (float)Mouse::getPosition(window).y));
 		}
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 
@@ -214,7 +219,8 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 }
 
 void Duck::SpawnShips(RenderWindow& window) {
-
+	float windowX = (float)window.getSize().x;
+	float windowY = (float)window.getSize().y;
 	if (enemiesCount <= maxEnemies) {
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (!enemies[i].alive && enemiesCount < maxEnemies) {
@@ -226,30 +232,30 @@ void Duck::SpawnShips(RenderWindow& window) {
 				switch (directionIndex)
 				{
 				case 0:
-					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
+					positionIndex = (int)(rand() % (int)(windowX - (windowX * 0.2f)) + windowX * 0.1f);
 					enemies[i].speed = Vector2f(0, shipSpeed);
-					enemies[i].position = Vector2f(positionIndex, -10.0f);
+					enemies[i].position = Vector2f((float)positionIndex, -10.0f);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
 					enemies[i].duck.setRotation(180);
 					break;
 				case 1:
-					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
+					positionIndex = (int)(rand() % (int)(windowY - (windowY * 0.2f)) + windowY * 0.1f);
 					enemies[i].speed = Vector2f(-shipSpeed, 0);
-					enemies[i].position = Vector2f(window.getSize().x + 10.0f, positionIndex);
+					enemies[i].position = Vector2f(windowX + 10.0f, (float)positionIndex);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
 					enemies[i].duck.setRotation(-90);
 					break;
 				case 2:
-					positionIndex = rand() % (int)(window.getSize().x - (window.getSize().x * 0.2f)) + window.getSize().x * 0.1f;
+					positionIndex = (int)(rand() % (int)(windowX - (windowX * 0.2f)) + windowX * 0.1f);
 					enemies[i].speed = Vector2f(0, -shipSpeed);
-					enemies[i].position = Vector2f(positionIndex, window.getSize().y + 10.0f);
+					enemies[i].position = Vector2f((float)positionIndex, windowY + 10.0f);
 					enemies[i].duck.setScale(abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
 					enemies[i].duck.setRotation(0);
 					break;
 				case 3:
-					positionIndex = rand() % (int)(window.getSize().y - (window.getSize().y * 0.2f)) + window.getSize().y * 0.1f;
+					positionIndex = (int)(rand() % (int)(windowY - (windowY * 0.2f)) + windowY * 0.1f);
 					enemies[i].speed = Vector2f(shipSpeed, 0);
-					enemies[i].position = Vector2f(-10.0f, positionIndex);
+					enemies[i].position = Vector2f(-10.0f, (float)positionIndex);
 					enemies[i].duck.setScale(-abs(enemies[i].duck.getScale().x), abs(enemies[i].duck.getScale().y));
 					enemies[i].duck.setRotation(90);
 					break;
@@ -299,7 +305,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 	Death_Check(window);
 	if (check_in) {
 		if (speed.x > 0) {
-			if (duck.getPosition().x >= window.getSize().x + 300) {
+			if (duck.getPosition().x >= (float)window.getSize().x + 300) {
 				alive = false;
 				if(!friendly)
 				{
@@ -319,7 +325,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 			}
 		}
 		else if (speed.y > 0) {
-			if (duck.getPosition().y >= window.getSize().y + 300) {
+			if (duck.getPosition().y >= (float)window.getSize().y + 300) {
 				alive = false;
 				if (!friendly)
 				{
@@ -347,7 +353,7 @@ void Ship::Death_Check(RenderWindow& window) {
 	if (check_in)
 		return;
 	if (duck.getPosition().x >= 30 && duck.getPosition().y >= 30
-		&& duck.getPosition().x <= window.getSize().x - 30 && duck.getPosition().y <= window.getSize().y - 30)
+		&& duck.getPosition().x <= (float)window.getSize().x - 30 && duck.getPosition().y <= (float)window.getSize().y - 30)
 		check_in = true;
 }
 

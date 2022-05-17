@@ -219,18 +219,18 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
 
 	DialougeBox.loadFromFile("Textures/Main/White box2.png");
-	setTextureNSprite(DialougeBox, DB1, 3.5, 35, 70);
-	setTextureNSprite(DialougeBox, DB2, 3.5, 375, 250);
-	setTextureNSprite(DialougeBox, DB3, 3.5, 225, 25);
-	setTextureNSprite(DialougeBox, DB4, 3.5, 1120, 185);
-	setTextureNSprite(DialougeBox, DBA, 3.7, 955, 190);
-	setTextureNSprite(DialougeBox, DBB, 3.0, 325, 585);
-	setTextureNSprite(DialougeBox, DBC, 4.0, 475, 5);
-	DBC.setScale(4.5, 4.0);
-	setTextureNSprite(DialougeBox, DBD, 4.0, 1280, 240);
-	DBD.setScale(6.2, 4.0);
-	setTextureNSprite(DialougeBox, DBE, 4.0, 60, 250);
-	setTextureNSprite(DialougeBox, DBF, 3.5, 1015, 55);
+	setTextureNSprite(DialougeBox, DB1, 3.5f, 35, 70);
+	setTextureNSprite(DialougeBox, DB2, 3.5f, 375, 250);
+	setTextureNSprite(DialougeBox, DB3, 3.5f, 225, 25);
+	setTextureNSprite(DialougeBox, DB4, 3.5f, 1120, 185);
+	setTextureNSprite(DialougeBox, DBA, 3.7f, 955, 190);
+	setTextureNSprite(DialougeBox, DBB, 3.0f, 325, 585);
+	setTextureNSprite(DialougeBox, DBC, 4.0f, 475, 5);
+	DBC.setScale(4.5f, 4.0f);
+	setTextureNSprite(DialougeBox, DBD, 4.0f, 1280, 240);
+	DBD.setScale(6.2f, 4.0f);
+	setTextureNSprite(DialougeBox, DBE, 4.0f, 60, 250);
+	setTextureNSprite(DialougeBox, DBF, 3.5f, 1015, 55);
 
 	//END OF LAYERS
 	Dialouge.loadFromFile("Fonts/ARCADE_N.TTF");
@@ -276,33 +276,33 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 
 	//NPCs' stuff
 	NPC1.loadFromFile("Textures/Characters/Alien_idle.png");
-	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 260.0);
-	Alien1.setScale(-3.5, 3.5);
+	setTextureNSprite(NPC1, Alien1, 3.5f, 1060.0, 260.0);
+	Alien1.setScale(-3.5f, 3.5f);
 
 	NPC2.loadFromFile("Textures/Characters/HellBoy.png");
-	setTextureNSprite(NPC2, HellBoy, 0.10, 700, 65);
+	setTextureNSprite(NPC2, HellBoy, 0.10f, 700, 65);
 	//HellBoy.setScale(-0.12, 0.12);
 
 	NPC3.loadFromFile("Textures/Characters/Nurse-cut.png");
-	setTextureNSprite(NPC3, Nurse, 1, 840, 115);
+	setTextureNSprite(NPC3, Nurse, 1.f, 840, 115);
 
 	NPC4.loadFromFile("Textures/Characters/Elf.png");
-	setTextureNSprite(NPC4, Elf, 1.5, 75, 315);
+	setTextureNSprite(NPC4, Elf, 1.5f, 75, 315);
 
 	NPC5.loadFromFile("Textures/Characters/Protocol A.png");
-	setTextureNSprite(NPC5, C3PO, 3.5, 1360, 440);
+	setTextureNSprite(NPC5, C3PO, 3.5f, 1360, 440);
 
 	NPC6.loadFromFile("Textures/Characters/Astro A.png");
-	setTextureNSprite(NPC6, R4D4, 2.5, 1355, 350);
+	setTextureNSprite(NPC6, R4D4, 2.5f, 1355, 350);
 
 	NPC7.loadFromFile("Textures/Characters/Todo.png");
-	setTextureNSprite(NPC7, Todo, 1, 343, 605);
+	setTextureNSprite(NPC7, Todo, 1.f, 343, 605);
 
 	NPC8.loadFromFile("Textures/Characters/Lisa.png");
-	setTextureNSprite(NPC8, Lisa, 1.5, 1290, 300);
+	setTextureNSprite(NPC8, Lisa, 1.5f, 1290, 300);
 
 	NPC9.loadFromFile("Textures/Characters/Solilas.png");
-	setTextureNSprite(NPC9, Solilas, 1.5, 450, 50);
+	setTextureNSprite(NPC9, Solilas, 1.5f, 450, 50);
 
 }
 

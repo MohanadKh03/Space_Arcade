@@ -77,4 +77,7 @@ private:
 	int level = 0;
 
 	RectangleShape crosshair;
+
+	// Music variables
+	Music DuckGame;
 };

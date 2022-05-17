@@ -3,6 +3,14 @@
 using namespace std;
 using namespace sf;
 
+struct myPlayer {
+    string playerName;
+    int score_BrickBreaker = 0;
+    int scoreDuck = 0;
+    int score_SpaceInvader = 0;
+    int sum = 0;
+};
+
 struct Menu {
     int SELECTEDIndex;
     Font font;

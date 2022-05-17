@@ -57,8 +57,8 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     s_mainBG.setScale(window.getSize().x / s_mainBG.getLocalBounds().width
         , window.getSize().y / s_mainBG.getLocalBounds().height);
     //SpacerMan
-    float SpaceX = window.getSize().x * 0.75;
-    float SpaceY = window.getSize().y * 0.5;
+    float SpaceX = window.getSize().x * 0.75f;
+    float SpaceY = window.getSize().y * 0.5f;
     SpaceMan.loadFromFile("Textures/Characters/Spacer.png");
     Spacer.setTexture(SpaceMan);
     Spacer.setScale((float)width / 1000.0f, (float)width / 1000.0f);
@@ -67,21 +67,21 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 
     font.loadFromFile("Fonts/Planet 37.ttf");
     //Texts to be shown
-    texts(menu[0], "Play", width * 0.1f, height / 2.0f, width / 50, font);
-    texts(menu[1], "Credits", width * 0.1f, height / 1.75f, width / 50, font);
-    texts(menu[2], "Exit", width * 0.1f, height / 1.5f, width / 50, font);
+    texts(menu[0], "Play", width * 0.1f, height / 2.0f, (int)(width / 50), font);
+    texts(menu[1], "Credits", width * 0.1f, height / 1.75f, (int)(width / 50), font);
+    texts(menu[2], "Exit", width * 0.1f, height / 1.5f, (int)(width / 50), font);
     //texts(menu[3], "Exit", width * 0.1f, height-200, width / 50, font);
     menu[0].setOutlineThickness(2.5);
     menu[1].setOutlineThickness(2.5);
     menu[2].setOutlineThickness(2.5);
     //menu[3].setOutlineThickness(2.5);
 
-    texts(menu[3], "Space Arcade", width / 8.0f, height / 4, (int)(width / 20), font);
+    texts(menu[3], "Space Arcade", width / 8.0f, height / 4.f, (int)(width / 20), font);
     menu[3].setOutlineThickness(2);
     menu[3].setOutlineColor(Color::Black);
     menu[3].setFillColor(Color::Cyan);
 
-    texts(menu[4], "V2.1", width / 1.65f, height / 3.18, (int)(width / 60), font);
+    texts(menu[4], "V2.1", width / 1.65f, height / 3.18f, (int)(width / 60), font);
     menu[4].setOutlineThickness(2);
     menu[4].setOutlineColor(Color::Black);
     menu[4].setFillColor(Color::Cyan);
@@ -102,7 +102,7 @@ void Menu::draw(RenderWindow& window, bool& isMENU) {
             RotationClock.restart();
         }
 
-        Spacer.setRotation(1 + factor);
+        Spacer.setRotation(1.f + factor);
         window.draw(Spacer);
     }
 }
