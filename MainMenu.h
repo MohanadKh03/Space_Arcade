@@ -6,7 +6,7 @@ using namespace sf;
 struct Menu {
     int SELECTEDIndex;
     Font font;
-    Text menu[5];
+    Text menu[6];
     Texture t_mainBG;
     Sprite s_mainBG;
     int factor;

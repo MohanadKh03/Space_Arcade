@@ -81,6 +81,11 @@ Menu::Menu(RenderWindow& window, float width, float height) {
     menu[3].setOutlineColor(Color::Black);
     menu[3].setFillColor(Color::Cyan);
 
+    texts(menu[4], "V2.1", width / 1.65f, height / 3.18, (int)(width / 60), font);
+    menu[4].setOutlineThickness(2);
+    menu[4].setOutlineColor(Color::Black);
+    menu[4].setFillColor(Color::Cyan);
+
     //First one is colored as if it's hovered 
     menu[0].setFillColor(Color::Cyan);
     SELECTEDIndex = 0;
@@ -89,7 +94,7 @@ Menu::Menu(RenderWindow& window, float width, float height) {
 void Menu::draw(RenderWindow& window, bool& isMENU) {
     if (isMENU) {
         window.draw(s_mainBG);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             window.draw(menu[i]);
         }
         if (RotationClock.getElapsedTime().asSeconds() > 0.1) {

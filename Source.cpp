@@ -112,7 +112,7 @@ void getCreditsNames(RenderWindow& window, Text txt[], Text& Backspace, Font& f,
     texts(txt[2], "Youssef Ahmed", window.getSize().x / 3.0f, window.getSize().y - 600, 50, f);
     texts(txt[3], "Marwan Hossam", window.getSize().x / 6.0f, window.getSize().y - 500, 50, f);
     texts(txt[4], "Noureldin Hesham", window.getSize().x / 3.f, window.getSize().y - 400, 50, f);
-    texts(txt[5], "Mohamed Gamal", window.getSize().x / 6.0f, window.getSize().y - 300, 50, f);
+    texts(txt[5], "Mohamed Barghush", window.getSize().x / 6.0f, window.getSize().y - 300, 50, f);
     texts(txt[6], "Mohanad Khaled", window.getSize().x / 3.f, window.getSize().y - 200, 50, f);
 
     window.draw(s_mainBG);
@@ -130,6 +130,7 @@ void getCreditsNames(RenderWindow& window, Text txt[], Text& Backspace, Font& f,
 int main()
 {
     //RenderWindow window(VideoMode(1360,768), "Space Arcade");
+    //RenderWindow window(VideoMode(1360,768), "Space Arcade");id
     RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);

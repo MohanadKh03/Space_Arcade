@@ -72,6 +72,8 @@ struct SpaceInvader {
 	int score = 0;
 	bool isgameover = false;
 	sf::Clock karizmaBoss;
+	sf::Clock playerLaser;
+	int animationTime = 0;
 	sf::Time KarizmaTime;
 	sf::Text GameOverText;
 	sf::Font GameOverFont;
@@ -87,6 +89,8 @@ struct SpaceInvader {
 	Bullet bullets[NumOfBullets];
 	Sheild sheilds[3];
 	sf::Texture background;
+	sf::Texture laser;
+	sf::Sprite playerShot;
 	sf::Sprite backgroundsprite;
 	//Boss boss;
 	int bulletIndex = 0;
@@ -104,8 +108,8 @@ struct SpaceInvader {
 	void Run(sf::RenderWindow&, int&, sf::Event&, float&, int& gameID);
 	void Destroyandgen(float dt);
 	/*void Boss();?*/
-	void audio();
-	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
+	/*void audio();
+	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);*/
 	void Sheild();
 	/*void PowerUps(float dt);*/
 };

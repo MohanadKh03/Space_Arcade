@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <ctime>
 #include "Invaders.h"
@@ -21,10 +22,10 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	//sheild stuff
 	sheilds[0].body.setPosition(50, sf::VideoMode::getDesktopMode().height - sf::VideoMode::getDesktopMode().height / 4);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		if (i > 0)
-			sheilds[i].body.setPosition(sheilds[i - 1].body.getPosition().x + 700, sheilds[i - 1].body.getPosition().y);
+			sheilds[i].body.setPosition(sheilds[i - 1].body.getPosition().x +(window.getSize().x - sheilds[i - 1].body.getSize().x) - 65, sheilds[i - 1].body.getPosition().y);
 		sheilds[i].texture.loadFromFile("Textures/Space Invaders/Shield.png");
 		sheilds[i].body.setTexture(&sheilds[i].texture);
 		sheilds[i].health = 100;
@@ -48,7 +49,7 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	livesfont.loadFromFile("Fonts/ARCADE_R.ttf");
 	livestext.setFont(livesfont);
 	livestext.setFillColor(sf::Color(0, 255, 255));
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		SheildText[i].setPosition(sheilds[i].body.getPosition());
 		SheildFont[i].loadFromFile("Fonts/ARCADE_R.ttf");
@@ -69,22 +70,25 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	boss.Boss.setColor(sf::Color(0, 255, 255, 0));*/
 
 	//background
-	background.loadFromFile("Textures/Space Invaders/Space Invaders Background.png");
+	background.loadFromFile("Textures/Space Invaders/stars_texture.png");
 	backgroundsprite.setTexture(background);
 	//Enemy Stuff
 	enemies[0].health = 100;
 	enemies[0].posx = 20;
 	enemies[0].posy = 0;
-	enemies[0].enemytexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
+	enemies[0].enemytexture.loadFromFile("Textures/Space Invaders/Enemy1.png");
 	enemies[0].enemy.setTexture(enemies[0].enemytexture);
-	enemies[0].enemy.setScale(sf::Vector2f(0.8 * WindowFactor, 0.8 * WindowFactor));
+	enemies[0].enemy.setScale(sf::Vector2f(1.3 * WindowFactor, 1.3 * WindowFactor));
 	enemies[0].enemyshot.loadFromFile("Sounds/Space-Invaders/EnemyShot.wav");
 	enemies[0].enemysound.setBuffer(enemies[0].enemyshot);
 	enemies[0].enemy.setPosition(sf::Vector2f(enemies[0].posx, enemies[0].posy));
 	enemies[0].enemy.setColor(sf::Color(enemies[0].enemy.getColor().r, enemies[0].enemy.getColor().b, enemies[0].enemy.getColor().g, 240));
-	enemies[0].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
-	enemies[0].enemybu.body.setSize(sf::Vector2f(10.f, 20.f));
+	enemies[0].enemybu.body.setFillColor(sf::Color(0, 255, 0, 255));
+	enemies[0].enemybu.body.setSize(sf::Vector2f(enemies[0].enemy.getGlobalBounds().width * 0.06294117f, enemies[0].enemy.getGlobalBounds().width * 0.10294117f * 4.5));
 	enemies[0].enemybu.body.setPosition(enemies[0].enemy.getPosition().x + 46.5, enemies[0].enemy.getPosition().y + 42);
+	laser.loadFromFile("Textures/Space Invaders/PlayerLaser.png");
+	sf::Sprite playerShot(laser);
+	playerShot.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	/*enemies[0].enemypower.body.setRadius(3.f);
 	enemies[0].enemypower.body.setPosition(enemies[0].enemy.getPosition());
 	enemies[0].enemypower.body.setFillColor(sf::Color(0, 255, 255, 0));
@@ -94,16 +98,16 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	{
 
 		enemies[i].health = 100;
-		enemies[i].enemytexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
+		enemies[i].enemytexture.loadFromFile("Textures/Space Invaders/Enemy1.png");
 		enemies[i].enemy.setTexture(enemies[i].enemytexture);;
-		enemies[i].enemy.setScale(sf::Vector2f(0.8 * WindowFactor, 0.8 * WindowFactor));
+		enemies[i].enemy.setScale(sf::Vector2f(1.3 * WindowFactor, 1.3 * WindowFactor));
 		enemies[i].enemyshot.loadFromFile("Sounds/Space-Invaders/EnemyShot.wav");
 		enemies[i].enemysound.setBuffer(enemies[i].enemyshot);
-		enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
-		enemies[i].enemybu.body.setSize(sf::Vector2f(4.f, 8.f));
+		enemies[i].enemybu.body.setFillColor(sf::Color(0, 0, 255, 255));
+		enemies[i].enemybu.body.setSize(sf::Vector2f(enemies[0].enemy.getGlobalBounds().width * 0.06294117f, enemies[0].enemy.getGlobalBounds().width * 0.10294117f * 4.5));
 		enemies[i].enemybu.released = false;
 		enemies[i].enemybu.body.setPosition(enemies[i].enemy.getPosition().x + 46.5, enemies[i].enemy.getPosition().y + 42);
-		enemies[i].enemybu.body.setScale(sf::Vector2f(2.f, 4.f));
+		//enemies[i].enemybu.body.setScale(sf::Vector2f(2.f, 4.f));
 		/*enemies[i].enemypower.body.setRadius(3.f);
 		enemies[i].enemypower.body.setPosition(enemies[i].enemy.getPosition());
 		enemies[i].enemypower.body.setFillColor(sf::Color(0, 255, 255, 0));
@@ -125,19 +129,30 @@ SpaceInvader::SpaceInvader(sf::RenderWindow& window) {
 	//Player Stuff
 	player.posx = sf::VideoMode::getDesktopMode().width / 2;
 	player.posy = sf::VideoMode::getDesktopMode().height - 100 * WindowFactor;
-	player.playertexture.loadFromFile("Textures/Space Invaders/blueship.png");
+	player.playertexture.loadFromFile("Textures/Space Invaders/SpaceShipPlayer.png");
 	player.playershot.loadFromFile("Sounds/Space-Invaders/PlayerShot.wav");
 	player.playersound.setBuffer(player.playershot);
 	player.playersprite.setTexture(&player.playertexture);
-	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 21.68f, window.getSize().y / 14));
+	player.playersprite.setSize(sf::Vector2f(window.getSize().x / 19.68f, window.getSize().y / 11));
 	player.playersprite.setPosition(sf::Vector2f(player.posx, player.posy));
 	player.health = 5;
 	//Bullets stuff
 	for (int i = 0; i < NumOfBullets; i++)
 	{
+		float bulletPositionX;
+		int bulletPos = rand() % 2;
+		switch (bulletPos)
+		{	
+		case 0:
+			bulletPositionX = player.playersprite.getSize().x * 0.90;
+			break;
+		case 1:
+			bulletPositionX = player.playersprite.getSize().x * 0.21;
+			break;
+		}
 		bullets[i].released = false;
-		bullets[i].body.setScale(sf::Vector2f(2.f, 4.f));
-		bullets[i].body.setPosition(player.posx, player.posy);
+		bullets[i].body.setScale(sf::Vector2f(1.5f, 4.f));
+		bullets[i].body.setPosition(bulletPositionX, player.posy);
 
 	}
 	//// Reset the score
@@ -267,7 +282,7 @@ void SpaceInvader::Collision(sf::RenderWindow& w, int& gameID) {
 			if (bullets[i].body.getGlobalBounds().intersects(enemies[j].enemy.getGlobalBounds()))
 			{
 				enemies[j].health -= 20;
-				enemies[j].enemy.setColor(sf::Color(enemies[j].red, enemies[j].enemy.getColor().g - 63, enemies[j].enemy.getColor().b - 63, enemies[j].enemy.getColor().a - 30));
+				enemies[j].enemy.setColor(sf::Color(enemies[j].red, enemies[j].enemy.getColor().g - 63, enemies[j].enemy.getColor().b - 63, enemies[j].enemy.getColor().a));
 				bullets[i].released = false;
 				if (enemies[j].health <= 0)
 				{
@@ -442,12 +457,12 @@ void SpaceInvader::Destroyandgen(float dt)
 		if (enemies[i].enemybu.released == true)
 		{
 			enemies[i].enemybu.body.move(0, enemies[i].bulletspeed * dt);
-			enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 255));
+			enemies[i].enemybu.body.setFillColor(sf::Color(0, 170, 0, 255));
 		}
 		//regen
 		if (enemies[i].enemybu.body.getPosition().y > sf::VideoMode::getDesktopMode().height - 20)
 		{
-			enemies[i].enemybu.body.setFillColor(sf::Color(0, 255, 0, 0));
+			enemies[i].enemybu.body.setFillColor(sf::Color(0, 170, 0, 255));
 			enemies[i].enemybu.released = false;
 
 		}
