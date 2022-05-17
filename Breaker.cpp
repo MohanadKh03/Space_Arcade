@@ -17,8 +17,9 @@ game::game(RenderWindow* window, int& score)
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color::White);
     paddle.setPosition(Vector2f(window->getSize().x / 2 - (paddle.getSize().x / 2), window->getSize().y - 40));
-    Paddle_texture.loadFromFile("Textures/Brick Breaker/56-Breakout-Tiles.png");
+    Paddle_texture.loadFromFile("Textures/Brick Breaker/paddle-animated.png");
     paddle.setTexture(&Paddle_texture);
+    paddle.setTextureRect(IntRect(0, 0, 693, 128));
     // Balls
     ball.setRadius((float)window->getSize().x / 160);
     ball.setFillColor(Color::White);
@@ -26,6 +27,7 @@ game::game(RenderWindow* window, int& score)
     defaultspeed = 500.0f;
     Ball_texture.loadFromFile("Textures/Brick Breaker/58-Breakout-Tiles.png");
     ball.setTexture(&Ball_texture);
+    
     angle = 0.0f;
     //// Ball Trail
     //ballTrail[0].setFillColor(Color::White);
@@ -214,12 +216,22 @@ void game::event(RenderWindow& window, Event& e)
 }
 
 // Update each frame of the game
-void game::update(RenderWindow* window, int& score, int& gameNUMBER)
+void game::update(RenderWindow* window, int& score, int& gameNUMBER, float dt)
 {
     // Don't update when paused
     if (paused) {
         return;
     }
+
+    // Animate paddle
+    if (paddleTimer <= 0) {
+        paddleTextureIndex++;
+        paddleTextureIndex %= 2;
+        paddleTimer = paddleDelay;
+    }
+    else
+        paddleTimer -= dt;
+    paddle.setTextureRect(IntRect(paddleTextureIndex*693, 0, 693, 128));
 
     // extras /////////////////////////////////////////
     hitEffect.setTextureRect(IntRect(spriteIndex * 37, 0, 37, 17));
@@ -397,10 +409,10 @@ void game::reset()
 }
 
 // Run the whole game
-void game::run(RenderWindow& window, Event& e, int& score, int& gameNUMBER)
+void game::run(RenderWindow& window, Event& e, int& score, int& gameNUMBER, float dt)
 {
     render(window);
-    update(&window, score, gameNUMBER);
+    update(&window, score, gameNUMBER, dt);
 }
 
 // Play the splash effect

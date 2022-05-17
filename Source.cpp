@@ -284,7 +284,7 @@ int main()
             }
             window.setView(window.getDefaultView());
             brickBreakerGame->deltaTime = dt;
-            brickBreakerGame->run(window, event, user.score_BrickBreaker, gameID);
+            brickBreakerGame->run(window, event, user.score_BrickBreaker, gameID, dt);
         }
         //Duck Shooter
         else if (gameID == 2) {

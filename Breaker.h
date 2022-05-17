@@ -22,10 +22,10 @@ struct game
 public:
 	game(RenderWindow* window, int& score);
 	void event(RenderWindow& window, Event& e);
-	void update(RenderWindow* window, int& score, int& gameNUMBER);
+	void update(RenderWindow* window, int& score, int& gameNUMBER, float);
 	void render(RenderWindow& window);
 	void reset();
-	void run(RenderWindow& window, Event& e, int& score, int& gameNUMBER);
+	void run(RenderWindow& window, Event& e, int& score, int& gameNUMBER, float);
 	void playEffect(Vector2f position, float rotation);
 
 	float deltaTime = 0.0f;
@@ -96,5 +96,10 @@ private:
 	Texture Ball_texture;
 	Texture Background;
 	Sprite Backsprite;
+
+	// paddle animation
+	int paddleTextureIndex = 0;
+	float paddleTimer = 0.0f;
+	float paddleDelay = 0.05f;
 
 };
