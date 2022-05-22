@@ -8,8 +8,6 @@ using namespace sf;
 
 bool movingright = true;
 bool movingleft = false;
-bool BossMovingRight = true;
-bool BoosMovingLeft = false;
 float windowsizex = (float)VideoMode::getDesktopMode().width;
 float windowsizey = (float)VideoMode::getDesktopMode().height;
 int side = VideoMode::getDesktopMode().width - 120;
@@ -63,12 +61,21 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	srand(time(0));
 
 	//boss stuff
-	/*boss.BossTexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
+	boss.BossTexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
+	boss.BossMissle = new Texture;
+	boss.BossMissle -> loadFromFile("Textures/Space Invaders/My project.png");
+	boss.bossMissle.setTexture(*boss.BossMissle);
+	boss.bossMissle.setRotation(180);
+	boss.bossMissle.setPosition(Vector2f(128,128));
+	
 	boss.Boss.setTexture(boss.BossTexture);
 	boss.Boss.setScale(Vector2f(2, 3));
-	boss.Boss.setPosition(Vector2f(-boss.Boss.getScale().x, 0));
-
-	boss.Boss.setColor(Color(0, 255, 255, 0));*/
+	boss.Boss.setPosition(Vector2f(-120, 0));
+	boss.Boss.setColor(Color(0, 255, 255, 0));
+	boss.isBossActive = false;
+	boss.isMovingright = true;
+	ReleaseBoss = false;
+	boss.bossGenCounter = 0;
 
 	//background
 	background.loadFromFile("Textures/Space Invaders/stars_texture.png");
@@ -330,7 +337,7 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 
 void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, int& gameID) {
 	GAMEscore = score;
-	// win.draw(boss.Boss);
+ win.draw(boss.Boss);
 	win.draw(backgroundsprite);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
@@ -349,7 +356,8 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 	}
 	if (SpaceInvader::isgameover == false)
 	{
-
+		win.draw(boss.bossMissle);
+		win.draw(boss.Boss);
 		win.draw(player.sprite);
 		win.draw(scoretext);
 		win.draw(livestext);
@@ -358,8 +366,8 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 		EnemyMovement(dt, clock, deltatimemove);
 		PlayerMovement();
 		Destroyandgen(dt);
-		/*Boss();
-		Bossmovement(karizmaBoss, KarizmaTime, dt);*/
+		Boss();
+		Bossmovement(karizmaBoss, KarizmaTime, dt);
 		Sheild();
 		/*PowerUps(dt);*/
 	}
@@ -461,7 +469,7 @@ void SpaceInvader::Destroyandgen(float dt)
 		//regen
 		if (enemies[i].bullet.sprite.getPosition().y > VideoMode::getDesktopMode().height - 20)
 		{
-			enemies[i].bullet.sprite.setFillColor(Color(0, 170, 0, 255));
+			enemies[i].bullet.sprite.setFillColor(Color(0, 170, 0, 0));
 			enemies[i].bullet.released = false;
 
 		}
@@ -486,39 +494,55 @@ void SpaceInvader::Sheild()
 	}
 }
 
-//void SpaceInvader::Boss()
-//{
-//	if (score >= 20)
-//	{
-//		boss.Boss.setColor(Color(0, 255, 255, 255));
-//	}
-//}
-//void SpaceInvader::Bossmovement(Clock& karizmaBoss, Time& karizmatime, float dt)
-//{
-//	KarizmaTime = karizmaBoss.getElapsedTime();
-//
-//	if (boss.Boss.getColor().a)
-//	{
-//		if ((boss.Boss.getPosition().x >= side + boss.Boss.getScale().x && BossMovingRight) || (boss.Boss.getPosition().x <= -boss.Boss.getScale().x && BoosMovingLeft))
-//		{
-//			boss.Boss.move(Vector2f(0, 0));
-//			karizmaBoss.restart();
-//		}
-//
-//		if (BoosMovingLeft == true && KarizmaTime.asSeconds() == 5) {
-//			boss.Boss.move(Vector2f(-2 * dt, 0));
-//			BoosMovingLeft = false;
-//			BossMovingRight = true;
-//		}
-//		if (BossMovingRight && KarizmaTime.asSeconds() == 5)
-//		{
-//			boss.Boss.move(Vector2f(2 * dt, 0));
-//			BoosMovingLeft = true;
-//			BossMovingRight = false;
-//		}
-//
-//	}
-//}
+	void SpaceInvader::Boss()
+{
+		if (score >= 10)
+			ReleaseBoss = true;
+	if (ReleaseBoss)
+	{
+		boss.Boss.setColor(Color(0, 255, 255, 255));
+		boss.isBossActive = true;
+		boss.bossGenCounter++;
+	}
+}
+void SpaceInvader::Bossmovement(Clock& karizmaBoss, Time& karizmatime, float dt)
+{
+	KarizmaTime = karizmaBoss.getElapsedTime();
+
+	if (boss.isBossActive)
+	{
+		if (boss.isMovingright) {
+			boss.Boss.move(Vector2f(300 * dt, 0));
+			boss.wasMovingright = 1;
+			boss.wasMovingleft = 0;
+			karizmaBoss.restart();
+		}
+
+		if (boss.Boss.getPosition().x >= side+128 && boss.wasMovingright)
+		{
+			boss.isMovingright = false;
+			boss.Boss.move(0, 0);
+			if (KarizmaTime.asSeconds() >= 5)
+				boss.isMovingleft = true;
+			
+		}
+		if (boss.isMovingleft == true) {
+			boss.Boss.move(Vector2f(-300 * dt, 0));
+			boss.wasMovingleft = 1;
+			boss.wasMovingright = 0;
+			karizmaBoss.restart();
+		}
+
+		if (boss.Boss.getPosition().x <= -128 && boss.wasMovingleft)
+		{
+			boss.isMovingleft = false;
+			boss.Boss.move(0, 0);
+			if (KarizmaTime.asSeconds() >= 5)
+				boss.isMovingright = true;
+
+		}
+	}
+}
 
 //void SpaceInvader::PowerUps(float dt)
 //{

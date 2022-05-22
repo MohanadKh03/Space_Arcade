@@ -35,13 +35,22 @@ struct Bullet {
 };
 
 
-//struct Boss
-//{
-//	int health;
-//	sf::Sprite Boss;
-//	sf::Texture BossTexture;
-//	Bullet bossBullet;
-//};
+struct Boss
+{
+	Texture *BossMissle;
+	Sprite bossMissle;
+	int health = 12;
+	bool isBossActive = 0;
+	bool isMovingright =true;
+	bool isMovingleft = 0;
+	bool wasMovingright = 0;
+	bool wasMovingleft = 1;
+	int bossGenCounter = 0;
+	int bossCntCntPast = 0;
+	sf::Sprite Boss;
+	sf::Texture BossTexture;
+	Bullet bossBullet;
+};
 
 // Defending shields variables
 struct Sheild
@@ -95,8 +104,8 @@ struct Player {
 	SoundBuffer bulletBuffer;
 	Sound bulletSound;
 	RectangleShape sprite;
-	bool Damaged;
-	int health;
+	bool Damaged = false;
+	int health =5;
 };
 
 // Game Manager Struct
@@ -128,9 +137,10 @@ struct SpaceInvader {
 	// ------------------------------ GAME MANAGER Variables
 	float WindowFactor = (float)(VideoMode::getDesktopMode().width / VideoMode::getDesktopMode().height);
 	bool isgameover = false;
+	bool ReleaseBoss;
 
 	// ------------------------------ TIME Variables
-	//sf::Clock karizmaBoss;
+	Clock karizmaBoss;
 	Clock playerLaser;
 	Time KarizmaTime;
 
@@ -142,7 +152,7 @@ struct SpaceInvader {
 	Player player;
 	Bullet bullets[NumOfBullets];
 	Sheild sheilds[3];
-	//Boss boss;
+	Boss boss;
 
 	// ------------------------------ PLAYER BULLETS Variables
 	int bulletIndex = 0;
@@ -164,9 +174,9 @@ struct SpaceInvader {
 	void GameOver(RenderWindow& w, int& gameID);
 	void Run(RenderWindow&, int&, Event&, float&, int& gameID);
 	void Destroyandgen(float dt);
-	/*void Boss();?*/
-	/*void audio();
-	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);*/
+	void Boss();
+	void audio();
+	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
 	void Sheild();
 	/*void PowerUps(float dt);*/
 };
