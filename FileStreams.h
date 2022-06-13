@@ -6,7 +6,7 @@
 
 using namespace std;
 
-
+// Player data struct
 struct myPlayer {
     string playerName;
     int score_BrickBreaker = 0;
@@ -17,6 +17,8 @@ struct myPlayer {
     void TypeUsername(Event&, bool&, bool&);
     void Save();
 };
+
+// User defined functions /////////////////////////////////////
 
 void myPlayer::TypeUsername(Event& event, bool& isSpaceshipMap, bool& UsernameTyping) {
     if (event.type == Event::TextEntered) {

@@ -191,7 +191,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	GM_Sprite2.setColor(Color::Red);
 
 
-	GameMachinePurp.loadFromFile("Textures/Main/GameMachinePurp2.png");
+	GameMachinePurp.loadFromFile("Textures/Main/GameMachinePurp2 02.png");
 	setTextureNSprite(GameMachinePurp, GM_Sprite4, 0.09f, 220, 70);
 
 	GameMachineSpace.loadFromFile("Textures/Main/DuckMachine.png");
@@ -265,8 +265,8 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 
 	//Other's
 
-	VendingMachine.loadFromFile("Textures/Main/Full Vending Machine.png");
-	setTextureNSprite(VendingMachine, VM, 2, 550, 40);
+	VendingMachine.loadFromFile("Textures/Main/Full Vending Machine 02.png");
+	setTextureNSprite(VendingMachine, VM, 2, 550, 70);
 
 	//Player's Stuff
 
@@ -275,16 +275,16 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
 
 	//NPCs' stuff
-	NPC1.loadFromFile("Textures/Characters/Alien_idle.png");
-	setTextureNSprite(NPC1, Alien1, 3.5, 1060.0, 260.0);
+	NPC1.loadFromFile("Textures/Characters/Alien_idle 02.png");
+	setTextureNSprite(NPC1, Alien1, 3.5, 1010.0, 280.0);
 	Alien1.setScale(-3.5, 3.5);
 
-	NPC2.loadFromFile("Textures/Characters/HellBoy.png");
-	setTextureNSprite(NPC2, HellBoy, 0.10, 700, 65);
+	NPC2.loadFromFile("Textures/Characters/HellBoy 02.png");
+	setTextureNSprite(NPC2, HellBoy, 3.5, 700, 65);
 	//HellBoy.setScale(-0.12, 0.12);
 
 	NPC3.loadFromFile("Textures/Characters/Nurse-cut.png");
-	setTextureNSprite(NPC3, Nurse, 1, 840, 115);
+	setTextureNSprite(NPC3, Nurse, 1, 830, 115);
 
 	NPC4.loadFromFile("Textures/Characters/Elf.png");
 	setTextureNSprite(NPC4, Elf, 1.5, 75, 315);
@@ -344,8 +344,8 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
 	
-	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 32, 32, 4);
-	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 1278, 1278, 3);
+	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 14, 19, 4);
+	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 22, 35, 3);
 	ChangeSprite(Elf, dt, g, l, alienSpriteTimer, alienSpriteDelay, 48, 81, 4);
 	ChangeSprite(Todo, dt, h, l, alienSpriteTimer, alienSpriteDelay, 64, 64, 4);
 	

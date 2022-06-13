@@ -8,7 +8,7 @@ using namespace sf;
 //bool gameStart;
 //bool gameOver = false;
 
-
+// The enemies and friendlies struct
 struct Ship {
 public:
 	Ship();
@@ -32,6 +32,7 @@ private:
 
 };
 
+// Game manager struct
 struct Duck {
 public:
 	Duck(RenderWindow&);

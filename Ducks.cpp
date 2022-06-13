@@ -22,8 +22,11 @@ SoundBuffer hahaSound;
 Sound haha(hahaSound);
 
 
+// Game Constructor
 Duck::Duck(RenderWindow& window) {
 	score = 0;
+
+	// Load all outside files into the game to use
 	duckMenu.loadFromFile("Fonts/AshetyPersonaluse-Medium.otf");
 	
 	hahaSound.loadFromFile("Sounds/Duck/haha.wav");
@@ -63,6 +66,7 @@ Duck::Duck(RenderWindow& window) {
 	enemies[0].duck.setTexture(&enemies[0].texture1);
 	enemies[0].duck.setScale(enemiesScale);
 
+	// Define all enemies and friendlies
 	for (int i = 1; i < 20; i++)
 	{
 		friend_index = rand() % 2;
@@ -127,6 +131,7 @@ Duck::Duck(RenderWindow& window) {
 	}
 }
 
+// Update function
 void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& GAMEscore) {
 	window.draw(backgroundsp);
 	GAMEscore = score;
@@ -213,6 +218,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 	Render(window, gameID);
 }
 
+// Spawner for enemies and friendlies
 void Duck::SpawnShips(RenderWindow& window) {
 
 	if (enemiesCount <= maxEnemies) {
@@ -262,6 +268,7 @@ void Duck::SpawnShips(RenderWindow& window) {
 	}
 }
 
+// Render all elements in game
 void Duck::Render(RenderWindow& window, int& gameID)
 {
 		
@@ -280,19 +287,14 @@ void Duck::Render(RenderWindow& window, int& gameID)
 
 }
 
-
+// Initialize ship
 Ship::Ship() {
 	duck.setSize(Vector2f(100, 100));
 	duck.setFillColor(Color::White);
 	duck.setPosition(position);
-	if (friendly) {
-
-	}
-	else {
-
-	}
 }
 
+// Game update function
 void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount)
 {
 	duck.move(speed * dt);
@@ -343,6 +345,7 @@ void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCoun
 	window.draw(duck);
 }
 
+// Check if the enemy or friendly entered the scene
 void Ship::Death_Check(RenderWindow& window) {
 	if (check_in)
 		return;
@@ -352,7 +355,7 @@ void Ship::Death_Check(RenderWindow& window) {
 }
 
 
-// Play the splash effect
+// Play the Explosion effect
 void Duck::playEffect(Vector2f position)
 {
 	effectTimer = effectDelay;

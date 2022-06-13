@@ -17,7 +17,7 @@ int main()
 {
     //RenderWindow window(VideoMode(1360,768), "Space Arcade");
     RenderWindow window(VideoMode::getFullscreenModes()[0], "Space Arcade", sf::Style::None);
-    window.setMouseCursorVisible(true);
+    window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
 
     int windowX = (int)window.getSize().x;
@@ -207,8 +207,6 @@ int main()
         window.display();
         // Store the time elapsed is a single frame into a variable
         dt = gameClock.getElapsedTime().asSeconds();
-
-
     }
     return 0;
 }

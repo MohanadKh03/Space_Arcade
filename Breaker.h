@@ -16,7 +16,7 @@ using namespace sf;
 #pragma once
 
 
-
+// Game manager struct
 struct game
 {
 public:
