@@ -47,5 +47,8 @@
     <ClInclude Include="Invaders.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="FileStreams.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

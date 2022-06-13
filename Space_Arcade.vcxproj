@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="Duck.h" />
     <ClInclude Include="Breaker.h" />
+    <ClInclude Include="FileStreams.h" />
     <ClInclude Include="Invaders.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="SpaceShipEvents.h" />

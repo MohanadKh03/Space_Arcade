@@ -206,6 +206,13 @@ void SpaceInvader::EnemyMovement(float dt, sf::Clock& clock, sf::Time& deltatime
 void SpaceInvader::PlayerMovement() {
 	//setting the position of the player and containing between the borders .. also its movement
 	player.posx = player.playersprite.getPosition().x;
+
+
+	//stop player from getting out of screen
+	if (sf::Mouse::getPosition().x > windowsizex - player.playersprite.getGlobalBounds().width)
+		sf::Mouse::setPosition(sf::Vector2i(int(windowsizex - player.playersprite.getGlobalBounds().width), 0));
+
+
 	player.playersprite.setPosition(sf::Vector2f(sf::Mouse::getPosition().x, player.posy));
 }
 
@@ -400,7 +407,6 @@ void SpaceInvader::GameOver(sf::RenderWindow& w, int& gameID)
 
 void SpaceInvader::Destroyandgen(float dt)
 {
-
 	for (int i = 0; i < NumOfEnemies; i++)
 	{
 		if (enemies[i].enemy.getScale().x == 0 && !(enemies[i].enemybu.released))

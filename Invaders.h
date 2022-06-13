@@ -36,7 +36,7 @@ struct Sheild
 	sf::Texture texture;
 	sf::RectangleShape body;
 	int health = 100;
-	bool active;
+	bool active = true;
 };
 struct InvaderEnemy
 {
