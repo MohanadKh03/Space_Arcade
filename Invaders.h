@@ -37,9 +37,12 @@ struct Bullet {
 
 struct Boss
 {
-	Texture *BossMissle;
+	RectangleShape bossWave;
+	Texture BossMissle;
 	Sprite bossMissle;
 	int health = 12;
+	bool releaseMissle = false;
+	bool isMissleReleased = false;
 	bool isBossActive = 0;
 	bool isMovingright =true;
 	bool isMovingleft = 0;
@@ -177,6 +180,7 @@ struct SpaceInvader {
 	void Boss();
 	void audio();
 	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
+	void BossShooting(float dt);
 	void Sheild();
 	/*void PowerUps(float dt);*/
 };

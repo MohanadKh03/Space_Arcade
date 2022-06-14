@@ -19,3 +19,13 @@ mohanad 11 14 4 29
 seif 0 99 19 118
 seif 0 0 60 60
 seif 0 0 60 60
+seif 0 48 0 48
+seif 0 48 20 68
+seif 18 48 20 86
+seif 0 0 60 60
+seif 0 0 47 47
+sei 0 0 55 55
+sei 0 0 60 60
+sei 0 0 60 60
+sei 0 0 60 60
+ 0 0 0 0
