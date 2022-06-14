@@ -91,7 +91,7 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	enemies[0].bulletSound.setBuffer(enemies[0].bulletBuffer);
 	enemies[0].sprite.setPosition(Vector2f(enemies[0].pos.x, enemies[0].pos.y));
 	enemies[0].sprite.setColor(Color(enemies[0].sprite.getColor().r, enemies[0].sprite.getColor().b, enemies[0].sprite.getColor().g, 240));
-	enemies[0].bullet.sprite.setFillColor(Color(0, 255, 0, 255));
+	enemies[0].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
 	enemies[0].bullet.sprite.setSize(Vector2f(enemies[0].sprite.getGlobalBounds().width * 0.06294117f, enemies[0].sprite.getGlobalBounds().width * 0.10294117f * 4.5f));
 	enemies[0].bullet.sprite.setPosition(enemies[0].sprite.getPosition().x + 46.5f, enemies[0].sprite.getPosition().y + 42);
 	laser.loadFromFile("Textures/Space Invaders/PlayerLaser.png");
@@ -230,8 +230,8 @@ void SpaceInvader::PlayerMovement() {
 
 
 	//stop player from getting out of screen
-	if (sf::Mouse::getPosition().x > windowsizex - player.playersprite.getGlobalBounds().width)
-		sf::Mouse::setPosition(sf::Vector2i(int(windowsizex - player.playersprite.getGlobalBounds().width), 0));
+	if (sf::Mouse::getPosition().x > windowsizex - player.sprite.getGlobalBounds().width)
+		sf::Mouse::setPosition(sf::Vector2i(int(windowsizex - player.sprite.getGlobalBounds().width), 0));
 
 
 	player.sprite.setPosition(Vector2f((float)Mouse::getPosition().x, player.pos.y));
@@ -446,11 +446,13 @@ void SpaceInvader::Destroyandgen(float dt)
 				continue;
 			if (enemies[j].bullet.released)
 			{
+				enemies[j].bullet.sprite.setFillColor(Color(0, 255, 0, 255));
 				lineshot = true;
 				break;
 			}
 			else
 			{
+				enemies[j].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
 				lineshot = false;
 			}
 		}
