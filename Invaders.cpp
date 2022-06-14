@@ -227,6 +227,13 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 void SpaceInvader::PlayerMovement() {
 	//setting the position of the player and containing between the borders .. also its movement
 	player.pos.x = player.sprite.getPosition().x;
+
+
+	//stop player from getting out of screen
+	if (sf::Mouse::getPosition().x > windowsizex - player.playersprite.getGlobalBounds().width)
+		sf::Mouse::setPosition(sf::Vector2i(int(windowsizex - player.playersprite.getGlobalBounds().width), 0));
+
+
 	player.sprite.setPosition(Vector2f((float)Mouse::getPosition().x, player.pos.y));
 }
 
