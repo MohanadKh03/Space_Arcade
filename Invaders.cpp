@@ -6,7 +6,8 @@
 using namespace std;
 using namespace sf;
 
-int changedScore;
+
+int changedScore; 
 bool increasedDiffculty = false;
 float diffcultyFactor = 1;
 int lastEnemy = 9;
