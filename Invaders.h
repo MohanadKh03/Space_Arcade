@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Ctime>
 #include <SFML/Audio.hpp>
-const int NumOfEnemies = 60;
+const int NumOfEnemies = 50;
 const int NumOfBullets = 20;
 const int NumOfEnemyBullets = 2;
 
@@ -37,11 +37,14 @@ struct Bullet {
 
 struct Boss
 {
-	Texture *BossMissle;
+	RectangleShape bossWave;
+	Texture BossMissle;
 	Sprite bossMissle;
 	int health = 12;
+	bool releaseMissle = false;
+	bool isMissleReleased = false;
 	bool isBossActive = 0;
-	bool isMovingright =true;
+	bool isMovingright = true;
 	bool isMovingleft = 0;
 	bool wasMovingright = 0;
 	bool wasMovingleft = 1;
@@ -105,7 +108,7 @@ struct Player {
 	Sound bulletSound;
 	RectangleShape sprite;
 	bool Damaged = false;
-	int health =5;
+	int health = 5;
 };
 
 // Game Manager Struct
@@ -177,6 +180,7 @@ struct SpaceInvader {
 	void Boss();
 	void audio();
 	void Bossmovement(sf::Clock& karizmaBoss, sf::Time& karizmatime, float dt);
+	void BossShooting(float dt);
 	void Sheild();
 	/*void PowerUps(float dt);*/
 };

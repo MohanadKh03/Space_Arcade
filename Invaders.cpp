@@ -6,6 +6,11 @@
 using namespace std;
 using namespace sf;
 
+int changedScore;
+bool increasedDiffculty = false;
+float diffcultyFactor = 1;
+int lastEnemy = 9;
+int firstEnemy = 0;
 bool movingright = true;
 bool movingleft = false;
 float windowsizex = (float)VideoMode::getDesktopMode().width;
@@ -19,12 +24,12 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	backgroundMusic.openFromFile("Sounds/Space-Invaders/Backtheme.wav");
 	backgroundMusic.setLoop(true);
 	//sheild stuff
-	sheilds[0].sprite.setPosition(50, (float)VideoMode::getDesktopMode().height - (float)VideoMode::getDesktopMode().height / 4);
+	sheilds[0].sprite.setPosition(250, (float)VideoMode::getDesktopMode().height - (float)VideoMode::getDesktopMode().height / 4);
 
 	for (int i = 0; i < 2; i++)
 	{
 		if (i > 0)
-			sheilds[i].sprite.setPosition(sheilds[i - 1].sprite.getPosition().x +(window.getSize().x - sheilds[i - 1].sprite.getSize().x) - 65, sheilds[i - 1].sprite.getPosition().y);
+			sheilds[i].sprite.setPosition(sheilds[i - 1].sprite.getPosition().x + (window.getSize().x - sheilds[i - 1].sprite.getSize().x) - 465, sheilds[i - 1].sprite.getPosition().y);
 		sheilds[i].texture.loadFromFile("Textures/Space Invaders/Shield.png");
 		sheilds[i].sprite.setTexture(&sheilds[i].texture);
 		sheilds[i].health = 100;
@@ -54,28 +59,30 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 		SheildFont[i].loadFromFile("Fonts/ARCADE_R.ttf");
 		SheildText[i].setFont(SheildFont[i]);
 		SheildText[i].setFillColor(Color(Color::Red));
-		SheildText[i].setString(to_string(sheilds[i].health)+ "%");
+		SheildText[i].setString(to_string(sheilds[i].health) + "%");
 	}
 
 
 	srand(time(0));
 
 	//boss stuff
-	boss.BossTexture.loadFromFile("Textures/Space Invaders/enemyBlack.png");
-	boss.BossMissle = new Texture;
-	boss.BossMissle -> loadFromFile("Textures/Space Invaders/My project.png");
-	boss.bossMissle.setTexture(*boss.BossMissle);
-	boss.bossMissle.setRotation(180);
-	boss.bossMissle.setPosition(Vector2f(128,128));
-	
+	boss.isMissleReleased = false;
+	boss.BossTexture.loadFromFile("Textures/Space Invaders/EnemyGreen.png");
+	boss.BossMissle.loadFromFile("Textures/Space Invaders/50.png");
+	boss.bossMissle.setTexture(boss.BossMissle);
+	boss.bossMissle.setRotation(90);
+	boss.bossMissle.setColor(Color(boss.bossMissle.getColor().r, boss.bossMissle.getColor().b, boss.bossMissle.getColor().g, 0));
+
 	boss.Boss.setTexture(boss.BossTexture);
-	boss.Boss.setScale(Vector2f(2, 3));
+	boss.Boss.setScale(Vector2f(0.5, 0.5));
 	boss.Boss.setPosition(Vector2f(-120, 0));
+	boss.bossMissle.setPosition(Vector2f(boss.Boss.getPosition().x + 180, 0));
 	boss.Boss.setColor(Color(0, 255, 255, 0));
 	boss.isBossActive = false;
 	boss.isMovingright = true;
 	ReleaseBoss = false;
 	boss.bossGenCounter = 0;
+
 
 	//background
 	background.loadFromFile("Textures/Space Invaders/stars_texture.png");
@@ -121,19 +128,20 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 		enemies[i].enemypower.sprite.setFillColor(Color(0, 255, 255, 0));
 		enemies[i].enemypower.powerConsumed = false;
 		enemies[i].enemypower.fireRate == false;*/
-		if (  i % 10 != 0)
+		if (i % 10 != 0)
 		{
-			enemies[i].pos.x = enemies[i - 1].pos.x + 90 * WindowFactor;
+			enemies[i].pos.x = enemies[i - 1].pos.x + 120 * WindowFactor + enemies[i].sprite.getGlobalBounds().width * 0.2;
 			enemies[i].pos.y = enemies[i - 1].pos.y;
 		}
 		else if (i % 10 == 0)
 		{
 			enemies[i].pos.x = enemies[0].pos.x;
-			enemies[i].pos.y = enemies[i - 1].pos.y + 90 * WindowFactor;
+			enemies[i].pos.y = enemies[i - 1].pos.y + 90 * WindowFactor + enemies[i].sprite.getGlobalBounds().height * 0.3;
 		}
 
 		enemies[i].sprite.setPosition(Vector2f(enemies[i].pos.x, enemies[i].pos.y));
 	}
+
 	//Player Stuff
 	player.pos.x = (float)VideoMode::getDesktopMode().width / 2;
 	player.pos.y = (float)VideoMode::getDesktopMode().height - 100 * WindowFactor;
@@ -144,13 +152,19 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	player.sprite.setSize(Vector2f((float)window.getSize().x / 19.68f, (float)window.getSize().y / 11.f));
 	player.sprite.setPosition(Vector2f(player.pos.x, player.pos.y));
 	player.health = 5;
+
+	//boss stuff cont
+	boss.bossWave.setPosition(boss.bossMissle.getPosition().x, player.sprite.getPosition().y);
+	boss.bossWave.setFillColor(Color(0, 0, 0, 0));
+	boss.bossWave.setSize(player.sprite.getSize());
+
 	//Bullets stuff
 	for (int i = 0; i < NumOfBullets; i++)
 	{
 		float bulletPositionX = 0.0f;
 		int bulletPos = rand() % 2;
 		switch (bulletPos)
-		{	
+		{
 		case 0:
 			bulletPositionX = player.sprite.getSize().x * 0.90f;
 			break;
@@ -173,6 +187,17 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 
 void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 {
+
+	if (score % 5 == 0 && increasedDiffculty == false && score != 0)
+	{
+		changedScore = score;
+		diffcultyFactor *= 0.9;
+		increasedDiffculty = true;
+	}
+	else if (score != changedScore)
+	{
+		increasedDiffculty = false;
+	}
 	//setting the x,y positions for the already set in the constructor ones
 	deltatimemove = clock.getElapsedTime();
 
@@ -182,7 +207,7 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 			enemies[i].bullet.sprite.setPosition(enemies[i].pos.x + 46.5f, enemies[i].pos.y + 38);
 		/*if (enemies[i].enemypower.powerSpared == false)
 			enemies[i].enemypower.sprite.setPosition(enemies[i].sprite.getPosition());*/
-		 
+
 		enemies[i].pos.x = enemies[i].sprite.getPosition().x;
 		enemies[i].pos.y = enemies[i].sprite.getPosition().y;
 	}
@@ -190,14 +215,14 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 
 	//containing the enemies and moving them right/left and down if they reach the far end(right/left)
 	//the down statement with right and left booleans
-	if (enemies[0].pos.x <= 20 && movingleft)
+	if (enemies[firstEnemy].pos.x <= 20 && movingleft)
 	{
 		for (int i = 0; i < NumOfEnemies; i++)
 			enemies[i].sprite.setPosition(Vector2f(enemies[i].pos.x, enemies[i].pos.y + 60));
 		movingright = true;
 		movingleft = false;
 	}
-	if (enemies[NumOfEnemies - 1].pos.x >= side && movingright)
+	if (enemies[lastEnemy].pos.x >= side && movingright)
 	{
 		for (int i = 0; i < NumOfEnemies; i++)
 			enemies[i].sprite.setPosition(Vector2f(enemies[i].pos.x, enemies[i].pos.y + 60));
@@ -207,7 +232,7 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 
 
 	//the right/left statements 
-	if (movingleft && deltatimemove.asMilliseconds() >= 500)
+	if (movingleft && deltatimemove.asMilliseconds() >= 500 * diffcultyFactor)
 	{
 		for (int i = 0; i < NumOfEnemies; i++)
 		{
@@ -215,12 +240,17 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 		}
 		clock.restart();
 	}
-	else if (movingright && deltatimemove.asMilliseconds() >= 500)
+	else if (movingright && deltatimemove.asMilliseconds() >= 500 * diffcultyFactor)
 	{
 		for (int i = 0; i < NumOfEnemies; i++)
 			enemies[i].sprite.setPosition(Vector2f(enemies[i].pos.x + 30, enemies[i].pos.y));
 		clock.restart();
 	}
+
+	if (enemies[firstEnemy].health == 0)
+		firstEnemy++;
+	if (enemies[lastEnemy].health == 0)
+		lastEnemy--;
 
 }
 
@@ -270,6 +300,13 @@ void SpaceInvader::ShootBullet(float& dt) {
 
 void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 	//checking if the bullet hit the sprite or not (By going through all the bullets and all the enemies)
+	if (boss.bossMissle.getGlobalBounds().intersects(player.sprite.getGlobalBounds()))
+	{
+		player.Damaged = true;
+		player.health -= 2;
+		livestext.setString("Lives " + to_string(player.health));
+		boss.isMissleReleased = false;
+	}
 	for (int i = 0; i < NumOfEnemies; i++)
 	{
 		if (enemies[i].bullet.sprite.getGlobalBounds().intersects(player.sprite.getGlobalBounds()))
@@ -309,10 +346,16 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 		}
 		for (int j = 0; j < 3; j++)
 		{
+			if (boss.bossMissle.getGlobalBounds().intersects(sheilds[j].sprite.getGlobalBounds()) && sheilds[j].active)
+			{
+				sheilds[j].health--;
+				SheildText[j].setString(to_string(sheilds[j].health) + "%");
+				boss.isMissleReleased = false;
+			}
 			if (bullets[i].sprite.getGlobalBounds().intersects(sheilds[j].sprite.getGlobalBounds()) && sheilds[j].active)
 			{
 				sheilds[j].health--;
-				SheildText[j].setString(to_string(sheilds[j].health)+"%");
+				SheildText[j].setString(to_string(sheilds[j].health) + "%");
 				bullets[i].released = false;
 			}
 
@@ -344,7 +387,7 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 
 void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, int& gameID) {
 	GAMEscore = score;
- win.draw(boss.Boss);
+	win.draw(boss.Boss);
 	win.draw(backgroundsprite);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
@@ -363,6 +406,7 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 	}
 	if (SpaceInvader::isgameover == false)
 	{
+		win.draw(boss.bossWave);
 		win.draw(boss.bossMissle);
 		win.draw(boss.Boss);
 		win.draw(player.sprite);
@@ -375,6 +419,7 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 		Destroyandgen(dt);
 		Boss();
 		Bossmovement(karizmaBoss, KarizmaTime, dt);
+		BossShooting(dt);
 		Sheild();
 		/*PowerUps(dt);*/
 	}
@@ -418,7 +463,7 @@ void SpaceInvader::GameOver(RenderWindow& w, int& gameID)
 			gameID = 0;
 	}
 	//cheats
-	if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::B))
+	if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::C))
 		score = NumOfEnemies;
 	if (Keyboard::isKeyPressed(Keyboard::H))
 		isgameover = true;
@@ -498,22 +543,26 @@ void SpaceInvader::Sheild()
 			sheilds[i].sprite.setFillColor(Color(0, 0, 0, 0));
 			sheilds[i].active = false;
 			SheildText[i].setScale(Vector2f(0, 0));
-			
+
 		}
 	}
 }
 
-	void SpaceInvader::Boss()
-{
-		if (score >= 10)
-			ReleaseBoss = true;
+void SpaceInvader::Boss()
+{		//cheats and boss release
+	if (sf::Keyboard::isKeyPressed(Keyboard::A) && (sf::Keyboard::isKeyPressed(Keyboard::B)))
+		ReleaseBoss = true;
+	if (score >= 10)
+		ReleaseBoss = true;
 	if (ReleaseBoss)
 	{
 		boss.Boss.setColor(Color(0, 255, 255, 255));
 		boss.isBossActive = true;
 		boss.bossGenCounter++;
 	}
+
 }
+
 void SpaceInvader::Bossmovement(Clock& karizmaBoss, Time& karizmatime, float dt)
 {
 	KarizmaTime = karizmaBoss.getElapsedTime();
@@ -522,34 +571,70 @@ void SpaceInvader::Bossmovement(Clock& karizmaBoss, Time& karizmatime, float dt)
 	{
 		if (boss.isMovingright) {
 			boss.Boss.move(Vector2f(300 * dt, 0));
+			boss.bossWave.move(Vector2f(300 * dt, 0));
+			if (!boss.isMissleReleased)
+				boss.bossMissle.move(Vector2f(300 * dt, 0));
 			boss.wasMovingright = 1;
 			boss.wasMovingleft = 0;
 			karizmaBoss.restart();
 		}
 
-		if (boss.Boss.getPosition().x >= side+128 && boss.wasMovingright)
+		if (boss.Boss.getPosition().x >= side + 128 && boss.wasMovingright)
 		{
 			boss.isMovingright = false;
 			boss.Boss.move(0, 0);
+			boss.bossWave.move(0, 0);
+			if (!boss.isMissleReleased)
+				boss.bossMissle.move(0, 0);
 			if (KarizmaTime.asSeconds() >= 5)
 				boss.isMovingleft = true;
-			
+
 		}
 		if (boss.isMovingleft == true) {
 			boss.Boss.move(Vector2f(-300 * dt, 0));
+			boss.bossWave.move(Vector2f(-300 * dt, 0));
+			if (!boss.isMissleReleased)
+				boss.bossMissle.move(Vector2f(-300 * dt, 0));
 			boss.wasMovingleft = 1;
 			boss.wasMovingright = 0;
 			karizmaBoss.restart();
 		}
 
-		if (boss.Boss.getPosition().x <= -128 && boss.wasMovingleft)
+		if (boss.Boss.getPosition().x <= -256 && boss.wasMovingleft)
 		{
 			boss.isMovingleft = false;
 			boss.Boss.move(0, 0);
+			if (!boss.isMissleReleased)
+				boss.bossMissle.move(0, 0);
+			boss.bossWave.move(0, 0);
 			if (KarizmaTime.asSeconds() >= 5)
 				boss.isMovingright = true;
 
 		}
+	}
+}
+
+void SpaceInvader::BossShooting(float dt)
+{
+
+
+	if (boss.bossWave.getGlobalBounds().intersects(player.sprite.getGlobalBounds()) && !boss.isMissleReleased)
+	{
+		boss.isMissleReleased = true;
+	}
+	if (boss.isMissleReleased)
+	{
+		boss.bossMissle.setColor(Color(boss.bossMissle.getColor().r, boss.bossMissle.getColor().b, boss.bossMissle.getColor().g, 255));
+		boss.bossMissle.move(0, 300 * dt);
+	}
+	if (boss.bossMissle.getPosition().y > windowsizey)
+		boss.isMissleReleased = false;
+
+	if (!boss.isMissleReleased)
+	{
+		boss.bossMissle.setColor(Color(boss.bossMissle.getColor().r, boss.bossMissle.getColor().b, boss.bossMissle.getColor().g, 0));
+		boss.bossMissle.setPosition(Vector2f(boss.Boss.getPosition().x + 180, 0));
+
 	}
 }
 
