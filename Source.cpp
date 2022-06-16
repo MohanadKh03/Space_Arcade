@@ -67,9 +67,7 @@ int main()
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
             //Menu and Username Events
-            //if (gameID == 0) {
-                //RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
-
+            if (gameID == 0) {
                 //EVENTS OF THE USERNAME TYPING
                 if (UsernameTyping) {
                     user.TypeUsername(event, isSpaceshipMap, UsernameTyping);
@@ -78,7 +76,9 @@ int main()
                     else
                         MainMenu.stop();
                 }
-            //}
+
+                RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
+            }
 
             if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison && collisionID <= 4) {
                 gameID = collisionID;
@@ -110,8 +110,7 @@ int main()
 
         //NO game yet .. Only the beginning (Main and username) then the spaceship stuff
         if (gameID == 0) {
-            //main.draw(window, isMenuOpened); //Draw main menu
-            RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
+            main.draw(window, isMenuOpened); //Draw main menu
 
             //Let all games point at NULL to avoid dangling pointers
             if (sp) {

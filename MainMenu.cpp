@@ -17,7 +17,7 @@ void texts(Text& x, string txt, float coordX, float coordY, int charSize, Font& 
 
 void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAME, bool& credits, Event& event) {
     //The start of the program , basically all the menu stuff ..
-    main.draw(window, isMENU);
+    //main.draw(window, isMENU);
     if (isMENU) {
         switch (event.type) {
             //if the key is pressed then move up/down
