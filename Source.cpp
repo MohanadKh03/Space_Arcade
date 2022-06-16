@@ -67,7 +67,7 @@ int main()
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
             //Menu and Username Events
-            if (gameID == 0) {
+            //if (gameID == 0) {
                 //RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
 
                 //EVENTS OF THE USERNAME TYPING
@@ -78,7 +78,7 @@ int main()
                     else
                         MainMenu.stop();
                 }
-            }
+            //}
 
             if (Keyboard::isKeyPressed(Keyboard::Enter) && canPlay && collison && collisionID <= 4) {
                 gameID = collisionID;
