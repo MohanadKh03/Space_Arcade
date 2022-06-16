@@ -21,7 +21,7 @@ void RunMenuEvents(RenderWindow& window, Menu& main, bool& isMENU, bool& USERNAM
     if (isMENU) {
         switch (event.type) {
             //if the key is pressed then move up/down
-        case Event::KeyReleased:
+        case Event::KeyPressed:
             switch (event.key.code) {
             case Keyboard::Up:
                 main.MoveUp();

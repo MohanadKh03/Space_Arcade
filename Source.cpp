@@ -68,7 +68,7 @@ int main()
                 window.close();
             //Menu and Username Events
             if (gameID == 0) {
-                RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
+                //RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
 
                 //EVENTS OF THE USERNAME TYPING
                 if (UsernameTyping) {
@@ -110,7 +110,8 @@ int main()
 
         //NO game yet .. Only the beginning (Main and username) then the spaceship stuff
         if (gameID == 0) {
-            main.draw(window, isMenuOpened); //Draw main menu
+            //main.draw(window, isMenuOpened); //Draw main menu
+            RunMenuEvents(window, main, isMenuOpened, UsernameTyping, credits, event);
 
             //Let all games point at NULL to avoid dangling pointers
             if (sp) {
