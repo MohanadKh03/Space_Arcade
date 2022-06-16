@@ -1,14 +1,19 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 using namespace std;
 using namespace sf;
 
+// Player data struct
 struct myPlayer {
     string playerName;
     int score_BrickBreaker = 0;
     int scoreDuck = 0;
     int score_SpaceInvader = 0;
-    int sum = 0;
+    int sum;
+
+    void TypeUsername(Event&, bool&, bool&);
+    void Save();
 };
 
 struct Menu {
