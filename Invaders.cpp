@@ -68,7 +68,7 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	//boss stuff
 	boss.isMissleReleased = false;
 	boss.BossTexture.loadFromFile("Textures/Space Invaders/EnemyGreen.png");
-	boss.BossMissle.loadFromFile("Textures/Space Invaders/50.png");
+	// boss.BossMissle.loadFromFile("Textures/Space Invaders/50.png");
 	boss.bossMissle.setTexture(boss.BossMissle);
 	boss.bossMissle.setRotation(90);
 	boss.bossMissle.setColor(Color(boss.bossMissle.getColor().r, boss.bossMissle.getColor().b, boss.bossMissle.getColor().g, 0));
@@ -152,6 +152,8 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 	player.sprite.setSize(Vector2f((float)window.getSize().x / 19.68f, (float)window.getSize().y / 11.f));
 	player.sprite.setPosition(Vector2f(player.pos.x, player.pos.y));
 	player.health = 5;
+	player.damagedBuffer.loadFromFile("Sounds/Space-Invaders/Damaged02.wav");
+	player.damagedSound.setBuffer(player.damagedBuffer);
 
 	//boss stuff cont
 	boss.bossWave.setPosition(boss.bossMissle.getPosition().x, player.sprite.getPosition().y);
@@ -185,6 +187,25 @@ SpaceInvader::SpaceInvader(RenderWindow& window) {
 
 }
 
+void Player::playDamagedEffect(float dt)
+{
+	if (damagedCurrentFlashes > 0) {
+		if (damagedTimer <= 0) {
+			if (sprite.getFillColor().r > 0) {
+				sprite.setFillColor(Color(0, 255, 0, 255));
+			}
+			else {
+				sprite.setFillColor(Color(255, 255, 255, 255));
+			}
+			damagedCurrentFlashes--;
+			damagedTimer = damagedDelay;
+		}
+		else {
+			damagedTimer -= 1 * dt;
+		}
+	}
+}
+
 void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 {
 
@@ -203,8 +224,10 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 
 	for (int i = 0; i < NumOfEnemies; i++)
 	{
-		if (enemies[i].bullet.released == false)
+		if (enemies[i].bullet.released == false) {
 			enemies[i].bullet.sprite.setPosition(enemies[i].pos.x + 46.5f, enemies[i].pos.y + 38);
+			enemies[i].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
+		}
 		/*if (enemies[i].enemypower.powerSpared == false)
 			enemies[i].enemypower.sprite.setPosition(enemies[i].sprite.getPosition());*/
 
@@ -254,7 +277,7 @@ void SpaceInvader::EnemyMovement(float dt, Clock& clock, Time& deltatimemove)
 
 }
 
-void SpaceInvader::PlayerMovement() {
+void SpaceInvader::PlayerMovement(float dt) {
 	//setting the position of the player and containing between the borders .. also its movement
 	player.pos.x = player.sprite.getPosition().x;
 
@@ -265,6 +288,16 @@ void SpaceInvader::PlayerMovement() {
 
 
 	player.sprite.setPosition(Vector2f((float)Mouse::getPosition().x, player.pos.y));
+
+	if (player.damageEffect) {
+		player.playDamagedEffect(dt);
+	}
+
+	if (player.damagedCurrentFlashes <= 0) {
+		player.sprite.setFillColor(Color(255, 255, 255, 255));
+		player.damagedCurrentFlashes = player.damagedFlashes;
+		player.damageEffect = false;
+	}
 }
 
 void SpaceInvader::bulletsFunction(Event& event, float dt)
@@ -312,6 +345,9 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 		if (enemies[i].bullet.sprite.getGlobalBounds().intersects(player.sprite.getGlobalBounds()))
 		{
 			player.Damaged = true;
+			player.damageEffect = true;
+			player.damagedSound.play();
+			player.damagedCurrentFlashes = player.damagedFlashes;
 			--player.health;
 			enemies[i].bullet.released = false;
 			enemies[i].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
@@ -320,7 +356,6 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 		else
 		{
 			player.Damaged = false;
-
 		}
 
 	}
@@ -415,7 +450,7 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 		bulletsFunction(e, dt);
 		Collision(win, gameID);
 		EnemyMovement(dt, clock, deltatimemove);
-		PlayerMovement();
+		PlayerMovement(dt);
 		Destroyandgen(dt);
 		Boss();
 		Bossmovement(karizmaBoss, KarizmaTime, dt);
@@ -486,7 +521,6 @@ void SpaceInvader::Destroyandgen(float dt)
 		int bulletspeedgen = rand() % 11 + 2;
 		for (int j = linebegin; j <= (linebegin + 11); j++)
 		{
-
 			if (enemies[j].sprite.getScale().x == 0 && !(enemies[i].bullet.released))
 				continue;
 			if (enemies[j].bullet.released)
@@ -497,7 +531,7 @@ void SpaceInvader::Destroyandgen(float dt)
 			}
 			else
 			{
-				enemies[j].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
+				//enemies[j].bullet.sprite.setFillColor(Color(0, 255, 0, 0));
 				lineshot = false;
 			}
 		}

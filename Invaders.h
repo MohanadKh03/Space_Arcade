@@ -109,6 +109,19 @@ struct Player {
 	RectangleShape sprite;
 	bool Damaged = false;
 	int health = 5;
+
+	float damagedDelay = 0.2f;
+	float damagedTimer = 0.1f;
+
+	int damagedFlashes = 4;
+	int damagedCurrentFlashes = 4;
+
+	bool damageEffect = false;
+
+	SoundBuffer damagedBuffer;
+	Sound damagedSound;
+
+	void playDamagedEffect(float dt);
 };
 
 // Game Manager Struct
@@ -169,7 +182,7 @@ struct SpaceInvader {
 	// ------------------------------ FUNCTIONS
 	SpaceInvader(sf::RenderWindow& window);
 	void EnemyMovement(float dt, Clock& clock, Time& deltatimemove);
-	void PlayerMovement();
+	void PlayerMovement(float dt);
 	/*void Enemybulletfunction(float dt);*/
 	void ShootBullet(float&);
 	void bulletsFunction(Event& event, float dt);
