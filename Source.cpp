@@ -100,7 +100,7 @@ int main()
             }
             if (gameID == 1)
             {
-                brickBreakerGame->event(window, event);
+                brickBreakerGame->event(window, event, gameID);
             }
 
         }
