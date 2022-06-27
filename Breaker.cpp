@@ -11,8 +11,8 @@ game::game(RenderWindow* window, int& score)
     //rand seed
     srand(time(0));
     // No. of blocks on the screen
-    blocksWidth = (int)window->getSize().x / 80;
-    blocksHeight = (int)window->getSize().y / 150;
+    blocksWidth = (int)window->getSize().x / 100;
+    blocksHeight = (int)window->getSize().y / 130;
     // Paddle (player) 
     paddle.setSize(Vector2f((int)window->getSize().x / 8, 20.0f));
     paddle.setFillColor(Color::White);
@@ -105,7 +105,7 @@ game::game(RenderWindow* window, int& score)
                 randomSize = (rand() % 2) + 1;
             }
             // Set each block
-            blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 18 - 2));
+            blocks[y][x].setSize(Vector2f((window->getSize().x / blocksWidth) * randomSize - 2, window->getSize().y / 16 - 2));
             blocks[y][x].setOutlineThickness(1.0f);
             int randomColor = rand() % 10;
             while (randomColor == lastRandColor)
