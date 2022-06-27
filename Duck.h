@@ -39,6 +39,7 @@ public:
 	void Render(RenderWindow&, int&);
 	void SpawnShips(RenderWindow&);
 	void playEffect(Vector2f position);
+	void playLevelUP();
 	Font font;
 	Text text;
 	Text score_text;
@@ -66,7 +67,7 @@ private:
 	
 	// special effect variables /////////////////////////////////////////
 	Texture hitEffectTex;
-	int spriteIndex = 0;
+	int spriteIndex = 8;
 	float effectTimer = 0;
 	float effectDelay = 0.05f;
 	Sprite hitEffect;
@@ -85,4 +86,13 @@ private:
 	bool gameOver = false;
 	Text currentScore;
 	Text enterToExit;
+
+	// LEVEL UP variables
+	float levelUpDelay = 0.1f;
+	float levelUpTimer = 0;
+	int levelUpIndex = 12;
+	Texture levelUpTex;
+	Sprite levelUpSprite;
+	SoundBuffer levelUpBuffer;
+	Sound levelUpSound;
 };
