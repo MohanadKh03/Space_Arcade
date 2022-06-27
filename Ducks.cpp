@@ -29,6 +29,9 @@ Duck::Duck(RenderWindow& window) {
 	hahaSound.loadFromFile("Sounds/Duck/haha.wav");
 	haha.setVolume(50.0);
 
+	levelUpBuffer.loadFromFile("Sounds/Duck/LEVELUP.wav");
+	levelUpSound.setBuffer(levelUpBuffer);
+
 	duckExpo.loadFromFile("Sounds/Duck/Duck explosion.wav");
 	ExpolosionDuck.setVolume(60.0);
 
@@ -41,6 +44,10 @@ Duck::Duck(RenderWindow& window) {
 	background.loadFromFile("Textures/Duck/Space Background2.png");
 	backgroundsp.setTexture(background);
 
+	levelUpTex.loadFromFile("Textures/Duck/Level-Up-Animation.png");
+	levelUpSprite.setTexture(levelUpTex);
+	levelUpSprite.setTextureRect(IntRect(0, 0, 600, 600));
+	levelUpSprite.setPosition(window.getSize().x / 2 - levelUpSprite.getGlobalBounds().width / 2 - 100, window.getSize().y / 2 - levelUpSprite.getGlobalBounds().height / 2 - 100);
 
 	crosshair.setSize(Vector2f(35, 35));
 	crosshair.setFillColor(Color::Red);
@@ -182,22 +189,31 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 
 		// Leveling
 		if (score >= 1 && level == 0) {
+			levelUpSound.play();
 			maxEnemies = 4;
 			level=1;
 		}
 		else if (score >= 10 && level == 1) {
+			playLevelUP();
+			levelUpSound.play();
 			maxEnemies = 8;
 			level=2;
 		}
 		else if (score >= 20 && level == 2) {
+			playLevelUP();
+			levelUpSound.play();
 			maxEnemies = 12;
 			level=3;
 		}
 		else if (score >= 30 && level == 3) {
+			playLevelUP();
+			levelUpSound.play();
 			maxEnemies = 16;
 			level=4;
 		}
 		else if (score >= 40 && level == 4) {
+			playLevelUP();
+			levelUpSound.play();
 			maxEnemies = 20;
 			level=5;
 		}
@@ -210,7 +226,7 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 		else {
 			enemyDelay -= 1 * dt;
 		}
-
+		levelUpSprite.setTextureRect(IntRect(levelUpIndex * 600, 0, 600, 600));
 		for (int i = 0; i < (sizeof(enemies) / sizeof(enemies[0])); i++) {
 			if (enemies[i].alive) {
 				enemies[i].Update(window, dt, health, enemiesCount);
@@ -228,6 +244,14 @@ void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& G
 	else
 	{
 		effectTimer -= 1 * delay;
+	}
+
+	if (levelUpTimer <= 0 && levelUpIndex < 12) {
+		levelUpIndex++;
+		levelUpTimer = levelUpDelay;
+	}
+	else {
+		levelUpTimer -= 1 * dt;
 	}
 
 	Render(window, gameID);
@@ -298,6 +322,7 @@ void Duck::Render(RenderWindow& window, int& gameID)
 	window.draw(text);
 	window.draw(score_text);
 	window.draw(hitEffect);
+	window.draw(levelUpSprite);
 	
 	if (health <= 0) {
 		currentScore.setString("YOUR SCORE: " + to_string(score));
@@ -391,4 +416,11 @@ void Duck::playEffect(Vector2f position)
 	effectTimer = effectDelay;
 	spriteIndex = 0;
 	hitEffect.setPosition(position);
+}
+
+// Play the level up effect
+void Duck::playLevelUP()
+{
+	levelUpTimer = levelUpDelay;
+	levelUpIndex = 0;
 }
