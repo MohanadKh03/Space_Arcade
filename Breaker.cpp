@@ -48,13 +48,14 @@ game::game(RenderWindow* window, int& score)
     text.setCharacterSize(32);
     text.setPosition(10, 10);
     lives = 3;
-    font.loadFromFile("Fonts/JosefinSans-Bold.ttf");
     textLife.setFont(font);
     textLife.setString("Lives : " + to_string(lives));
     textLife.setFillColor(Color(50, 205, 50, 255));
     textLife.setCharacterSize(32);
     textLife.setOrigin(textLife.getLocalBounds().width, textLife.getLocalBounds().height);
     textLife.setPosition(window->getSize().x - 10, textLife.getLocalBounds().height + 10);
+    PToPause.setFont(font);
+    PToPause.setFillColor(Color(50, 205, 50, 255));
 
     // special effects calls  /////////////////////////////////////////
     hitEffectTex.loadFromFile("Textures/Brick Breaker/effect.png");
@@ -156,11 +157,23 @@ game::game(RenderWindow* window, int& score)
             blockCount++;
         }
     }
+
+    currentScore.setFont(font);
+    enterToExit.setFont(font);
+    currentScore.setString("");
+    enterToExit.setString("");
+    gameOver = false;
 }
 
 // Check for inputs
-void game::event(RenderWindow& window, Event& e)
+void game::event(RenderWindow& window, Event& e, int& gameNUMBER)
 {
+    if (e.type == Event::KeyReleased) {
+        if (e.key.code == Keyboard::Enter)
+            if (gameOver)
+                gameNUMBER = 0;
+    }
+
     // Check for pause input When Pressed Once
     if (e.key.code == Keyboard::P) {
         if (!pressed) {
@@ -216,12 +229,25 @@ void game::event(RenderWindow& window, Event& e)
 }
 
 // Update each frame of the game
-void game::update(RenderWindow* window, int& score, int& gameNUMBER, float dt)
+void game::update(RenderWindow* window, int& score, float dt)
 {
-    // Don't update when paused
-    if (paused) {
+    // Don't update when game is over
+    if (gameOver) {
         return;
     }
+
+    PToPause.setOrigin(PToPause.getGlobalBounds().width / 2.0f,
+        PToPause.getGlobalBounds().height / 2.0f);
+    PToPause.setPosition(window->getSize().x / 2.0f,
+        PToPause.getGlobalBounds().height / 2.0f + 10);
+
+    // Don't update when paused
+    if (paused) {
+        PToPause.setString("P to UNpause");
+        return;
+    }
+
+    PToPause.setString("P to pause");
 
     // Animate paddle
     if (paddleTimer <= 0) {
@@ -370,7 +396,15 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER, float dt)
             }
         }
         if (killedBlockCount == blockCount || lives <= 0) {
-            gameNUMBER = 0;
+            currentScore.setString("YOUR SCORE: " + to_string(score));
+            enterToExit.setString("PRESS ENTER TO GO BACK TO THE SPACESHIP!");
+            currentScore.setOrigin(currentScore.getGlobalBounds().width / 2.0f,
+                currentScore.getGlobalBounds().height / 2.0f);
+            enterToExit.setOrigin(enterToExit.getGlobalBounds().width / 2.0f,
+                enterToExit.getGlobalBounds().height / 2.0f);
+            currentScore.setPosition(window->getSize().x / 2.0f, window->getSize().y / 2.0f - enterToExit.getGlobalBounds().height*1.5f);
+            enterToExit.setPosition(window->getSize().x / 2.0f, window->getSize().y / 2.0f);
+            gameOver = true;
         }
     }
 }
@@ -378,7 +412,14 @@ void game::update(RenderWindow* window, int& score, int& gameNUMBER, float dt)
 // Render the game 
 void game::render(RenderWindow& window)
 {
+    if (gameOver) {
+        window.draw(currentScore);
+        window.draw(enterToExit);
+        return;
+    }
+
     window.draw(Backsprite);
+
     // Spawn Blocks
     for (int y = 0; y < blocksHeight; y++)
     {
@@ -397,6 +438,7 @@ void game::render(RenderWindow& window)
         for (int i = 0; i < 20; i++)
             ballTrail[i].setPosition(ball.getPosition());*/
     window.draw(textLife);
+    window.draw(PToPause);
     window.draw(text);
     window.draw(hitEffect);
 }
@@ -412,7 +454,7 @@ void game::reset()
 void game::run(RenderWindow& window, Event& e, int& score, int& gameNUMBER, float dt)
 {
     render(window);
-    update(&window, score, gameNUMBER, dt);
+    update(&window, score, dt);
 }
 
 // Play the splash effect

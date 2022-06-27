@@ -80,4 +80,9 @@ private:
 
 	// Music variables
 	Music DuckGame;
+
+	// game over variables
+	bool gameOver = false;
+	Text currentScore;
+	Text enterToExit;
 };

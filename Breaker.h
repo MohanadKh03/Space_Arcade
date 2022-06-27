@@ -21,8 +21,8 @@ struct game
 {
 public:
 	game(RenderWindow* window, int& score);
-	void event(RenderWindow& window, Event& e);
-	void update(RenderWindow* window, int& score, int& gameNUMBER, float);
+	void event(RenderWindow& window, Event& e, int& gameNUMBER);
+	void update(RenderWindow* window, int& score, float);
 	void render(RenderWindow& window);
 	void reset();
 	void run(RenderWindow& window, Event& e, int& score, int& gameNUMBER, float);
@@ -56,7 +56,7 @@ private:
 
 	// UI Variables
 	Font font;
-	Text text, textLife;
+	Text text, textLife, PToPause;
 
 	// GameManager Variables
 	float speedfactor;
@@ -102,4 +102,8 @@ private:
 	float paddleTimer = 0.0f;
 	float paddleDelay = 0.05f;
 
+	// game over variables
+	bool gameOver = false;
+	Text currentScore;
+	Text enterToExit;
 };

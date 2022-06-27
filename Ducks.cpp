@@ -130,12 +130,27 @@ Duck::Duck(RenderWindow& window) {
 	DuckGame.setLoop(true);
 	DuckGame.setVolume(30.0);
 	DuckGame.play();
+
+	font.loadFromFile("Fonts/JosefinSans-Bold.ttf");
+	currentScore.setFont(font);
+	enterToExit.setFont(font);
+	currentScore.setString("");
+	enterToExit.setString("");
+	gameOver = false;
 }
 
 void Duck::Update(RenderWindow& window, Event& e, float& dt, int& gameID, int& GAMEscore) {
-	window.draw(backgroundsp);
+	if (e.type == Event::KeyReleased) {
+		if (e.key.code == Keyboard::Enter) {
+			if (gameOver) {
+				gameID = 0;
+			}
+		}
+	}
+
 	GAMEscore = score;
-	if (health >= 0) {
+	if (health > 0) {
+		window.draw(backgroundsp);
 		if (e.type == Event::MouseMoved) {
 			crosshair.setPosition(Vector2f((float)Mouse::getPosition(window).x, (float)Mouse::getPosition(window).y));
 		}
@@ -270,19 +285,31 @@ void Duck::SpawnShips(RenderWindow& window) {
 
 void Duck::Render(RenderWindow& window, int& gameID)
 {
-		
-		window.draw(start);
+	if (gameOver) {
+		window.draw(currentScore);
+		window.draw(enterToExit);
+		return;
+	}
+
+	window.draw(start);
 	
-		window.draw(crosshair);
+	window.draw(crosshair);
 		
-		window.draw(text);
-		window.draw(score_text);
-		window.draw(hitEffect);
+	window.draw(text);
+	window.draw(score_text);
+	window.draw(hitEffect);
 	
-		if (health <= 0) {
-			gameID = 0;
-			
-		}
+	if (health <= 0) {
+		currentScore.setString("YOUR SCORE: " + to_string(score));
+		enterToExit.setString("PRESS ENTER TO GO BACK TO THE SPACESHIP!");
+		currentScore.setOrigin(currentScore.getGlobalBounds().width / 2.0f,
+			currentScore.getGlobalBounds().height / 2.0f);
+		enterToExit.setOrigin(enterToExit.getGlobalBounds().width / 2.0f,
+			enterToExit.getGlobalBounds().height / 2.0f);
+		currentScore.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f - enterToExit.getGlobalBounds().height * 1.5f);
+		enterToExit.setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
+		gameOver = true;
+	}
 
 }
 
@@ -291,12 +318,12 @@ Ship::Ship() {
 	duck.setSize(Vector2f(100, 100));
 	duck.setFillColor(Color::White);
 	duck.setPosition(position);
-	if (friendly) {
+	/*if (friendly) {
 
 	}
 	else {
 
-	}
+	}*/
 }
 
 void Ship::Update(RenderWindow& window, float& dt, int& health, int& enemiesCount)
