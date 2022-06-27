@@ -10,7 +10,7 @@ void setTextureNSprite(Texture& te, Sprite& se, const float& scale, float xPos, 
 	se.setPosition(xPos, yPos);
 }
 
-void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, float& spriteDelay, int sizeX ,int sizeY, int spriteWidth) {
+void ChangeSprite(Sprite& YP, float dt, int& x, int& y, float& spriteTimer, float& spriteDelay, int sizeX, int sizeY, int spriteWidth) {
 	if (spriteTimer <= 0) {
 		x++;
 		x %= spriteWidth;
@@ -59,17 +59,17 @@ void Collision(Sprite& body, Sprite& player, View& camera, float speed, int& col
 			player.move(0, speed);
 			camera.move(0, speed);
 		}
-		 if (Keyboard::isKeyPressed(Keyboard::Down))
+		if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, -speed);
 			camera.move(0, -speed);
 		}
-		 if (Keyboard::isKeyPressed(Keyboard::Right))
+		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 			player.move(-speed, 0);
 			camera.move(-speed, 0);
 		}
-		 if (Keyboard::isKeyPressed(Keyboard::Left))
+		if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			player.move(speed, 0);
 			camera.move(speed, 0);
@@ -191,7 +191,7 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	GM_Sprite2.setColor(Color::Red);
 
 
-	GameMachinePurp.loadFromFile("Textures/Main/GameMachinePurp2.png");
+	GameMachinePurp.loadFromFile("Textures/Main/GameMachinePurp2 02.png");
 	setTextureNSprite(GameMachinePurp, GM_Sprite4, 0.09f, 220, 70);
 
 	GameMachineSpace.loadFromFile("Textures/Main/DuckMachine.png");
@@ -219,18 +219,18 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	setTextureNSprite(wall4, wall5, 0.799f, 1040, 250);
 
 	DialougeBox.loadFromFile("Textures/Main/White box2.png");
-	setTextureNSprite(DialougeBox, DB1, 3.5f, 35, 70);
-	setTextureNSprite(DialougeBox, DB2, 3.5f, 375, 250);
-	setTextureNSprite(DialougeBox, DB3, 3.5f, 225, 25);
-	setTextureNSprite(DialougeBox, DB4, 3.5f, 1120, 185);
-	setTextureNSprite(DialougeBox, DBA, 3.7f, 955, 190);
-	setTextureNSprite(DialougeBox, DBB, 3.0f, 325, 585);
-	setTextureNSprite(DialougeBox, DBC, 4.0f, 475, 5);
-	DBC.setScale(4.5f, 4.0f);
-	setTextureNSprite(DialougeBox, DBD, 4.0f, 1280, 240);
-	DBD.setScale(6.2f, 4.0f);
-	setTextureNSprite(DialougeBox, DBE, 4.0f, 60, 250);
-	setTextureNSprite(DialougeBox, DBF, 3.5f, 1015, 55);
+	setTextureNSprite(DialougeBox, DB1, 3.5, 35, 70);
+	setTextureNSprite(DialougeBox, DB2, 3.5, 375, 250);
+	setTextureNSprite(DialougeBox, DB3, 3.5, 225, 25);
+	setTextureNSprite(DialougeBox, DB4, 3.5, 1120, 185);
+	setTextureNSprite(DialougeBox, DBA, 3.7, 955, 190);
+	setTextureNSprite(DialougeBox, DBB, 3.0, 325, 585);
+	setTextureNSprite(DialougeBox, DBC, 4.0, 475, 5);
+	DBC.setScale(4.5, 4.0);
+	setTextureNSprite(DialougeBox, DBD, 4.0, 1280, 240);
+	DBD.setScale(6.2, 4.0);
+	setTextureNSprite(DialougeBox, DBE, 4.0, 60, 250);
+	setTextureNSprite(DialougeBox, DBF, 3.5, 1015, 55);
 
 	//END OF LAYERS
 	Dialouge.loadFromFile("Fonts/ARCADE_N.TTF");
@@ -265,8 +265,8 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 
 	//Other's
 
-	VendingMachine.loadFromFile("Textures/Main/Full Vending Machine.png");
-	setTextureNSprite(VendingMachine, VM, 2, 550, 40);
+	VendingMachine.loadFromFile("Textures/Main/Full Vending Machine 02.png");
+	setTextureNSprite(VendingMachine, VM, 2, 550, 70);
 
 	//Player's Stuff
 
@@ -275,34 +275,34 @@ SpaceShip::SpaceShip(RenderWindow& window, int& gameID, float& dt, View& camera)
 	YourPlayer.setTextureRect(IntRect(0 * 64, 0 * 64, 64, 64));
 
 	//NPCs' stuff
-	NPC1.loadFromFile("Textures/Characters/Alien_idle.png");
-	setTextureNSprite(NPC1, Alien1, 3.5f, 1060.0, 260.0);
-	Alien1.setScale(-3.5f, 3.5f);
+	NPC1.loadFromFile("Textures/Characters/Alien_idle 02.png");
+	setTextureNSprite(NPC1, Alien1, 3.5, 1010.0, 280.0);
+	Alien1.setScale(-3.5, 3.5);
 
-	NPC2.loadFromFile("Textures/Characters/HellBoy.png");
-	setTextureNSprite(NPC2, HellBoy, 0.10f, 700, 65);
+	NPC2.loadFromFile("Textures/Characters/HellBoy 02.png");
+	setTextureNSprite(NPC2, HellBoy, 3.5, 700, 65);
 	//HellBoy.setScale(-0.12, 0.12);
 
 	NPC3.loadFromFile("Textures/Characters/Nurse-cut.png");
-	setTextureNSprite(NPC3, Nurse, 1.f, 840, 115);
+	setTextureNSprite(NPC3, Nurse, 1, 830, 115);
 
 	NPC4.loadFromFile("Textures/Characters/Elf.png");
-	setTextureNSprite(NPC4, Elf, 1.5f, 75, 315);
+	setTextureNSprite(NPC4, Elf, 1.5, 75, 315);
 
 	NPC5.loadFromFile("Textures/Characters/Protocol A.png");
-	setTextureNSprite(NPC5, C3PO, 3.5f, 1360, 440);
+	setTextureNSprite(NPC5, C3PO, 3.5, 1360, 440);
 
 	NPC6.loadFromFile("Textures/Characters/Astro A.png");
-	setTextureNSprite(NPC6, R4D4, 2.5f, 1355, 350);
+	setTextureNSprite(NPC6, R4D4, 2.5, 1355, 350);
 
 	NPC7.loadFromFile("Textures/Characters/Todo.png");
-	setTextureNSprite(NPC7, Todo, 1.f, 343, 605);
+	setTextureNSprite(NPC7, Todo, 1, 343, 605);
 
 	NPC8.loadFromFile("Textures/Characters/Lisa.png");
-	setTextureNSprite(NPC8, Lisa, 1.5f, 1290, 300);
+	setTextureNSprite(NPC8, Lisa, 1.5, 1290, 300);
 
 	NPC9.loadFromFile("Textures/Characters/Solilas.png");
-	setTextureNSprite(NPC9, Solilas, 1.5f, 450, 50);
+	setTextureNSprite(NPC9, Solilas, 1.5, 450, 50);
 
 }
 
@@ -338,17 +338,17 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 			y = 0;
 			ChangeSprite(YourPlayer, dt, x, y, spriteTimer, spriteDelay, 64, 64, 4);
 		}
-		
+
 	}
 	else {
 		YourPlayer.setTextureRect(IntRect(0 * 64, y * 64, 64, 64));
 	}
-	
-	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 32, 32, 4);
-	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 1278, 1278, 3);
+
+	ChangeSprite(Alien1, dt, n, l, alienSpriteTimer, alienSpriteDelay, 14, 19, 4);
+	ChangeSprite(HellBoy, dt, n, l, alienSpriteTimer, alienSpriteDelay, 22, 35, 3);
 	ChangeSprite(Elf, dt, g, l, alienSpriteTimer, alienSpriteDelay, 48, 81, 4);
 	ChangeSprite(Todo, dt, h, l, alienSpriteTimer, alienSpriteDelay, 64, 64, 4);
-	
+
 	collisionID = 0;
 	collison = false;
 
@@ -357,7 +357,7 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	Collision(GM_Sprite5, YourPlayer, camera, speed, collisionID, 2, true);
 
 	Collision(GM_Sprite4, YourPlayer, camera, speed, collisionID, 3, true);
-	
+
 	Collision(GM_Row2, YourPlayer, camera, speed);
 
 	Collision(GM_Row1, YourPlayer, camera, speed);
@@ -375,27 +375,27 @@ void SpaceShip::Update(RenderWindow& window, View& camera, float dt, int& collis
 	Collision(wall5, YourPlayer, camera, speed);
 
 	Collision(VM, YourPlayer, camera, speed);
-	
+
 	Collision(Alien1, YourPlayer, camera, speed, collisionID, 5, true);
 
 	Collision(HellBoy, YourPlayer, camera, speed);
 
 	Collision(Nurse, YourPlayer, camera, speed);
-	
+
 	Collision(Elf, YourPlayer, camera, speed, collisionID, 9, true);
-	
+
 	Collision(Todo, YourPlayer, camera, speed, collisionID, 6, true);
-	
+
 	Collision(Solilas, YourPlayer, camera, speed, collisionID, 7, true);
 
 	Collision(Lisa, YourPlayer, camera, speed, collisionID, 8, true);
-	
+
 	Render(window, camera, collisionID);
 }
 
 // Define the Render function of the space ship
 void SpaceShip::Render(RenderWindow& window, View& camera, int collisionID) {
-	
+
 	window.draw(GM_Sprite);
 	window.draw(wall5);
 	window.draw(wall3);
@@ -424,7 +424,7 @@ void SpaceShip::Render(RenderWindow& window, View& camera, int collisionID) {
 	window.draw(Solilas);
 	window.draw(YourPlayer);
 	window.draw(BottomWall_Sprite);
-	
+
 	if (collison) {
 		switch (collisionID)
 		{
