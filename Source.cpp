@@ -144,12 +144,14 @@ int main()
             if (UsernameTyping)
             {
                 //DO ALL THE USERNAME SHOWING THEN ENTERING STUFF
-                Text ShowTheUser, Username;
+                Text ShowTheUser, Username, Instruction;
                 Font SHOW_USER_FONT, USER_FONT;
                 SHOW_USER_FONT.loadFromFile("Fonts/ARCADE_R.ttf");
                 USER_FONT.loadFromFile("Fonts/ARCADE_I.ttf");
-                texts(ShowTheUser, "Enter your username", (float)window.getSize().x / 4.f, (float)window.getSize().y / 2.f, (int)((float)window.getSize().x / 35.0f), SHOW_USER_FONT);
+                texts(ShowTheUser, "Enter your username", (float)window.getSize().x / 4.f, (float)window.getSize().y / 2.7f, (int)((float)window.getSize().x / 35.0f), SHOW_USER_FONT);
                 window.draw(ShowTheUser);
+                texts(Instruction, "Press 'Enter' to continue", ShowTheUser.getPosition().x + 80, ShowTheUser.getPosition().y + 450, window.getSize().x / 55.0f, SHOW_USER_FONT);
+                window.draw(Instruction);
                 texts(Username, user.playerName, ShowTheUser.getPosition().x + (ShowTheUser.getGlobalBounds().width / 3.5f), ShowTheUser.getPosition().y + 100, (int)((float)window.getSize().x / 45.0f), USER_FONT);
                 window.draw(Username);
             }

@@ -39,6 +39,7 @@ bool compareAll(myPlayer& a, myPlayer& b) {
 
 void Load(RenderWindow& window, myPlayer mp[]) {
     float windowX = (float)window.getSize().x;
+    float windowY = (float)window.getSize().y;
     ifstream file("Data/scoreboard.txt");
     int i = 0;
     while (file.good() && i != 30) {
@@ -53,31 +54,86 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     }
 
     sort(mp, mp + 30, compareAll);
+    Texture screen;
+    screen.loadFromFile("Textures/Main/LeaderBoard.png");
+    Sprite LeaderScreen;
+    LeaderScreen.setTexture(screen);
+    LeaderScreen.setScale(2.35, 1.9);
+    Text Name, Games[5];
+    Text rankUser[8], rankBB[8], rankSS[8], rankSI[8], rankSUM[8];
+    Text Instructions;
+    Font Scorefont, LBfont;
+    Scorefont.loadFromFile("Fonts/AndromedaSpace-Regular.ttf");
+    LBfont.loadFromFile("Fonts/Planet 37.ttf");
 
-    Text Name, Games[4];
-    Text rankUser[5], rankBB[5], rankSS[5], rankSI[5], rankSUM[5];
-    Font font;
-    font.loadFromFile("Fonts/AmbersHand-Regular.ttf");
-
-    texts(Name, "Name", windowX * 0.1f, 100, (int)(windowX / 40), font);
-    texts(Games[0], "BRICK BREAKER", windowX * 0.2f, 100, (int)(windowX / 40), font);
-    texts(Games[1], "SPACE SHOOTER", windowX * 0.4f, 100, (int)(windowX / 40), font);
-    texts(Games[2], "SPACE INVADER", windowX * 0.6f, 100, (int)(windowX / 40), font);
-    texts(Games[3], "SUM", windowX * 0.8f, 100, (int)(windowX / 50), font);
-
+    texts(Instructions, "Press 'E' to go back", windowX * 0.04f, windowY * 0.85f, (int)(windowX / 65), LBfont);
+    Instructions.setFillColor(Color::Yellow);
+    texts(Name, "Name", windowX * 0.08f, windowY * 0.12f, (int)(windowX / 55), LBfont);
+    Name.setFillColor(Color::Yellow);
+    texts(Games[0], "Brick Breaker", windowX * 0.2f, windowY * 0.12f, (int)(windowX / 55), LBfont);
+    texts(Games[1], "Space Shooter", windowX * 0.4f, windowY * 0.12f, (int)(windowX / 55), LBfont);
+    texts(Games[2], "Space Invader", windowX * 0.6f, windowY * 0.12f, (int)(windowX / 55), LBfont);
+    texts(Games[3], "Total", windowX * 0.8f, windowY * 0.12f, (int)(windowX / 55), LBfont);
+    texts(Games[4], "LEADERBOARD", windowX * 0.24f, windowY * 0, (int)(windowX / 25), LBfont);
+    for (int i = 0; i < 5; i++)
+    {
+        Games[i].setFillColor(Color::Yellow);
+    }
+    Games[4].setScale(1.4f, 0.8f);
+    window.draw(LeaderScreen);
+    window.draw(Instructions);
     window.draw(Name);
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
         window.draw(Games[i]);
 
 
     int j = 0;
-    while (j != 5) {
-        texts(rankUser[j], mp[j].playerName, Name.getPosition().x, Name.getPosition().y + 120 + j * 50, 30, font);
-        texts(rankBB[j], to_string(mp[j].score_BrickBreaker), Games[0].getPosition().x, Games[0].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSS[j], to_string(mp[j].scoreDuck), Games[1].getPosition().x, Games[1].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSI[j], to_string(mp[j].score_SpaceInvader), Games[2].getPosition().x, Games[2].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSUM[j], to_string(mp[j].sum), Games[3].getPosition().x, Games[3].getPosition().y + 120 + j * 50, 25, font);
+    while (j != 8) {
+        texts(rankUser[j], mp[j].playerName, Name.getPosition().x - 40, Name.getPosition().y + 100 + j * 55, 40, Scorefont);
+        texts(rankBB[j], to_string(mp[j].score_BrickBreaker), Games[0].getPosition().x + 50, Games[0].getPosition().y + 100 + j * 55, 35, Scorefont);
+        texts(rankSS[j], to_string(mp[j].scoreDuck), Games[1].getPosition().x + 50, Games[1].getPosition().y + 100 + j * 55, 35, Scorefont);
+        texts(rankSI[j], to_string(mp[j].score_SpaceInvader), Games[2].getPosition().x + 50, Games[2].getPosition().y + 100 + j * 55, 35, Scorefont);
+        texts(rankSUM[j], to_string(mp[j].sum), Games[3].getPosition().x + 50, Games[3].getPosition().y + 100 + j * 55, 35, Scorefont);
 
+        int rank = j;
+        switch (rank) {
+        case 0:
+            rankUser[rank].setScale(1.3f, 1.3f);
+            rankUser[rank].setFillColor(Color::Red);
+            rankBB[rank].setScale(1.3f, 1.3f);
+            rankBB[rank].setFillColor(Color::Red);
+            rankSS[rank].setScale(1.3f, 1.3f);
+            rankSS[rank].setFillColor(Color::Red);
+            rankSI[rank].setScale(1.3f, 1.3f);
+            rankSI[rank].setFillColor(Color::Red);
+            rankSUM[rank].setScale(1.3f, 1.3f);
+            rankSUM[rank].setFillColor(Color::Red);
+            break;
+        case 1:
+            rankUser[rank].setScale(1.2f, 1.2f);
+            rankUser[rank].setFillColor(Color::Red);
+            rankBB[rank].setScale(1.2f, 1.2f);
+            rankBB[rank].setFillColor(Color::Red);
+            rankSS[rank].setScale(1.2f, 1.2f);
+            rankSS[rank].setFillColor(Color::Red);
+            rankSI[rank].setScale(1.2f, 1.2f);
+            rankSI[rank].setFillColor(Color::Red);
+            rankSUM[rank].setScale(1.2f, 1.2f);
+            rankSUM[rank].setFillColor(Color::Red);
+            break;
+        case 2:
+            rankUser[rank].setScale(1.1f, 1.1f);
+            rankUser[rank].setFillColor(Color::Red);
+            rankBB[rank].setScale(1.1f, 1.1f);
+            rankBB[rank].setFillColor(Color::Red);
+            rankSS[rank].setScale(1.1f, 1.1f);
+            rankSS[rank].setFillColor(Color::Red);
+            rankSI[rank].setScale(1.1f, 1.1f);
+            rankSI[rank].setFillColor(Color::Red);
+            rankSUM[rank].setScale(1.1f, 1.1f);
+            rankSUM[rank].setFillColor(Color::Red);
+            break;
+        }
 
         window.draw(rankUser[j]);
         window.draw(rankBB[j]);

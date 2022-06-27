@@ -1,23 +1,11 @@
 Mohamed 30 60 0 90
 lool 13 60 0 73
-seif 0 8 0 8
-seif 0 8 2 10
-seif 2 8 2 12
-bahnasy 23 19 11 53
-Kandeel 0 45 60 105
 kjahaf 0 0 1 1
 kjahaf 0 14 1 15
 kjahaf 6 14 1 21
 mohanad 11 0 0 11
 mohanad 11 0 4 15
 mohanad 11 14 4 29
-mohmaed 0 0 12 12
- 0 0 6 6
- 0 0 13 13
-seif 0 0 60 60
-seif 0 0 19 19
-seif 0 99 19 118
-seif 0 0 60 60
-seif 0 0 60 60
- 0 0 90 90
- 0 0 60 60
+mohmaed 0 0 12 12
+
+
