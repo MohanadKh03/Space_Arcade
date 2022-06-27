@@ -47,6 +47,12 @@ bool compareAll(myPlayer& a, myPlayer& b) {
 }
 
 void Load(RenderWindow& window, myPlayer mp[]) {
+    Texture background;
+    Sprite BackgroundSprite;
+    background.loadFromFile("Textures/Background.png");
+    BackgroundSprite.setTexture(background);
+    BackgroundSprite.setScale(window.getSize().x / BackgroundSprite.getLocalBounds().width
+                            , window.getSize().y / BackgroundSprite.getLocalBounds().height);
     ifstream file("Data/scoreboard.txt");
     int i = 0;
     while (file.good() && i != 30) {
@@ -65,29 +71,37 @@ void Load(RenderWindow& window, myPlayer mp[]) {
     Text Name, Games[4];
     Text rankUser[5], rankBB[5], rankSS[5], rankSI[5], rankSUM[5];
     Font font;
-    font.loadFromFile("Fonts/AmbersHand-Regular.ttf");
+    font.loadFromFile("Fonts/World-of-spell.ttf");
 
-    texts(Name, "Name", window.getSize().x * 0.1f, 100, window.getSize().x / 40, font);
-    texts(Games[0], "BRICK BREAKER", window.getSize().x * 0.2f, 100, window.getSize().x / 40, font);
-    texts(Games[1], "SPACE SHOOTER", window.getSize().x * 0.4f, 100, window.getSize().x / 40, font);
-    texts(Games[2], "SPACE INVADER", window.getSize().x * 0.6f, 100, window.getSize().x / 40, font);
-    texts(Games[3], "SUM", window.getSize().x * 0.8f, 100, window.getSize().x / 50, font);
+    texts(Name, "Name", window.getSize().x * 0.12f, 100, window.getSize().x / 55, font);
+    texts(Games[0], "BRICK BREAKER", window.getSize().x * 0.25f, 100, window.getSize().x / 55, font);
+    texts(Games[1], "SPACE SHOOTER", window.getSize().x * 0.45f, 100, window.getSize().x / 55, font);
+    texts(Games[2], "SPACE INVADER", window.getSize().x * 0.65f, 100, window.getSize().x / 55, font);
+    texts(Games[3], "SUM", window.getSize().x * 0.85f, 100, window.getSize().x / 55, font);
 
+    window.draw(BackgroundSprite);
+    Name.setFillColor(Color::Black);
     window.draw(Name);
     for (int i = 0; i < 4; i++) {
+        Games[i].setFillColor(Color::Black);
         window.draw(Games[i]);
     }
 
 
     int j = 0;
     while (j != 5) {
-        texts(rankUser[j], mp[j].playerName, Name.getPosition().x, Name.getPosition().y + 120 + j * 50, 30, font);
-        texts(rankBB[j], to_string(mp[j].score_BrickBreaker), Games[0].getPosition().x, Games[0].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSS[j], to_string(mp[j].scoreDuck), Games[1].getPosition().x, Games[1].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSI[j], to_string(mp[j].score_SpaceInvader), Games[2].getPosition().x, Games[2].getPosition().y + 120 + j * 50, 25, font);
-        texts(rankSUM[j], to_string(mp[j].sum), Games[3].getPosition().x, Games[3].getPosition().y + 120 + j * 50, 25, font);
+        int charSize = 45;
+        texts(rankUser[j], mp[j].playerName, Name.getPosition().x, Name.getPosition().y + 120 + j * 50, charSize,font);
+        texts(rankBB[j], to_string(mp[j].score_BrickBreaker), Games[0].getPosition().x, Games[0].getPosition().y + 120 + j * 50, charSize-10, font);
+        texts(rankSS[j], to_string(mp[j].scoreDuck), Games[1].getPosition().x, Games[1].getPosition().y + 120 + j * 50, charSize-10, font);
+        texts(rankSI[j], to_string(mp[j].score_SpaceInvader), Games[2].getPosition().x, Games[2].getPosition().y + 120 + j * 50, charSize-10, font);
+        texts(rankSUM[j], to_string(mp[j].sum), Games[3].getPosition().x, Games[3].getPosition().y + 120 + j * 50, charSize-10, font);
 
-
+        rankUser[j].setFillColor(Color::Black);
+        rankBB[j].setFillColor(Color::Black);
+        rankSS[j].setFillColor(Color::Black);
+        rankSI[j].setFillColor(Color::Black);
+        rankSUM[j].setFillColor(Color::Black);
         window.draw(rankUser[j]);
         window.draw(rankBB[j]);
         window.draw(rankSS[j]);
