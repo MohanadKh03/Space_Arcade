@@ -346,7 +346,7 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 		{
 			player.Damaged = true;
 			player.damageEffect = true;
-			player.damagedSound.play();
+			//player.damagedSound.play();
 			player.damagedCurrentFlashes = player.damagedFlashes;
 			--player.health;
 			enemies[i].bullet.released = false;
@@ -422,7 +422,7 @@ void SpaceInvader::Collision(RenderWindow& w, int& gameID) {
 
 void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, int& gameID) {
 	GAMEscore = score;
-	win.draw(boss.Boss);
+	//win.draw(boss.Boss);
 	win.draw(backgroundsprite);
 	for (int i = 0; i < NumOfEnemies; i++) {
 
@@ -443,7 +443,7 @@ void SpaceInvader::Run(RenderWindow& win, int& GAMEscore, Event& e, float& dt, i
 	{
 		win.draw(boss.bossWave);
 		win.draw(boss.bossMissle);
-		win.draw(boss.Boss);
+		//win.draw(boss.Boss);
 		win.draw(player.sprite);
 		win.draw(scoretext);
 		win.draw(livestext);
