@@ -1,15 +1,20 @@
-# Space Arcade
+# 🚀 Space Arcade
 
-## Description: 
-### It is an arcade (A lobby of games ... currently 3 games but we might add more) that allows the user to move freely and choose which game to play and check his/her scores and all the other players that have played before on a leaderboard.
+## Description  
+Space Arcade is a dynamic **arcade lobby** where players freely explore a spaceship-themed hub to select from three mini-games, track their personal high scores, and compare themselves on a global leaderboard.
 
-----------------------------------------------------------------------------------------
+[▶️ Play on itch.io](https://mohamedelshab.itch.io/space-arcade)
 
-## About the game:
-### The spaceship lobby consists of a bunch of game machines,NPCs and a bluescreen for showing the leaderboard. 
-### 3 Game Machines are currently open to play 3 different games.
-  ## 1. Brick Breaker </br > 2. Space Shooter </br > 3. Space Invader </br >
-### 1.<ins>Brick Breaker</ins> : Controlling the paddle by mouse to hit the ball and hit as much bricks as possible .. The ball is sped up by time to make it more difficult.
-### 2.<ins>Space Shooter</ins> : Controlled by a mouse-crosshair that shoots spaceships which are randomly generated inside the screen .. Player must shoot as much spaceships as possible before his 20 healthpoints are over (Healthpoints decrease when those spaceships cross the other side of the borders).
-### 3.<ins>Space Invader</ins> : Controlled by a Player-Spaceship that shoots bullets at the Enemies as they move towards the player and shoot bullets back at the player.
+---
 
+## About the Game  
+The spaceship lobby features multiple game machines, NPC attendants, and a central blue screen displaying the leaderboard. Three game machines are currently available:
+
+1. **Brick Breaker**  
+   Control the paddle with your mouse to keep the ball in play and clear as many bricks as possible. The ball gradually speeds up over time to ramp up the challenge.
+
+2. **Space Shooter**  
+   Aim and click with a mouse-controlled crosshair to shoot incoming enemy ships. You start with 20 HP, which decreases when enemies slip past your defenses.
+
+3. **Space Invader**  
+   Pilot your spaceship to fire at advancing alien waves while dodging their return fire. Rack up points by eliminating enemies before they reach your position.
